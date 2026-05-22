@@ -23,12 +23,12 @@ export function ResearchModelStrip({
   strengths,
 }: ResearchModelStripProps) {
   return (
-    <section className="research-brief" aria-label="AIGC 研究维度摘要">
+    <section className="research-brief" aria-label="AI memory 研究维度摘要">
       <article className="research-thesis">
-        <p className="eyebrow">AIGC memory science model</p>
+        <p className="eyebrow">AI memory science model</p>
         <h2>从记忆认知、检索扎根、Agent 运行和治理可信四层评估</h2>
         <p>
-          先看研究层，再进入项目地图，避免把数据库、记忆 API 和完整 Memory OS 混成一类。
+          先看类别边界，再进入项目地图，避免把数据库、记忆 API、RAG 框架和 Agent runtime 混成一类。
         </p>
       </article>
 

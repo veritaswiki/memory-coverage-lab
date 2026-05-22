@@ -20,7 +20,7 @@ describe("coverage calculations", () => {
 
   it("combines a stack by taking the strongest capability from each project", () => {
     const stack = memoryProjects.filter((project) =>
-      ["llm-wiki", "gbrain", "hindsight"].includes(project.slug),
+      ["mem0", "zep-graphiti", "vectorstack"].includes(project.slug),
     );
 
     const combined = combineCapabilityScores(stack);
@@ -32,22 +32,22 @@ describe("coverage calculations", () => {
   });
 
   it("finds capability gaps under a threshold", () => {
-    const vikingdb = memoryProjects.find((project) => project.slug === "vikingdb");
+    const vectorstack = memoryProjects.find((project) => project.slug === "vectorstack");
 
-    expect(vikingdb).toBeDefined();
+    expect(vectorstack).toBeDefined();
 
-    const gaps = getCoverageGaps(vikingdb!.scores, 0.5);
+    const gaps = getCoverageGaps(vectorstack!.scores, 0.5);
 
     expect(gaps.map((gap) => gap.key)).toContain("episodic");
     expect(gaps.map((gap) => gap.key)).toContain("timelineProof");
   });
 
   it("summarizes the expanded model into research groups", () => {
-    const gbrain = memoryProjects.find((project) => project.slug === "gbrain");
+    const mem0 = memoryProjects.find((project) => project.slug === "mem0");
 
-    expect(gbrain).toBeDefined();
+    expect(mem0).toBeDefined();
 
-    const groups = getCapabilityGroupScores(gbrain!.scores);
+    const groups = getCapabilityGroupScores(mem0!.scores);
 
     expect(groups).toHaveLength(4);
     expect(groups.every((group) => group.value >= 0 && group.value <= 1)).toBe(true);

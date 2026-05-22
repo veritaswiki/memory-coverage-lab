@@ -7,8 +7,8 @@ describe("Memory Coverage Lab", () => {
   it("renders the default coverage map and selected project panel", () => {
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: "Memory Coverage Lab" })).toBeInTheDocument();
-    expect(screen.getAllByRole("heading", { name: "GBrain" }).length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { name: /When AI agents remember/ })).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { name: "Mem0" }).length).toBeGreaterThan(0);
     expect(screen.getByLabelText("记忆覆盖圆图")).toBeInTheDocument();
   });
 
@@ -17,7 +17,7 @@ describe("Memory Coverage Lab", () => {
 
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: /组合设计/ }));
+    await user.click(screen.getByRole("button", { name: /Stack planner/ }));
     expect(screen.getByRole("heading", { name: "组合路线覆盖计算" })).toBeInTheDocument();
     expect(screen.getAllByText("组合覆盖").length).toBeGreaterThan(0);
 
@@ -30,9 +30,9 @@ describe("Memory Coverage Lab", () => {
 
     render(<App />);
 
-    await user.type(screen.getByLabelText("搜索项目、层级或能力"), "Viking");
+    await user.type(screen.getByLabelText("搜索项目、层级或能力"), "Vector");
 
-    expect(screen.getAllByText("VikingDB").length).toBeGreaterThan(0);
-    expect(screen.queryByText("Nowledge Mem")).not.toBeInTheDocument();
+    expect(screen.getAllByText("Vector DB").length).toBeGreaterThan(0);
+    expect(screen.queryByText("Supermemory")).not.toBeInTheDocument();
   });
 });

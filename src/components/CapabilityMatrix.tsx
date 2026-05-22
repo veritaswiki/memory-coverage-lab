@@ -24,7 +24,7 @@ export function CapabilityMatrix({
       <div className="section-head">
         <div>
           <p className="eyebrow">Scientific capability matrix</p>
-          <h2>十六项 AIGC 记忆能力横向对照</h2>
+          <h2>十六项 AI memory 能力横向对照</h2>
         </div>
         <p>
           每个维度绑定研究 lens 与权重，覆盖分强调长期一致性、证据扎根、Agent 闭环和可信治理。

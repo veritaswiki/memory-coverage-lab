@@ -23,7 +23,7 @@ export const capabilityGroupDefinitions = [
   {
     key: "assurance",
     label: "治理可信层",
-    summary: "评测、矛盾修复、权限留存和本地部署边界是否可审计。",
+    summary: "评测、矛盾修复、权限留存和部署边界是否可审计。",
   },
 ] as const;
 
@@ -126,9 +126,9 @@ export const capabilityDefinitions = [
   },
   {
     key: "selfHostLan",
-    label: "本地与局域网",
+    label: "部署控制",
     group: "assurance",
-    description: "自托管、LAN 可访问、离线可运行、机器间同步策略。",
+    description: "自托管、私有化、离线可运行、数据驻留和迁移策略。",
     lens: "Deployment boundary",
     weight: 0.85,
   },
@@ -150,10 +150,10 @@ export const capabilityDefinitions = [
   },
   {
     key: "projectFit",
-    label: "项目配合度",
+    label: "类别清晰度",
     group: "cognitive",
-    description: "和 Personal AI OS、GBrain、Hindsight、Vault 的组合成熟度。",
-    lens: "System fit",
+    description: "产品定位、能力边界和与相邻工具组合的清晰程度。",
+    lens: "Category fit",
     weight: 1.25,
   },
 ] as const;

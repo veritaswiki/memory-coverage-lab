@@ -1,13 +1,24 @@
 import { useMemo, useState } from "react";
+import {
+  BenchmarkControls,
+  type ActiveView,
+} from "./components/BenchmarkControls";
 import { CapabilityMatrix } from "./components/CapabilityMatrix";
 import { CoverageMap } from "./components/CoverageMap";
 import { EvidenceTable } from "./components/EvidenceTable";
 import { ImplementationBoard } from "./components/ImplementationBoard";
+import {
+  HeroSection,
+  PlatformSection,
+  ResearchCards,
+  SubscribeSection,
+  SurfaceSection,
+} from "./components/LandingSections";
 import { MetricRibbon } from "./components/MetricRibbon";
 import { ProjectPanel } from "./components/ProjectPanel";
 import { ResearchModelStrip } from "./components/ResearchModelStrip";
 import { StackPlanner } from "./components/StackPlanner";
-import { type ActiveView, TopBar } from "./components/TopBar";
+import { TopBar } from "./components/TopBar";
 import { capabilityDefinitions } from "./data/capabilities";
 import { getProjectImplementation } from "./data/implementation";
 import { memoryProjects } from "./data/projects";
@@ -19,11 +30,11 @@ import {
   getStrongestCapabilities,
 } from "./lib/coverage";
 
-const defaultStack = ["llm-wiki", "gbrain", "hindsight", "nowledge-mem"];
+const defaultStack = ["mem0", "zep-graphiti", "llamaindex", "vectorstack"];
 
 function App() {
   const [activeView, setActiveView] = useState<ActiveView>("map");
-  const [selectedSlug, setSelectedSlug] = useState("gbrain");
+  const [selectedSlug, setSelectedSlug] = useState("mem0");
   const [query, setQuery] = useState("");
   const [stackSlugs, setStackSlugs] = useState<string[]>(defaultStack);
   const stackProjects = useMemo(
@@ -94,76 +105,98 @@ function App() {
 
   return (
     <div className="app-shell">
-      <TopBar
-        activeView={activeView}
-        onViewChange={setActiveView}
-        query={query}
-        onQueryChange={setQuery}
-      />
+      <TopBar />
 
-      <section className="overview-deck" aria-label="模型与运行概览">
-        <MetricRibbon
-          dimensionCount={capabilityDefinitions.length}
-          projectCount={memoryProjects.length}
-          stackCoverage={stackCoverage}
-          gapCount={gapCount}
-          focusCoverage={calculateCoverageScore(visibleSelectedProject.scores)}
+      <HeroSection />
+      <SurfaceSection />
+      <ResearchCards />
+      <PlatformSection />
+
+      <section className="benchmark-section" id="benchmarks">
+        <div className="benchmark-head">
+          <div>
+            <p className="eyebrow">Benchmark explorer</p>
+            <h2>Objective AI memory coverage map</h2>
+          </div>
+          <p>
+            公开研究分数是启发式 scorecard，不是采购背书。它把 memory API、
+            temporal graph、RAG framework、vector substrate 和 agent runtime
+            放到同一能力边界中比较。
+          </p>
+        </div>
+
+        <BenchmarkControls
+          activeView={activeView}
+          onViewChange={setActiveView}
+          query={query}
+          onQueryChange={setQuery}
         />
 
-        <ResearchModelStrip
-          groupScores={selectedGroupScores}
-          strengths={selectedStrengths}
-        />
-      </section>
+        <section className="overview-deck" aria-label="模型与运行概览">
+          <MetricRibbon
+            dimensionCount={capabilityDefinitions.length}
+            projectCount={memoryProjects.length}
+            stackCoverage={stackCoverage}
+            gapCount={gapCount}
+            focusCoverage={calculateCoverageScore(visibleSelectedProject.scores)}
+          />
 
-      <main className="workspace">
-        <section className="workspace-main">
-          {activeView === "map" ? (
-            <CoverageMap
-              projects={filteredProjects}
-              selectedProject={visibleSelectedProject}
-              selectedStackSlugs={stackSlugs}
-              onSelectProject={handleSelectProject}
-            />
-          ) : null}
-
-          {activeView === "matrix" ? (
-            <CapabilityMatrix
-              projects={filteredProjects}
-              selectedSlug={visibleSelectedProject.slug}
-              onSelectProject={handleSelectProject}
-            />
-          ) : null}
-
-          {activeView === "stack" ? (
-            <StackPlanner
-              projects={memoryProjects}
-              selectedSlugs={stackSlugs}
-              onToggleProject={handleToggleProject}
-            />
-          ) : null}
-
-          {activeView === "governance" ? (
-            <EvidenceTable projects={filteredProjects} />
-          ) : null}
+          <ResearchModelStrip
+            groupScores={selectedGroupScores}
+            strengths={selectedStrengths}
+          />
         </section>
 
-        <ProjectPanel project={visibleSelectedProject} allProjects={memoryProjects} />
-      </main>
+        <main className="workspace">
+          <section className="workspace-main">
+            {activeView === "map" ? (
+              <CoverageMap
+                projects={filteredProjects}
+                selectedProject={visibleSelectedProject}
+                selectedStackSlugs={stackSlugs}
+                onSelectProject={handleSelectProject}
+              />
+            ) : null}
 
-      {activeView === "map" ? (
-        <ImplementationBoard
-          projects={filteredProjects}
-          selectedProject={visibleSelectedProject}
-          onSelectProject={handleSelectProject}
-        />
-      ) : null}
+            {activeView === "matrix" ? (
+              <CapabilityMatrix
+                projects={filteredProjects}
+                selectedSlug={visibleSelectedProject.slug}
+                onSelectProject={handleSelectProject}
+              />
+            ) : null}
 
-      <footer className="status-strip" aria-label="局域网访问状态">
-        <span>Dev host: :::5179</span>
-        <span>LAN: 192.168.31.22:5179</span>
-        <span>Tailnet host: luxmac-mini.tail3aaf3f.ts.net:5179</span>
-        <span>Tailscale: 100.119.246.9:5179</span>
+            {activeView === "stack" ? (
+              <StackPlanner
+                projects={memoryProjects}
+                selectedSlugs={stackSlugs}
+                onToggleProject={handleToggleProject}
+              />
+            ) : null}
+
+            {activeView === "governance" ? (
+              <EvidenceTable projects={filteredProjects} />
+            ) : null}
+          </section>
+
+          <ProjectPanel project={visibleSelectedProject} allProjects={memoryProjects} />
+        </main>
+
+        {activeView === "map" ? (
+          <ImplementationBoard
+            projects={filteredProjects}
+            selectedProject={visibleSelectedProject}
+            onSelectProject={handleSelectProject}
+          />
+        ) : null}
+      </section>
+
+      <SubscribeSection />
+
+      <footer className="status-strip" aria-label="site footer">
+        <span>MemoryBench / ai-memory-intelligence</span>
+        <span>Objective scorecards for AI memory categories</span>
+        <a href="https://github.com/veritaswiki/memory-coverage-lab">GitHub</a>
       </footer>
     </div>
   );

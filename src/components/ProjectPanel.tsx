@@ -36,7 +36,7 @@ export function ProjectPanel({ project, allProjects }: ProjectPanelProps) {
 
       <div className="panel-section implementation-panel">
         <div className="panel-section-title">
-          <h3>实施更新进展</h3>
+          <h3>研究更新进展</h3>
           <span data-phase={implementation.phase}>{implementation.phaseLabel}</span>
         </div>
         <div className="implementation-progress">
@@ -101,7 +101,7 @@ export function ProjectPanel({ project, allProjects }: ProjectPanelProps) {
         <div>
           <dt>
             <BadgeCheck aria-hidden="true" size={16} />
-            官方支持
+            公开产品面
           </dt>
           <dd>{project.officialSupport}</dd>
         </div>
@@ -115,7 +115,7 @@ export function ProjectPanel({ project, allProjects }: ProjectPanelProps) {
         <div>
           <dt>
             <Network aria-hidden="true" size={16} />
-            项目配合
+            类别边界
           </dt>
           <dd>{project.fitPosition}</dd>
         </div>
@@ -161,7 +161,7 @@ export function ProjectPanel({ project, allProjects }: ProjectPanelProps) {
       </div>
 
       <div className="panel-section">
-        <h3>实际案例时间</h3>
+        <h3>研究样例时间</h3>
         <div className="case-list">
           {project.cases.map((caseNote) => (
             <article key={`${caseNote.when}-${caseNote.title}`}>

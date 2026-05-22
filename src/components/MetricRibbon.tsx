@@ -24,11 +24,11 @@ export function MetricRibbon({
   focusCoverage,
 }: MetricRibbonProps) {
   const metrics: RibbonMetric[] = [
-    { label: "AIGC 维度", value: String(dimensionCount), Icon: Radar },
-    { label: "评估对象", value: String(projectCount), Icon: Boxes },
-    { label: "组合覆盖", value: `${stackCoverage}%`, Icon: Layers3 },
-    { label: "待补能力", value: String(gapCount), Icon: TriangleAlert },
-    { label: "当前焦点", value: `${focusCoverage}%`, Icon: Crosshair, emphasis: true },
+    { label: "Criteria", value: String(dimensionCount), Icon: Radar },
+    { label: "Systems", value: String(projectCount), Icon: Boxes },
+    { label: "Stack coverage", value: `${stackCoverage}%`, Icon: Layers3 },
+    { label: "Open gaps", value: String(gapCount), Icon: TriangleAlert },
+    { label: "Focus score", value: `${focusCoverage}%`, Icon: Crosshair, emphasis: true },
   ];
 
   return (

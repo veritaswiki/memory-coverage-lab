@@ -66,10 +66,10 @@ export function CoverageMap({
       <div className="map-stage">
         <div className="map-titlebar">
           <div>
-            <p className="eyebrow">AIGC memory cartography</p>
+            <p className="eyebrow">AI memory cartography</p>
             <h2>{selectedProject.name}</h2>
             <span className="map-titlebar-note">
-              外圈是完整记忆能力边界；填充轮廓表示当前项目在 16 个维度上的实际覆盖。
+              外圈是完整 AI memory 能力边界；填充轮廓表示当前系统在 16 个维度上的公开覆盖。
             </span>
           </div>
           <div className="map-titlebar-score">
@@ -82,7 +82,7 @@ export function CoverageMap({
           className="coverage-svg"
           viewBox="0 0 840 660"
           role="img"
-          aria-label="完整记忆边界与各项目能力覆盖圆"
+          aria-label="完整 AI memory 边界与各项目能力覆盖圆"
         >
           <defs>
             <radialGradient id="boundary-fill" cx="50%" cy="50%" r="60%">
@@ -191,10 +191,10 @@ export function CoverageMap({
             {selectedCoverage}%
           </text>
           <text x={boundary.cx} y="38" textAnchor="middle" className="boundary-title">
-            完整记忆能力边界
+            AI memory capability boundary
           </text>
           <text x={boundary.cx} y="596" textAnchor="middle" className="boundary-subtitle">
-            轮廓越接近外圈，表示越接近完整 Memory OS 能力边界
+            轮廓越接近外圈，表示越接近完整 AI memory 平台能力边界
           </text>
           {groupAnchors.map((anchor) => (
             <text

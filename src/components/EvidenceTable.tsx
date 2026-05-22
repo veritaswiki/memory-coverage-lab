@@ -13,10 +13,10 @@ export function EvidenceTable({ projects }: EvidenceTableProps) {
       <div className="section-head">
         <div>
           <p className="eyebrow">Support, signal, cases, validity</p>
-          <h2>官方支持、技术交流、案例与可信证据</h2>
+          <h2>公开产品面、技术交流、案例与可信证据</h2>
         </div>
         <p>
-          把产品成熟度、研究传播、真实接入案例和能力强项拆开，避免把数据库、框架、记忆 API 与完整 Memory OS 混为一类。
+          把产品成熟度、研究传播、真实接入案例和能力强项拆开，避免把数据库、框架、记忆 API 与完整 AI memory 平台混为一类。
         </p>
       </div>
 
@@ -41,7 +41,7 @@ export function EvidenceTable({ projects }: EvidenceTableProps) {
 
                   <div className="evidence-columns">
                     <div>
-                      <h4>实施进展</h4>
+                      <h4>研究进展</h4>
                       <p>
                         <strong>{implementation.progress}%</strong>{" "}
                         {implementation.lane}
@@ -49,7 +49,7 @@ export function EvidenceTable({ projects }: EvidenceTableProps) {
                       <p>{implementation.nextMilestone}</p>
                     </div>
                     <div>
-                      <h4>官方支持</h4>
+                      <h4>公开产品面</h4>
                       <p>{project.officialSupport}</p>
                     </div>
                     <div>
@@ -57,7 +57,7 @@ export function EvidenceTable({ projects }: EvidenceTableProps) {
                       <p>{project.technologySignal}</p>
                     </div>
                     <div>
-                      <h4>项目配合案例</h4>
+                      <h4>研究样例</h4>
                       {project.cases.map((caseNote) => (
                         <p key={`${project.slug}-${caseNote.when}`}>
                           <time>{caseNote.when}</time> {caseNote.title}

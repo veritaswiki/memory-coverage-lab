@@ -22,26 +22,26 @@ export function ImplementationBoard({
   const latestUpdate = selectedImplementation.updates[0];
 
   return (
-    <section className="implementation-board" aria-label="项目实施进展">
+    <section className="implementation-board" aria-label="项目研究进展">
       <div className="implementation-head">
         <div>
-          <p className="eyebrow">Implementation ledger</p>
-          <h2>实施进展、缺口与下一里程碑</h2>
+          <p className="eyebrow">Research ledger</p>
+          <h2>复测进展、缺口与下一里程碑</h2>
         </div>
         <p>
-          覆盖分回答“能做什么”，实施账本回答“现在做到哪、风险在哪、下一步是什么”。
+          覆盖分回答“公开能力覆盖什么”，研究账本回答“复测到哪、风险在哪、下一步是什么”。
         </p>
       </div>
 
       <div className="implementation-stats" aria-label="实施概览">
         <article>
           <CheckCircle2 aria-hidden="true" size={16} />
-          <span>已纳入</span>
+          <span>已发布</span>
           <strong>{stats.production}</strong>
         </article>
         <article>
           <Activity aria-hidden="true" size={16} />
-          <span>推进中</span>
+          <span>复测中</span>
           <strong>{stats.active}</strong>
         </article>
         <article>
@@ -51,7 +51,7 @@ export function ImplementationBoard({
         </article>
         <article>
           <AlertTriangle aria-hidden="true" size={16} />
-          <span>高风险</span>
+          <span>高不确定</span>
           <strong>{stats.highRisk}</strong>
         </article>
       </div>
@@ -79,7 +79,7 @@ export function ImplementationBoard({
 
         <dl className="implementation-facts">
           <div>
-            <dt>负责人/系统面</dt>
+            <dt>研究台</dt>
             <dd>{selectedImplementation.owner}</dd>
           </div>
           <div>
