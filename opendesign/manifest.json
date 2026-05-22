@@ -1,0 +1,39 @@
+{
+  "generated": "2026-05-22T14:05:00.000+08:00",
+  "sections": [
+    {
+      "id": "mockups",
+      "label": "Mockups",
+      "groups": [
+        {
+          "slug": "memory-coverage-lab",
+          "files": [
+            {
+              "label": "index.html",
+              "path": "mockups/memory-coverage-lab/index.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design-systems",
+      "label": "Design Systems",
+      "groups": [
+        {
+          "slug": "memory-os",
+          "files": [
+            {
+              "label": "SKILL.md",
+              "path": "design-systems/memory-os/SKILL.md"
+            },
+            {
+              "label": "colors_and_type.css",
+              "path": "design-systems/memory-os/tokens/colors_and_type.css"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

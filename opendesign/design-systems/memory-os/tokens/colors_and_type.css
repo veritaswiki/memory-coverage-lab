@@ -1,0 +1,20 @@
+:root {
+  --memory-paper: #fffaf0;
+  --memory-field: #eef3e7;
+  --memory-ink: #14201c;
+  --memory-muted: #66756b;
+  --memory-line: #d4d8c8;
+  --memory-green: #1d604f;
+  --memory-teal: #136f79;
+  --memory-coral: #b95b42;
+  --memory-gold: #c9882e;
+  --memory-lime: #b9ca47;
+  --memory-plum: #7d4d6a;
+  --memory-blue: #425f9d;
+  --memory-paper-warm: #f5eddc;
+  --memory-line-soft: rgba(20, 32, 28, 0.1);
+  --memory-serif: "IBM Plex Serif", Georgia, serif;
+  --memory-sans: "IBM Plex Sans", "Noto Sans SC", sans-serif;
+  --memory-shadow: 0 18px 56px rgba(20, 32, 28, 0.13);
+  --memory-radius: 8px;
+}

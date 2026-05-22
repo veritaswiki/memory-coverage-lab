@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Coverage Lab Mockup v3</title>
+    <link rel="stylesheet" href="../../design-systems/memory-os/tokens/colors_and_type.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@600;700&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--memory-sans);
+        color: var(--memory-ink);
+        background:
+          linear-gradient(90deg, rgba(20, 32, 28, 0.055) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(20, 32, 28, 0.04) 1px, transparent 1px),
+          linear-gradient(180deg, #fbf8ee 0%, var(--memory-field) 48%, #e6eee2 100%);
+        background-size: 40px 40px, 40px 40px, auto;
+      }
+
+      .shell {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(360px, 600px) 1fr;
+        gap: 24px;
+        align-items: end;
+        padding: 24px 42px 16px;
+        border-bottom: 1px solid rgba(20, 32, 28, 0.15);
+        background: rgba(255, 250, 240, 0.94);
+        box-shadow: 0 10px 28px rgba(20, 32, 28, 0.07);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .mark {
+        width: 60px;
+        height: 60px;
+        display: grid;
+        place-items: center;
+        border-radius: var(--memory-radius);
+        background: linear-gradient(135deg, rgba(201, 136, 46, 0.28), transparent 46%), var(--memory-ink);
+        color: var(--memory-paper);
+        box-shadow: inset 0 0 0 1px rgba(255, 250, 240, 0.26), inset 0 0 0 3px var(--memory-gold);
+        font: 700 19px var(--memory-serif);
+      }
+
+      .eyebrow {
+        margin: 0 0 5px;
+        color: #7a5a12;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2 {
+        font-family: var(--memory-serif);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 38px;
+        line-height: 1;
+      }
+
+      .meta,
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .meta {
+        margin-top: 10px;
+      }
+
+      .meta span,
+      nav span {
+        padding: 6px 9px;
+        border: 1px solid rgba(20, 32, 28, 0.14);
+        border-radius: 999px;
+        background: #f4eddc;
+        color: var(--memory-muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      nav {
+        justify-content: flex-end;
+        padding: 5px;
+        border: 1px solid rgba(20, 32, 28, 0.16);
+        border-radius: var(--memory-radius);
+        background: rgba(255, 250, 240, 0.92);
+      }
+
+      nav span:first-child {
+        border-radius: 6px;
+        background: var(--memory-ink);
+        color: var(--memory-paper);
+      }
+
+      .ribbon {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(132px, 1fr));
+        gap: 1px;
+        margin: 0 42px;
+        border: 1px solid rgba(20, 32, 28, 0.16);
+        border-top: 0;
+        background: rgba(20, 32, 28, 0.14);
+      }
+
+      .ribbon div {
+        display: grid;
+        gap: 5px;
+        padding: 13px 16px;
+        background: rgba(255, 250, 240, 0.9);
+      }
+
+      .ribbon span {
+        color: var(--memory-muted);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .ribbon strong {
+        font: 700 21px var(--memory-serif);
+      }
+
+      .ribbon div:last-child {
+        background: var(--memory-ink);
+      }
+
+      .ribbon div:last-child span,
+      .ribbon div:last-child strong {
+        color: var(--memory-paper);
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 400px;
+        gap: 18px;
+        padding: 20px 42px 24px;
+      }
+
+      .atlas,
+      .docket {
+        border: 1px solid rgba(20, 32, 28, 0.17);
+        border-radius: var(--memory-radius);
+        background: rgba(255, 250, 240, 0.94);
+        box-shadow: var(--memory-shadow);
+      }
+
+      .atlas {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        min-height: 720px;
+      }
+
+      .map {
+        padding: 22px;
+        border-right: 1px solid rgba(20, 32, 28, 0.14);
+        background:
+          linear-gradient(90deg, rgba(20, 32, 28, 0.045) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(20, 32, 28, 0.035) 1px, transparent 1px),
+          var(--memory-paper);
+        background-size: 28px 28px;
+      }
+
+      .map-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(20, 32, 28, 0.12);
+      }
+
+      .score {
+        text-align: right;
+      }
+
+      .score strong {
+        display: block;
+        font: 700 34px var(--memory-serif);
+      }
+
+      svg {
+        width: 100%;
+        height: auto;
+        margin-top: 8px;
+      }
+
+      .legend,
+      .docket {
+        padding: 22px;
+      }
+
+      .legend {
+        background: linear-gradient(180deg, #f4eddc 0%, #eee6d2 100%);
+      }
+
+      .focus {
+        padding: 14px;
+        margin-bottom: 18px;
+        border: 1px solid rgba(20, 32, 28, 0.14);
+        border-radius: var(--memory-radius);
+        background: rgba(255, 250, 240, 0.7);
+      }
+
+      .focus strong {
+        display: block;
+        font: 700 19px var(--memory-serif);
+      }
+
+      .meter {
+        margin-bottom: 13px;
+      }
+
+      .meter div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        color: #39443e;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .bar {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(20, 32, 28, 0.12);
+      }
+
+      .bar i {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--memory-green), var(--memory-teal), var(--memory-gold));
+      }
+
+      .docket h2 {
+        margin-bottom: 14px;
+        font-size: 28px;
+      }
+
+      .fact,
+      .evidence,
+      .case {
+        padding: 14px 0;
+        border-top: 1px solid rgba(20, 32, 28, 0.14);
+      }
+
+      .fact strong,
+      .evidence strong,
+      .case strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #7a5a12;
+      }
+
+      .fact p,
+      .evidence p,
+      .case p {
+        margin: 0;
+        color: #39443e;
+        line-height: 1.55;
+      }
+
+      .evidence span {
+        display: inline-flex;
+        margin-bottom: 8px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: var(--memory-ink);
+        color: var(--memory-paper);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      footer {
+        padding: 12px 42px;
+        background: var(--memory-ink);
+        color: var(--memory-paper);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div class="brand">
+          <div class="mark">MC</div>
+          <div>
+            <p class="eyebrow">Personal AI OS memory architecture</p>
+            <h1>Memory Coverage Lab</h1>
+            <div class="meta">
+              <span>OpenDesign workbench</span>
+              <span>16-axis AIGC model</span>
+              <span>Research-grade evidence</span>
+            </div>
+          </div>
+        </div>
+        <nav aria-label="视图切换">
+          <span>研究地图</span>
+          <span>维度矩阵</span>
+          <span>组合设计</span>
+          <span>证据治理</span>
+        </nav>
+      </header>
+      <section class="ribbon">
+        <div><span>AIGC 维度</span><strong>16</strong></div>
+        <div><span>评估对象</span><strong>10</strong></div>
+        <div><span>组合覆盖</span><strong>91%</strong></div>
+        <div><span>待补能力</span><strong>4</strong></div>
+        <div><span>当前焦点</span><strong>82%</strong></div>
+      </section>
+      <section class="ribbon" style="grid-template-columns: repeat(4, minmax(132px, 1fr)); margin-top: 14px; border-top: 1px solid rgba(20, 32, 28, 0.16);">
+        <div><span>记忆认知层</span><strong>76%</strong></div>
+        <div><span>检索与扎根</span><strong>83%</strong></div>
+        <div><span>Agent 运行层</span><strong>68%</strong></div>
+        <div><span>治理可信层</span><strong>72%</strong></div>
+      </section>
+      <main>
+        <section class="atlas">
+          <div class="map">
+            <div class="map-head">
+              <div>
+                <p class="eyebrow">AIGC memory cartography</p>
+                <h2>GBrain</h2>
+              </div>
+              <div class="score">
+                <span>边界覆盖</span>
+                <strong>73%</strong>
+              </div>
+            </div>
+            <svg viewBox="0 0 840 660" role="img" aria-label="完整记忆边界圆和项目覆盖圆">
+              <circle cx="420" cy="330" r="278" fill="#fffaf0" stroke="#14201c" stroke-width="2" stroke-dasharray="9 9" />
+              <circle cx="420" cy="330" r="70" fill="none" stroke="#c7cdbd" stroke-dasharray="2 10" />
+              <circle cx="420" cy="330" r="139" fill="none" stroke="#c7cdbd" stroke-dasharray="4 8" />
+              <circle cx="420" cy="330" r="209" fill="none" stroke="#c7cdbd" stroke-dasharray="2 10" />
+              <circle cx="420" cy="330" r="232" fill="none" stroke="#c9882e" stroke-width="5" stroke-dasharray="18 12" />
+              <text x="420" y="84" text-anchor="middle" font-family="IBM Plex Serif" font-size="25" font-weight="700">完整记忆能力边界</text>
+              <text x="420" y="112" text-anchor="middle" font-size="13" fill="#66756b">圆面积按十六项学术维度加权覆盖度映射</text>
+              <circle cx="398" cy="262" r="98" fill="#136f79" fill-opacity="0.28" stroke="#b9ca47" stroke-width="5" />
+              <text x="398" y="258" text-anchor="middle" font-size="15" font-weight="700">GBrain</text>
+              <text x="398" y="282" text-anchor="middle" font-family="IBM Plex Serif" font-size="23" font-weight="700">73%</text>
+              <circle cx="516" cy="230" r="89" fill="#b95b42" fill-opacity="0.16" stroke="#b95b42" stroke-width="2" />
+              <text x="516" y="228" text-anchor="middle" font-size="15" font-weight="700">Hindsight</text>
+              <text x="516" y="252" text-anchor="middle" font-family="IBM Plex Serif" font-size="22" font-weight="700">56%</text>
+              <circle cx="304" cy="248" r="85" fill="#1d604f" fill-opacity="0.16" stroke="#1d604f" stroke-width="2" />
+              <text x="304" y="246" text-anchor="middle" font-size="15" font-weight="700">LLM Wiki</text>
+              <text x="304" y="270" text-anchor="middle" font-family="IBM Plex Serif" font-size="22" font-weight="700">57%</text>
+              <circle cx="542" cy="424" r="91" fill="#7d4d6a" fill-opacity="0.16" stroke="#7d4d6a" stroke-width="2" />
+              <text x="542" y="422" text-anchor="middle" font-size="15" font-weight="700">Mem0</text>
+              <text x="542" y="446" text-anchor="middle" font-family="IBM Plex Serif" font-size="22" font-weight="700">62%</text>
+              <circle cx="356" cy="430" r="76" fill="#354f9a" fill-opacity="0.14" stroke="#354f9a" stroke-width="2" />
+              <text x="356" y="428" text-anchor="middle" font-size="15" font-weight="700">VikingDB</text>
+              <text x="356" y="452" text-anchor="middle" font-family="IBM Plex Serif" font-size="22" font-weight="700">43%</text>
+            </svg>
+          </div>
+          <aside class="legend">
+            <div class="focus"><strong>GBrain</strong><span>Graph + Proof Spine</span></div>
+            <div class="meter"><div><span>关系图谱</span><strong>95%</strong></div><span class="bar"><i style="width:95%"></i></span></div>
+            <div class="meter"><div><span>时间线与证据</span><strong>93%</strong></div><span class="bar"><i style="width:93%"></i></span></div>
+            <div class="meter"><div><span>反思规划</span><strong>74%</strong></div><span class="bar"><i style="width:74%"></i></span></div>
+            <div class="meter"><div><span>矛盾修复</span><strong>78%</strong></div><span class="bar"><i style="width:78%"></i></span></div>
+            <div class="meter"><div><span>项目配合度</span><strong>98%</strong></div><span class="bar"><i style="width:98%"></i></span></div>
+          </aside>
+        </section>
+        <aside class="docket">
+          <p class="eyebrow">Graph + Proof Spine</p>
+          <h2>GBrain</h2>
+          <div class="fact"><strong>角色</strong><p>结构化保存项目事实、source evidence、决策、proof metadata 和 timeline。</p></div>
+          <div class="fact"><strong>前沿能力强项</strong><p>Temporal provenance、relational substrate、memory dynamics 与 Personal AI OS fit。</p></div>
+          <div class="fact"><strong>官方支持</strong><p>本地 GBrain CLI/MCP 已纳入 Personal AI OS worker contract。</p></div>
+          <div class="evidence"><span>本地</span><strong>CLI/MCP</strong><p>支持 query、put、get、timeline-add 等本地工作流。</p></div>
+          <div class="case"><strong>实际案例时间</strong><p>2026-05-21，对比报告写入 GBrain page + timeline。</p></div>
+        </aside>
+      </main>
+      <footer>Tailnet route: http://100.119.246.9:5179/ · OpenDesign viewer: /opendesign/</footer>
+    </div>
+  </body>
+</html>
