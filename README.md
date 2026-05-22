@@ -15,6 +15,8 @@ vector infrastructure, managed retrieval, and stateful agent runtimes.
 - Editorial public research modeled as an intelligence publication.
 - A 16-criteria AI memory capability boundary.
 - A coverage map for each evaluated system.
+- A system dossier directory with research status, progress, uncertainty, and
+  latest update per project.
 - A matrix view for comparing criteria across products.
 - A stack planner that calculates combined coverage across selected categories.
 - An evidence table that separates public product surface, technology signal,

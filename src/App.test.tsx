@@ -21,7 +21,7 @@ describe("Memory Coverage Lab", () => {
     expect(screen.getByRole("heading", { name: "组合路线覆盖计算" })).toBeInTheDocument();
     expect(screen.getAllByText("组合覆盖").length).toBeGreaterThan(0);
 
-    await user.click(screen.getByRole("button", { name: /Mem0/ }));
+    await user.click(screen.getByRole("button", { name: "Toggle Mem0 in stack" }));
     expect(screen.getAllByText(/Mem0/).length).toBeGreaterThan(0);
   });
 

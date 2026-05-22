@@ -2169,6 +2169,140 @@ tbody th button {
   line-height: 1.65;
 }
 
+.system-directory {
+  display: grid;
+  gap: 18px;
+  margin: 26px 0 18px;
+  padding: clamp(18px, 2.4vw, 28px);
+  border: 1px solid rgba(24, 21, 18, 0.18);
+  background:
+    linear-gradient(135deg, rgba(226, 138, 26, 0.09), transparent 42%),
+    rgba(255, 250, 242, 0.72);
+}
+
+.directory-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: end;
+}
+
+.directory-head h3 {
+  max-width: 760px;
+  margin: 0;
+  color: var(--ink);
+  font: 700 clamp(1.55rem, 2.8vw, 2.7rem) "Source Serif 4", Georgia, serif;
+  line-height: 1.04;
+}
+
+.directory-count {
+  min-width: 150px;
+  display: grid;
+  gap: 2px;
+  justify-items: end;
+}
+
+.directory-count strong {
+  color: var(--ink);
+  font: 700 clamp(2rem, 3vw, 3rem) "Source Serif 4", Georgia, serif;
+  line-height: 0.9;
+}
+
+.directory-count span,
+.directory-status {
+  color: #76695d;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.directory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.directory-grid button {
+  min-height: 220px;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto auto;
+  align-content: start;
+  gap: 9px;
+  padding: 16px;
+  border: 1px solid rgba(24, 21, 18, 0.16);
+  border-radius: var(--radius);
+  background: #fbf6ee;
+  color: var(--ink);
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.directory-grid button:hover {
+  border-color: color-mix(in srgb, var(--project-accent), var(--ink) 15%);
+  transform: translateY(-2px);
+}
+
+.directory-grid button.active {
+  border-color: var(--project-accent);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--project-accent), transparent 82%), transparent 58%),
+    #1d1915;
+  color: #fff8ef;
+}
+
+.directory-grid strong {
+  font: 700 1.35rem "Source Serif 4", Georgia, serif;
+  line-height: 1.05;
+}
+
+.directory-grid em {
+  color: #6d6258;
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.directory-grid button.active em,
+.directory-grid button.active .directory-status,
+.directory-grid button.active p,
+.directory-grid button.active footer {
+  color: #dccfc0;
+}
+
+.directory-grid p {
+  margin: 0;
+  color: #504840;
+  font-size: 0.88rem;
+  line-height: 1.42;
+}
+
+.directory-progress {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(24, 21, 18, 0.1);
+}
+
+.directory-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--project-color), var(--project-accent));
+}
+
+.directory-grid footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #6d6258;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
 .benchmark-controls {
   display: grid;
   grid-template-columns: minmax(240px, 420px) auto;
@@ -2259,8 +2393,17 @@ tbody th button {
 
   .surface-grid,
   .research-card-grid,
-  .benchmark-controls {
+  .benchmark-controls,
+  .directory-head {
     grid-template-columns: 1fr;
+  }
+
+  .directory-count {
+    justify-items: start;
+  }
+
+  .directory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-copy {
@@ -2331,5 +2474,13 @@ tbody th button {
 
   .view-tabs button span {
     display: inline;
+  }
+
+  .directory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .directory-grid button {
+    min-height: 0;
   }
 }

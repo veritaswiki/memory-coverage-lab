@@ -55,6 +55,7 @@ export function StackPlanner({
                 <button
                   key={project.slug}
                   type="button"
+                  aria-label={`Toggle ${project.shortName} in stack`}
                   className={active ? "active" : ""}
                   onClick={() => onToggleProject(project.slug)}
                 >

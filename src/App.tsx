@@ -18,6 +18,7 @@ import { MetricRibbon } from "./components/MetricRibbon";
 import { ProjectPanel } from "./components/ProjectPanel";
 import { ResearchModelStrip } from "./components/ResearchModelStrip";
 import { StackPlanner } from "./components/StackPlanner";
+import { SystemDirectory } from "./components/SystemDirectory";
 import { TopBar } from "./components/TopBar";
 import { capabilityDefinitions } from "./data/capabilities";
 import { getProjectImplementation } from "./data/implementation";
@@ -130,6 +131,12 @@ function App() {
           onViewChange={setActiveView}
           query={query}
           onQueryChange={setQuery}
+        />
+
+        <SystemDirectory
+          projects={filteredProjects}
+          selectedSlug={visibleSelectedProject.slug}
+          onSelectProject={handleSelectProject}
         />
 
         <section className="overview-deck" aria-label="模型与运行概览">
