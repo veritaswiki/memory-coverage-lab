@@ -29,6 +29,7 @@ export function StackPlanner({
   const combinedCoverage = calculateCoverageScore(combinedScores);
   const gaps = getCoverageGaps(combinedScores);
   const groupScores = getCapabilityGroupScores(combinedScores);
+  const hasSelectedProjects = selectedProjects.length > 0;
 
   return (
     <section className="stack-view" aria-label="组合覆盖规划">
@@ -40,7 +41,7 @@ export function StackPlanner({
         <div className="stack-score">
           <GitMerge aria-hidden="true" size={20} />
           <span>组合覆盖</span>
-          <strong>{combinedCoverage}%</strong>
+          <strong>{hasSelectedProjects ? `${combinedCoverage}%` : "待选择"}</strong>
         </div>
       </div>
 
@@ -56,6 +57,7 @@ export function StackPlanner({
                   key={project.slug}
                   type="button"
                   aria-label={`Toggle ${project.shortName} in stack`}
+                  aria-pressed={active}
                   className={active ? "active" : ""}
                   onClick={() => onToggleProject(project.slug)}
                 >
@@ -78,37 +80,58 @@ export function StackPlanner({
         </div>
 
         <div className="combined-panel">
-          <h3>研究分组</h3>
-          <div className="planner-group-grid">
-            {groupScores.map((group) => (
-              <article key={group.key}>
-                <span>{group.label}</span>
-                <strong>{formatPercent(group.value)}</strong>
-              </article>
-            ))}
-          </div>
-          <h3>十六项能力</h3>
-          <div className="combined-bars">
-            {capabilityDefinitions.map((capability) => {
-              const value = combinedScores[capability.key];
-              return (
-                <div className="combined-row" key={capability.key}>
-                  <div>
-                    <span title={capability.description}>{capability.label}</span>
-                    <strong>{formatPercent(value)}</strong>
-                  </div>
-                  <div className="meter">
-                    <span style={{ width: `${value * 100}%` }} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {hasSelectedProjects ? (
+            <>
+              <h3>研究分组</h3>
+              <div className="planner-group-grid">
+                {groupScores.map((group) => (
+                  <article key={group.key}>
+                    <span>{group.label}</span>
+                    <strong>{formatPercent(group.value)}</strong>
+                  </article>
+                ))}
+              </div>
+              <h3>十六项能力</h3>
+              <div className="combined-bars">
+                {capabilityDefinitions.map((capability) => {
+                  const value = combinedScores[capability.key];
+                  return (
+                    <div className="combined-row" key={capability.key}>
+                      <div>
+                        <span title={capability.description}>{capability.label}</span>
+                        <strong>{formatPercent(value)}</strong>
+                      </div>
+                      <div
+                        className="meter"
+                        role="progressbar"
+                        aria-label={`${capability.label} combined coverage`}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={Math.round(value * 100)}
+                      >
+                        <span style={{ width: `${value * 100}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <div className="empty-stack-state" aria-live="polite">
+              <h3>当前没有选择项目</h3>
+              <p>
+                选择至少一个系统后，这里才会计算组合覆盖。空栈不是 benchmark
+                结论，只代表当前没有可比较的能力来源。
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="gap-panel">
           <h3>优先补齐</h3>
-          {gaps.length > 0 ? (
+          {!hasSelectedProjects ? (
+            <p className="empty-state">先选择项目，才能生成优先补齐列表。</p>
+          ) : gaps.length > 0 ? (
             <div className="gap-list">
               {gaps.slice(0, 6).map((gap) => (
                 <article key={gap.key}>

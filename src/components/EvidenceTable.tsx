@@ -60,7 +60,10 @@ export function EvidenceTable({ projects }: EvidenceTableProps) {
                       <h4>研究样例</h4>
                       {project.cases.map((caseNote) => (
                         <p key={`${project.slug}-${caseNote.when}`}>
-                          <time>{caseNote.when}</time> {caseNote.title}
+                          <time dateTime={caseNote.when.replace("-Q2", "-04")}>
+                            {caseNote.when}
+                          </time>{" "}
+                          {caseNote.title}
                         </p>
                       ))}
                     </div>

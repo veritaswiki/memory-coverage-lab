@@ -16,6 +16,7 @@ interface CoverageMapProps {
   projects: MemoryProject[];
   selectedProject: MemoryProject;
   selectedStackSlugs: string[];
+  stackSelectionLabel: string;
   onSelectProject: (slug: string) => void;
 }
 
@@ -38,6 +39,7 @@ export function CoverageMap({
   projects,
   selectedProject,
   selectedStackSlugs,
+  stackSelectionLabel,
   onSelectProject,
 }: CoverageMapProps) {
   const selectedCoverage = calculateCoverageScore(selectedProject.scores);
@@ -236,6 +238,8 @@ export function CoverageMap({
                 key={project.slug}
                 type="button"
                 className={isSelected ? "active" : ""}
+                aria-current={isSelected ? "true" : undefined}
+                aria-label={`Open ${project.shortName} coverage profile${isInStack ? ", in selected stack" : ""}`}
                 onClick={() => onSelectProject(project.slug)}
               >
                 <span className="rank-dot" style={{ backgroundColor: project.color }} />
@@ -283,7 +287,7 @@ export function CoverageMap({
           </div>
           <div>
             <Layers3 aria-hidden="true" size={16} />
-            <span>组合项目</span>
+            <span>{stackSelectionLabel}</span>
             <strong>{selectedStackSlugs.length} 个已选</strong>
           </div>
         </div>

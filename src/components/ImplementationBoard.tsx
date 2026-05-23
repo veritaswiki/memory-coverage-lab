@@ -73,7 +73,15 @@ export function ImplementationBoard({
             <span>实施进度</span>
             <strong>{selectedImplementation.progress}%</strong>
           </div>
-          <div className="meter" data-risk={selectedImplementation.riskLevel}>
+          <div
+            className="meter"
+            data-risk={selectedImplementation.riskLevel}
+            role="progressbar"
+            aria-label={`${selectedProject.shortName} implementation progress`}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={selectedImplementation.progress}
+          >
             <span style={{ width: `${selectedImplementation.progress}%` }} />
           </div>
         </div>
@@ -109,7 +117,7 @@ export function ImplementationBoard({
         <div className="update-list" aria-label={`${selectedProject.shortName} update history`}>
           {selectedImplementation.updates.map((update) => (
             <article key={`${update.date}-${update.title}`}>
-              <time>{update.date}</time>
+              <time dateTime={update.date}>{update.date}</time>
               <strong>{update.title}</strong>
               <p>{update.detail}</p>
             </article>
@@ -127,6 +135,7 @@ export function ImplementationBoard({
               key={project.slug}
               type="button"
               className={active ? "active" : ""}
+              aria-current={active ? "true" : undefined}
               onClick={() => onSelectProject(project.slug)}
             >
               <span className="rail-dot" style={{ backgroundColor: project.color }} />

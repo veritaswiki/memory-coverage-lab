@@ -1,13 +1,20 @@
 import {
+  Activity,
   ArrowRight,
   BarChart3,
+  BrainCircuit,
   ClipboardCheck,
   Database,
+  DatabaseZap,
   GitPullRequestArrow,
+  Radar,
   RefreshCcw,
+  Route,
   SearchCheck,
   ShieldCheck,
 } from "lucide-react";
+import { memoryProjects } from "../data/projects";
+import { calculateCoverageScore } from "../lib/coverage";
 
 const heroTags = ["Mem0", "Zep", "Letta", "LangGraph", "LlamaIndex"];
 
@@ -96,11 +103,97 @@ const operatingLoop = [
   },
 ];
 
+const heroWorkflow = [
+  { label: "Plan", value: "Scope locked", state: "done" },
+  { label: "Review", value: "Docs challenged", state: "done" },
+  { label: "QA", value: "Hard cases live", state: "current" },
+  { label: "Ship", value: "Scorecards public", state: "queued" },
+  { label: "Learn", value: "Changes tracked", state: "watch" },
+];
+
+function averageCoverage(...layerMatches: string[]) {
+  const normalizedMatches = layerMatches.map((match) => match.toLowerCase());
+  const matches = memoryProjects.filter((project) =>
+    normalizedMatches.some((match) => project.layer.toLowerCase().includes(match)),
+  );
+
+  if (matches.length === 0) {
+    return 0;
+  }
+
+  const total = matches.reduce(
+    (sum, project) => sum + calculateCoverageScore(project.scores),
+    0,
+  );
+
+  return Math.round(total / matches.length);
+}
+
+const heroSignals = [
+  { label: "Memory APIs", value: averageCoverage("memory api"), icon: BrainCircuit },
+  { label: "Temporal graphs", value: averageCoverage("temporal graph"), icon: Route },
+  { label: "RAG frameworks", value: averageCoverage("rag"), icon: DatabaseZap },
+  { label: "Vector substrate", value: averageCoverage("retrieval substrate"), icon: Radar },
+];
+
 export function HeroSection() {
   return (
     <section className="hero" id="top">
+      <div className="visually-hidden">
+        <h2>MemoryBench signal summary</h2>
+        <ul>
+          {heroSignals.map((signal) => (
+            <li key={signal.label}>
+              {signal.label}: {signal.value}% average coverage
+            </li>
+          ))}
+        </ul>
+        <p>
+          Evidence loop status: Plan and Review complete, QA active, Ship queued,
+          Learn in watch mode.
+        </p>
+      </div>
+      <div className="hero-studio" aria-hidden="true">
+        <div className="studio-map">
+          <div className="studio-orbit orbit-outer" />
+          <div className="studio-orbit orbit-mid" />
+          <div className="studio-orbit orbit-inner" />
+          <div className="studio-polygon" />
+          <div className="studio-core">
+            <span>16</span>
+            <b>criteria</b>
+          </div>
+          {heroSignals.map((signal, index) => {
+            const Icon = signal.icon;
+
+            return (
+              <div
+                key={signal.label}
+                className={`studio-signal studio-signal-${index + 1}`}
+              >
+                <Icon size={16} />
+                <span>{signal.label}</span>
+                <strong>{signal.value}%</strong>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="studio-ledger">
+          <div className="studio-ledger-head">
+            <Activity size={16} />
+            <span>Evidence loop</span>
+          </div>
+          {heroWorkflow.map((stage) => (
+            <div key={stage.label} className="studio-stage" data-state={stage.state}>
+              <span>{stage.label}</span>
+              <strong>{stage.value}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="hero-copy">
-        <p className="hero-kicker">AI memory intelligence</p>
         <h1 aria-label="When AI agents remember, what survives and why?">
           <span>When AI agents</span>
           <span>remember, what</span>
@@ -204,7 +297,7 @@ export function ResearchCards() {
       <div className="research-card-grid">
         {researchCards.map((card) => (
           <article key={card.title}>
-            <time>{card.month}</time>
+            <time dateTime="2026-05">{card.month}</time>
             <h3>{card.title}</h3>
             <p>{card.body}</p>
             <span>{card.meta}</span>

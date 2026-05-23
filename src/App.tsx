@@ -39,10 +39,7 @@ function App() {
   const [selectedSlug, setSelectedSlug] = useState("mem0");
   const [query, setQuery] = useState("");
   const [stackSlugs, setStackSlugs] = useState<string[]>(defaultStack);
-  const stackProjects = useMemo(
-    () => memoryProjects.filter((project) => stackSlugs.includes(project.slug)),
-    [stackSlugs],
-  );
+  const hasQuery = query.trim().length > 0;
 
   const filteredProjects = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -73,6 +70,17 @@ function App() {
       return haystack.includes(normalizedQuery);
     });
   }, [query]);
+
+  const hasResults = filteredProjects.length > 0;
+  const stackUniverse = hasQuery ? filteredProjects : memoryProjects;
+  const stackProjects = useMemo(
+    () => stackUniverse.filter((project) => stackSlugs.includes(project.slug)),
+    [stackSlugs, stackUniverse],
+  );
+  const visibleStackSlugs = useMemo(
+    () => stackProjects.map((project) => project.slug),
+    [stackProjects],
+  );
 
   const selectedProject =
     memoryProjects.find((project) => project.slug === selectedSlug) ??
@@ -141,62 +149,78 @@ function App() {
           onSelectProject={handleSelectProject}
         />
 
-        <section className="overview-deck" aria-label="模型与运行概览">
-          <MetricRibbon
-            dimensionCount={capabilityDefinitions.length}
-            projectCount={memoryProjects.length}
-            stackCoverage={stackCoverage}
-            gapCount={gapCount}
-            focusCoverage={calculateCoverageScore(visibleSelectedProject.scores)}
-          />
+        {!hasResults ? (
+          <section className="no-results-panel" aria-live="polite">
+            <p className="eyebrow">No matching dossier</p>
+            <h3>没有找到匹配的系统或证据线索</h3>
+            <p>
+              调整搜索词，或切换到更宽的类别词，例如 memory API、graph、RAG、
+              vector、runtime、risk。
+            </p>
+          </section>
+        ) : null}
 
-          <ResearchModelStrip
-            groupScores={selectedGroupScores}
-            strengths={selectedStrengths}
-          />
-        </section>
+        {hasResults ? (
+          <>
+            <section className="overview-deck" aria-label="模型与运行概览">
+              <MetricRibbon
+                dimensionCount={capabilityDefinitions.length}
+                projectCount={filteredProjects.length}
+                stackCoverage={stackCoverage}
+                gapCount={gapCount}
+                focusCoverage={calculateCoverageScore(visibleSelectedProject.scores)}
+              />
 
-        <main className="workspace">
-          <section className="workspace-main">
+              <ResearchModelStrip
+                groupScores={selectedGroupScores}
+                strengths={selectedStrengths}
+              />
+            </section>
+
+            <main className="workspace">
+              <section className="workspace-main">
+                {activeView === "map" ? (
+                  <CoverageMap
+                    projects={filteredProjects}
+                    selectedProject={visibleSelectedProject}
+                    selectedStackSlugs={visibleStackSlugs}
+                    stackSelectionLabel={hasQuery ? "筛选内组合项目" : "组合项目"}
+                    onSelectProject={handleSelectProject}
+                  />
+                ) : null}
+
+                {activeView === "matrix" ? (
+                  <CapabilityMatrix
+                    projects={filteredProjects}
+                    selectedSlug={visibleSelectedProject.slug}
+                    onSelectProject={handleSelectProject}
+                  />
+                ) : null}
+
+                {activeView === "stack" ? (
+                  <StackPlanner
+                    projects={stackUniverse}
+                    selectedSlugs={stackSlugs}
+                    onToggleProject={handleToggleProject}
+                  />
+                ) : null}
+
+                {activeView === "governance" ? (
+                  <EvidenceTable projects={filteredProjects} />
+                ) : null}
+              </section>
+
+              <ProjectPanel project={visibleSelectedProject} allProjects={memoryProjects} />
+            </main>
+
             {activeView === "map" ? (
-              <CoverageMap
+              <ImplementationBoard
                 projects={filteredProjects}
                 selectedProject={visibleSelectedProject}
-                selectedStackSlugs={stackSlugs}
                 onSelectProject={handleSelectProject}
               />
             ) : null}
-
-            {activeView === "matrix" ? (
-              <CapabilityMatrix
-                projects={filteredProjects}
-                selectedSlug={visibleSelectedProject.slug}
-                onSelectProject={handleSelectProject}
-              />
-            ) : null}
-
-            {activeView === "stack" ? (
-              <StackPlanner
-                projects={memoryProjects}
-                selectedSlugs={stackSlugs}
-                onToggleProject={handleToggleProject}
-              />
-            ) : null}
-
-            {activeView === "governance" ? (
-              <EvidenceTable projects={filteredProjects} />
-            ) : null}
-          </section>
-
-          <ProjectPanel project={visibleSelectedProject} allProjects={memoryProjects} />
-        </main>
-
-        {activeView === "map" ? (
-          <ImplementationBoard
-            projects={filteredProjects}
-            selectedProject={visibleSelectedProject}
-            onSelectProject={handleSelectProject}
-          />
+          </>
         ) : null}
       </section>
 

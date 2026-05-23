@@ -56,7 +56,11 @@ export function CapabilityMatrix({
                   className={project.slug === selectedSlug ? "active" : ""}
                 >
                   <th>
-                    <button type="button" onClick={() => onSelectProject(project.slug)}>
+                    <button
+                      type="button"
+                      aria-current={project.slug === selectedSlug ? "true" : undefined}
+                      onClick={() => onSelectProject(project.slug)}
+                    >
                       {project.name}
                     </button>
                   </th>

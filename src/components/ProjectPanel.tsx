@@ -44,7 +44,15 @@ export function ProjectPanel({ project, allProjects }: ProjectPanelProps) {
             <span>{implementation.lane}</span>
             <strong>{implementation.progress}%</strong>
           </div>
-          <div className="meter" data-risk={implementation.riskLevel}>
+          <div
+            className="meter"
+            data-risk={implementation.riskLevel}
+            role="progressbar"
+            aria-label={`${project.shortName} research progress`}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={implementation.progress}
+          >
             <span style={{ width: `${implementation.progress}%` }} />
           </div>
         </div>
@@ -61,7 +69,7 @@ export function ProjectPanel({ project, allProjects }: ProjectPanelProps) {
         <div className="update-list">
           {implementation.updates.map((update) => (
             <article key={`${update.date}-${update.title}`}>
-              <time>{update.date}</time>
+              <time dateTime={update.date}>{update.date}</time>
               <strong>{update.title}</strong>
               <p>{update.detail}</p>
             </article>
@@ -165,7 +173,9 @@ export function ProjectPanel({ project, allProjects }: ProjectPanelProps) {
         <div className="case-list">
           {project.cases.map((caseNote) => (
             <article key={`${caseNote.when}-${caseNote.title}`}>
-              <time>{caseNote.when}</time>
+              <time dateTime={caseNote.when.replace("-Q2", "-04")}>
+                {caseNote.when}
+              </time>
               <strong>{caseNote.title}</strong>
               <p>{caseNote.detail}</p>
             </article>

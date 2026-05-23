@@ -53,6 +53,7 @@ export function SystemDirectory({
               type="button"
               aria-label={`Open ${project.shortName} dossier`}
               className={active ? "active" : ""}
+              aria-current={active ? "true" : undefined}
               style={style}
               onClick={() => onSelectProject(project.slug)}
             >
@@ -67,7 +68,14 @@ export function SystemDirectory({
                   </span>
                 ))}
               </div>
-              <div className="directory-progress" aria-label={`${project.shortName} research progress`}>
+              <div
+                className="directory-progress"
+                role="progressbar"
+                aria-label={`${project.shortName} research progress`}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={implementation.progress}
+              >
                 <span style={{ width: `${implementation.progress}%` }} />
               </div>
               <footer>
