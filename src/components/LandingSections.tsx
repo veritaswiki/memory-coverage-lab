@@ -1,4 +1,13 @@
-import { ArrowRight, BarChart3, Database, RefreshCcw, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  ClipboardCheck,
+  Database,
+  GitPullRequestArrow,
+  RefreshCcw,
+  SearchCheck,
+  ShieldCheck,
+} from "lucide-react";
 
 const heroTags = ["Mem0", "Zep", "Letta", "LangGraph", "LlamaIndex"];
 
@@ -51,6 +60,39 @@ const platformSteps = [
     title: "Neutral adoption briefs",
     body: "Evidence-led notes on where each memory layer fits, what it does not cover, and which claims need validation.",
     icon: ShieldCheck,
+  },
+];
+
+const operatingLoop = [
+  {
+    label: "Plan",
+    title: "Define the boundary",
+    body: "Separate product category, evaluation job, sample scope and known exclusions before any score is shown.",
+    icon: ClipboardCheck,
+  },
+  {
+    label: "Review",
+    title: "Challenge the evidence",
+    body: "Compare public claims against docs, demos and counterexamples so adjacent systems are not collapsed into one bucket.",
+    icon: SearchCheck,
+  },
+  {
+    label: "QA",
+    title: "Replay the hard cases",
+    body: "Track preference updates, entity drift, deletion, provenance and governance scenarios as repeatable checks.",
+    icon: ShieldCheck,
+  },
+  {
+    label: "Ship",
+    title: "Publish with uncertainty",
+    body: "Expose scores, caveats, progress and risk together so readers can see what is validated and what is still open.",
+    icon: GitPullRequestArrow,
+  },
+  {
+    label: "Learn",
+    title: "Keep the ledger alive",
+    body: "Record regressions, vendor changes and next milestones so each project has an auditable update history.",
+    icon: RefreshCcw,
   },
 ];
 
@@ -117,6 +159,35 @@ export function SurfaceSection() {
           </p>
           <a href="#benchmarks">Run the explorer</a>
         </article>
+      </div>
+    </section>
+  );
+}
+
+export function OperatingLoopSection() {
+  return (
+    <section className="operating-loop-section" id="method">
+      <div className="section-intro">
+        <p className="eyebrow">Operating model</p>
+        <h2>Every scorecard moves through the same evidence loop.</h2>
+      </div>
+
+      <div className="loop-grid" aria-label="Plan Review QA Ship Learn workflow">
+        {operatingLoop.map((step, index) => {
+          const Icon = step.icon;
+
+          return (
+            <article key={step.label}>
+              <div className="loop-marker">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <Icon aria-hidden="true" size={18} />
+              </div>
+              <p>{step.label}</p>
+              <h3>{step.title}</h3>
+              <small>{step.body}</small>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

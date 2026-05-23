@@ -9,6 +9,7 @@ import { EvidenceTable } from "./components/EvidenceTable";
 import { ImplementationBoard } from "./components/ImplementationBoard";
 import {
   HeroSection,
+  OperatingLoopSection,
   PlatformSection,
   ResearchCards,
   SubscribeSection,
@@ -110,6 +111,7 @@ function App() {
 
       <HeroSection />
       <SurfaceSection />
+      <OperatingLoopSection />
       <ResearchCards />
       <PlatformSection />
 

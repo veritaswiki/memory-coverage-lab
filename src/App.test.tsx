@@ -8,6 +8,9 @@ describe("Memory Coverage Lab", () => {
     render(<App />);
 
     expect(screen.getByRole("heading", { name: /When AI agents remember/ })).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Plan Review QA Ship Learn workflow"),
+    ).toBeInTheDocument();
     expect(screen.getAllByRole("heading", { name: "Mem0" }).length).toBeGreaterThan(0);
     expect(screen.getByLabelText("记忆覆盖圆图")).toBeInTheDocument();
   });

@@ -1,5 +1,9 @@
 import type { CSSProperties } from "react";
-import { getProjectImplementation, riskLabels } from "../data/implementation";
+import {
+  getProjectImplementation,
+  getProjectWorkflow,
+  riskLabels,
+} from "../data/implementation";
 import type { MemoryProject } from "../data/projects";
 import { calculateCoverageScore } from "../lib/coverage";
 
@@ -34,6 +38,7 @@ export function SystemDirectory({
       <div className="directory-grid">
         {rankedProjects.map((project) => {
           const implementation = getProjectImplementation(project.slug);
+          const workflow = getProjectWorkflow(project.slug);
           const latestUpdate = implementation.updates[0];
           const active = project.slug === selectedSlug;
           const coverage = calculateCoverageScore(project.scores);
@@ -55,6 +60,13 @@ export function SystemDirectory({
               <strong>{project.shortName}</strong>
               <em>{project.layer}</em>
               <p>{latestUpdate?.title ?? implementation.nextMilestone}</p>
+              <div className="directory-workflow" aria-label={`${project.shortName} workflow status`}>
+                {workflow.map((stage) => (
+                  <span key={stage.key} data-state={stage.state}>
+                    {stage.label}
+                  </span>
+                ))}
+              </div>
               <div className="directory-progress" aria-label={`${project.shortName} research progress`}>
                 <span style={{ width: `${implementation.progress}%` }} />
               </div>

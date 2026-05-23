@@ -14,9 +14,10 @@ vector infrastructure, managed retrieval, and stateful agent runtimes.
 
 - Editorial public research modeled as an intelligence publication.
 - A 16-criteria AI memory capability boundary.
+- A Plan / Review / QA / Ship / Learn operating loop for every scorecard.
 - A coverage map for each evaluated system.
 - A system dossier directory with research status, progress, uncertainty, and
-  latest update per project.
+  workflow status, latest update, and next milestone per project.
 - A matrix view for comparing criteria across products.
 - A stack planner that calculates combined coverage across selected categories.
 - An evidence table that separates public product surface, technology signal,
@@ -76,3 +77,13 @@ pnpm build
 
 The Vite config uses `base: "./"` so the static build works from the GitHub
 Pages project path.
+
+## Operating Model
+
+MemoryBench follows a gstack-style evidence loop:
+
+1. Plan the category boundary and sample scope.
+2. Review public claims against docs, demos, and counterexamples.
+3. QA hard memory cases such as updates, deletion, provenance, and governance.
+4. Ship scorecards with uncertainty instead of hidden confidence.
+5. Learn from regressions, vendor changes, and the next open questions.

@@ -2,6 +2,7 @@ import { Activity, AlertTriangle, CheckCircle2, FlaskConical } from "lucide-reac
 import {
   getImplementationStats,
   getProjectImplementation,
+  getProjectWorkflow,
   riskLabels,
 } from "../data/implementation";
 import type { MemoryProject } from "../data/projects";
@@ -19,7 +20,7 @@ export function ImplementationBoard({
 }: ImplementationBoardProps) {
   const stats = getImplementationStats(projects);
   const selectedImplementation = getProjectImplementation(selectedProject.slug);
-  const latestUpdate = selectedImplementation.updates[0];
+  const selectedWorkflow = getProjectWorkflow(selectedProject.slug);
 
   return (
     <section className="implementation-board" aria-label="项目研究进展">
@@ -77,6 +78,15 @@ export function ImplementationBoard({
           </div>
         </div>
 
+        <div className="workflow-ledger" aria-label={`${selectedProject.shortName} operating workflow`}>
+          {selectedWorkflow.map((stage) => (
+            <article key={stage.key} data-state={stage.state}>
+              <span>{stage.label}</span>
+              <strong>{stage.title}</strong>
+            </article>
+          ))}
+        </div>
+
         <dl className="implementation-facts">
           <div>
             <dt>研究台</dt>
@@ -96,13 +106,15 @@ export function ImplementationBoard({
           </div>
         </dl>
 
-        {latestUpdate ? (
-          <article className="latest-update">
-            <time>{latestUpdate.date}</time>
-            <strong>{latestUpdate.title}</strong>
-            <p>{latestUpdate.detail}</p>
-          </article>
-        ) : null}
+        <div className="update-list" aria-label={`${selectedProject.shortName} update history`}>
+          {selectedImplementation.updates.map((update) => (
+            <article key={`${update.date}-${update.title}`}>
+              <time>{update.date}</time>
+              <strong>{update.title}</strong>
+              <p>{update.detail}</p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="implementation-rail" aria-label="项目实施列表">

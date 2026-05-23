@@ -15,6 +15,15 @@ export interface ImplementationUpdate {
   detail: string;
 }
 
+export type WorkflowStageState = "done" | "current" | "queued" | "watch";
+
+export interface WorkflowStage {
+  key: "plan" | "review" | "qa" | "ship" | "learn";
+  label: string;
+  title: string;
+  state: WorkflowStageState;
+}
+
 export interface ProjectImplementation {
   phase: ImplementationPhase;
   phaseLabel: string;
@@ -40,6 +49,42 @@ export const riskLabels: Record<RiskLevel, string> = {
   low: "低不确定性",
   medium: "中不确定性",
   high: "高不确定性",
+};
+
+const workflowTemplates: Omit<WorkflowStage, "state">[] = [
+  {
+    key: "plan",
+    label: "Plan",
+    title: "定义类别边界与样本范围",
+  },
+  {
+    key: "review",
+    label: "Review",
+    title: "审查公开证据与反例",
+  },
+  {
+    key: "qa",
+    label: "QA",
+    title: "复测能力、冲突与治理场景",
+  },
+  {
+    key: "ship",
+    label: "Ship",
+    title: "发布 scorecard 与不确定性标注",
+  },
+  {
+    key: "learn",
+    label: "Learn",
+    title: "记录变更、回归与下一轮问题",
+  },
+];
+
+const workflowStates: Record<ImplementationPhase, WorkflowStageState[]> = {
+  production: ["done", "done", "done", "done", "current"],
+  hardening: ["done", "done", "current", "queued", "queued"],
+  evaluating: ["done", "current", "queued", "queued", "queued"],
+  watchlist: ["current", "queued", "queued", "queued", "watch"],
+  deferred: ["queued", "queued", "queued", "queued", "watch"],
 };
 
 const projectImplementations: Record<string, ProjectImplementation> = {
@@ -263,6 +308,16 @@ const fallbackImplementation: ProjectImplementation = {
 
 export function getProjectImplementation(slug: string): ProjectImplementation {
   return projectImplementations[slug] ?? fallbackImplementation;
+}
+
+export function getProjectWorkflow(slug: string): WorkflowStage[] {
+  const implementation = getProjectImplementation(slug);
+  const states = workflowStates[implementation.phase];
+
+  return workflowTemplates.map((stage, index) => ({
+    ...stage,
+    state: states[index] ?? "queued",
+  }));
 }
 
 export function getImplementationStats(projects: MemoryProject[]) {
