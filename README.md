@@ -69,11 +69,11 @@ The project deploys to GitHub Pages through `.github/workflows/pages.yml`.
 The workflow runs:
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
+pnpm verify
 ```
+
+That command covers linting, type checking, unit tests, OpenDesign manifest
+validation, and the production build.
 
 The Vite config uses `base: "./"` so the static build works from the GitHub
 Pages project path.

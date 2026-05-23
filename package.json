@@ -9,6 +9,8 @@
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty false",
     "lint": "eslint . --max-warnings=0",
+    "check:opendesign": "node scripts/check-opendesign.mjs",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm check:opendesign && pnpm build",
     "test": "vitest run",
     "preview": "vite preview --host ::"
   },

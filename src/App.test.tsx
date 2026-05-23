@@ -3,122 +3,131 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import App from "./App";
 
-describe("Memory Coverage Lab", () => {
-  it("renders the default coverage map and selected project panel", () => {
-    render(<App />);
+describe("MemoryBench OpenDesign rebuild", () => {
+  it("renders the amplifying-style editorial surface before the benchmark studio", () => {
+    const { container } = render(<App />);
 
-    expect(screen.getByRole("heading", { name: /When AI agents remember/ })).toBeInTheDocument();
     expect(
-      screen.getByLabelText("Plan Review QA Ship Learn workflow"),
+      screen.getByRole("heading", { name: /When AI agents remember/ }),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("heading", { name: "Mem0" }).length).toBeGreaterThan(0);
-    expect(screen.getByLabelText("记忆覆盖圆图")).toBeInTheDocument();
-  });
-
-  it("switches views and keeps the stack planner interactive", async () => {
-    const user = userEvent.setup();
-
-    render(<App />);
-
-    await user.click(screen.getByRole("button", { name: /Stack planner/ }));
-    expect(screen.getByRole("heading", { name: "组合路线覆盖计算" })).toBeInTheDocument();
-    expect(screen.getAllByText("组合覆盖").length).toBeGreaterThan(0);
-
-    await user.click(screen.getByRole("button", { name: "Toggle Mem0 in stack" }));
-    expect(screen.getAllByText(/Mem0/).length).toBeGreaterThan(0);
-  });
-
-  it("filters projects from the search input", async () => {
-    const user = userEvent.setup();
-
-    render(<App />);
-
-    await user.type(screen.getByLabelText("搜索项目、层级或能力"), "Vector");
-
-    expect(screen.getAllByText("Vector DB").length).toBeGreaterThan(0);
-    expect(screen.queryByText("Supermemory")).not.toBeInTheDocument();
-  });
-
-  it("shows an empty search state without stale benchmark panels", async () => {
-    const user = userEvent.setup();
-
-    render(<App />);
-
-    await user.type(screen.getByLabelText("搜索项目、层级或能力"), "no-such-memory-system");
-
-    expect(screen.getByText("No matching dossier")).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: "没有找到匹配的系统或证据线索" }),
-    ).toBeInTheDocument();
-    expect(screen.getByLabelText("tracked system count")).toHaveTextContent("0");
-    expect(screen.queryByLabelText("记忆覆盖圆图")).not.toBeInTheDocument();
-    expect(screen.queryByLabelText("项目详情")).not.toBeInTheDocument();
-  });
-
-  it("shows the stack planner empty state when all selected projects are removed", async () => {
-    const user = userEvent.setup();
-
-    render(<App />);
-
-    await user.click(screen.getByRole("button", { name: /Stack planner/ }));
-
-    for (const project of ["Mem0", "Zep", "LlamaIndex", "Vector DB"]) {
-      await user.click(screen.getByRole("button", { name: `Toggle ${project} in stack` }));
-    }
-
-    expect(screen.getByText("待选择")).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: "当前没有选择项目" }),
-    ).toBeInTheDocument();
-    expect(screen.getByText("先选择项目，才能生成优先补齐列表。")).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "十六项能力" })).not.toBeInTheDocument();
-  });
-
-  it("limits the stack planner universe to filtered projects", async () => {
-    const user = userEvent.setup();
-
-    render(<App />);
-
-    await user.click(screen.getByRole("button", { name: /Stack planner/ }));
-    await user.type(screen.getByLabelText("搜索项目、层级或能力"), "Supermemory");
-
-    expect(screen.getByLabelText("tracked system count")).toHaveTextContent("1");
-    expect(
-      screen.getByRole("button", { name: "Toggle Supermemory in stack" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Toggle Mem0 in stack" }),
-    ).not.toBeInTheDocument();
-    expect(screen.getByText("待选择")).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: "当前没有选择项目" }),
-    ).toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "Toggle Supermemory in stack" }));
-
-    expect(screen.queryByText("待选择")).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("heading", { name: "当前没有选择项目" }),
-    ).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "十六项能力" })).toBeInTheDocument();
-  });
-
-  it("keeps primary public links and the five-step evidence loop discoverable", () => {
-    render(<App />);
-
     expect(screen.getByRole("link", { name: /See public research/ })).toHaveAttribute(
       "href",
       "#research",
     );
-    expect(screen.getByRole("link", { name: "Explore benchmark data" })).toHaveAttribute(
-      "href",
-      "#benchmarks",
+    expect(screen.getByRole("heading", { name: "Read the research. Run the benchmark." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Public research" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /intelligence and optimization platform/i })).toBeInTheDocument();
+    expect(
+      container.querySelector('[data-opendesign-source="opendesign/mockups/memorybench-ai-studio"]'),
+    ).toBeInTheDocument();
+    expect(container.querySelectorAll("#research")).toHaveLength(1);
+    expect(container.querySelector("#memory-categories")).toBeInTheDocument();
+  });
+
+  it("starts in the research map with a selected dossier and evidence workflow", () => {
+    render(<App />);
+
+    expect(screen.getByLabelText("AI memory boundary map")).toBeInTheDocument();
+    expect(screen.getByRole("tabpanel", { name: /Research map/ })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Selectable AI memory coverage circle map" })).toBeInTheDocument();
+    expect(screen.getByLabelText("selected system dossier")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Open Mem0 dossier/ })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+    expect(
+      screen.getByLabelText("Plan Review QA Ship Learn workflow"),
+    ).toBeInTheDocument();
+  });
+
+  it("filters the studio without leaving stale project dossiers", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.type(
+      screen.getByLabelText("Search systems, layers, evidence, and risks"),
+      "Supermemory",
     );
 
-    for (const stage of ["Plan", "Review", "QA", "Ship", "Learn"]) {
-      expect(screen.getAllByText(stage).length).toBeGreaterThan(0);
-    }
+    expect(screen.getByText("Visible systems")).toBeInTheDocument();
+    expect(screen.getAllByText("Supermemory").length).toBeGreaterThan(0);
+    expect(screen.queryByRole("button", { name: /Open Mem0 dossier/ })).not.toBeInTheDocument();
+  });
 
-    expect(screen.getAllByRole("link", { name: "GitHub" }).length).toBeGreaterThan(0);
+  it("shows a clean empty scope when no evidence matches", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.type(
+      screen.getByLabelText("Search systems, layers, evidence, and risks"),
+      "no-such-memory-system",
+    );
+
+    expect(screen.getByText("No matching dossier")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "No system or evidence line matches this filter." })).toBeInTheDocument();
+    expect(screen.queryByLabelText("AI memory boundary map")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("selected system dossier")).not.toBeInTheDocument();
+  });
+
+  it("switches to the capability matrix", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.click(screen.getByRole("tab", { name: /Capability matrix/ }));
+
+    expect(screen.getByLabelText("capability matrix")).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "System" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Mem0" })).toBeInTheDocument();
+  });
+
+  it("keeps stack selection interactive and exposes selected state", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.click(screen.getByRole("tab", { name: /Stack design/ }));
+
+    const mem0Toggle = screen.getByRole("button", { name: "Toggle Mem0 in stack" });
+    expect(mem0Toggle).toHaveAttribute("aria-pressed", "true");
+
+    await user.click(mem0Toggle);
+
+    expect(screen.getByRole("button", { name: "Toggle Mem0 in stack" })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+    expect(screen.getByText("Compose a memory stack by category boundary")).toBeInTheDocument();
+  });
+
+  it("switches to the evidence ledger", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await user.click(screen.getByRole("tab", { name: /Evidence ledger/ }));
+
+    expect(screen.getByLabelText("evidence ledger")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Public surface, risk, case, and signal ledger" })).toBeInTheDocument();
+    expect(screen.getByText(/SDK\/API surface/)).toBeInTheDocument();
+  });
+
+  it("opens the evidence ledger from the top navigation", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    const evidenceLink = screen.getByRole("link", { name: "Evidence" });
+    expect(evidenceLink).toHaveAttribute("href", "#evidence");
+
+    await user.click(evidenceLink);
+
+    expect(screen.getByRole("tab", { name: /Evidence ledger/ })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(screen.getByLabelText("evidence ledger")).toBeInTheDocument();
   });
 });

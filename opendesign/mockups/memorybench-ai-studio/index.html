@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MemoryBench AI Studio Mockup</title>
+    <link rel="stylesheet" href="../../design-systems/memory-os/tokens/colors_and_type.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600;700&family=IBM+Plex+Sans:wght@400;600;700;800&family=IBM+Plex+Serif:wght@600;700&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--memory-sans);
+        color: #f8efe3;
+        background: #17130f;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        display: grid;
+        align-items: center;
+        padding: 72px 58px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 80% 24%, rgba(201, 136, 46, 0.24), transparent 24%),
+          radial-gradient(circle at 64% 70%, rgba(19, 111, 121, 0.28), transparent 28%),
+          linear-gradient(135deg, #16120f 0%, #211d18 52%, #181512 100%);
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(255, 247, 236, 0.05) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(255, 247, 236, 0.045) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      .studio {
+        position: absolute;
+        right: 58px;
+        top: 88px;
+        bottom: 48px;
+        width: min(51vw, 790px);
+        border: 1px solid rgba(255, 247, 236, 0.14);
+        background:
+          linear-gradient(90deg, rgba(255, 247, 236, 0.035) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(255, 247, 236, 0.03) 1px, transparent 1px),
+          linear-gradient(145deg, rgba(255, 247, 236, 0.1), rgba(255, 247, 236, 0.03));
+        background-size: 28px 28px, 28px 28px, auto;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 247, 236, 0.05),
+          0 44px 120px rgba(0, 0, 0, 0.34);
+      }
+
+      .orbit {
+        position: absolute;
+        left: 12%;
+        top: 12%;
+        width: 54%;
+        aspect-ratio: 1;
+        border: 1px dashed rgba(255, 247, 236, 0.32);
+        border-radius: 50%;
+      }
+
+      .orbit:nth-child(2) {
+        left: 18%;
+        top: 18%;
+        width: 42%;
+        border-color: rgba(201, 136, 46, 0.5);
+      }
+
+      .orbit:nth-child(3) {
+        left: 25%;
+        top: 25%;
+        width: 28%;
+        border-style: solid;
+        border-color: rgba(19, 111, 121, 0.8);
+        background: rgba(19, 111, 121, 0.1);
+      }
+
+      .poly {
+        position: absolute;
+        left: 23%;
+        top: 19%;
+        width: 31%;
+        aspect-ratio: 1;
+        background: linear-gradient(135deg, rgba(19, 111, 121, 0.6), rgba(201, 136, 46, 0.44));
+        clip-path: polygon(48% 3%, 78% 19%, 96% 52%, 76% 86%, 37% 93%, 12% 62%, 21% 24%);
+      }
+
+      .core {
+        position: absolute;
+        left: 32%;
+        top: 33%;
+        width: 112px;
+        height: 112px;
+        display: grid;
+        place-items: center;
+        align-content: center;
+        border: 2px solid rgba(201, 136, 46, 0.86);
+        border-radius: 50%;
+        background: #fff7ec;
+        color: #181512;
+      }
+
+      .core span {
+        font: 700 36px var(--memory-serif);
+        line-height: 0.95;
+      }
+
+      .core b {
+        font: 700 11px "IBM Plex Mono", monospace;
+        text-transform: uppercase;
+      }
+
+      .signal {
+        position: absolute;
+        right: 8%;
+        min-width: 184px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 9px;
+        padding: 12px;
+        border: 1px solid rgba(255, 247, 236, 0.14);
+        background: rgba(255, 247, 236, 0.08);
+      }
+
+      .signal:nth-of-type(5) {
+        top: 12%;
+      }
+
+      .signal:nth-of-type(6) {
+        top: 31%;
+        right: 17%;
+      }
+
+      .signal:nth-of-type(7) {
+        top: 50%;
+      }
+
+      .signal:nth-of-type(8) {
+        top: 69%;
+        right: 24%;
+      }
+
+      .signal span {
+        font-weight: 700;
+      }
+
+      .signal strong {
+        color: #f3c47f;
+        font: 700 18px var(--memory-serif);
+      }
+
+      .copy {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 900px);
+      }
+
+      h1 {
+        margin: 0;
+        color: #fff8ef;
+        font: 700 clamp(72px, 7vw, 116px) / 0.94 var(--memory-serif);
+      }
+
+      h1 span {
+        display: block;
+      }
+
+      p {
+        width: min(100%, 720px);
+        margin: 28px 0 0;
+        color: #d8cabc;
+        font-size: 20px;
+        line-height: 1.68;
+      }
+
+      .actions,
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      a,
+      .tags span {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        padding: 0 18px;
+        color: inherit;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      a:first-child {
+        background: #fff7ec;
+        color: #181512;
+      }
+
+      a:last-child {
+        background: #c9882e;
+        color: #181512;
+      }
+
+      .tags span {
+        min-height: 34px;
+        border: 1px solid rgba(255, 247, 236, 0.22);
+        background: rgba(255, 247, 236, 0.08);
+        color: #f4dfc4;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero">
+      <div class="studio" aria-hidden="true">
+        <div class="orbit"></div>
+        <div class="orbit"></div>
+        <div class="orbit"></div>
+        <div class="poly"></div>
+        <div class="core"><span>16</span><b>criteria</b></div>
+        <div class="signal"><span>Memory APIs</span><strong>73%</strong></div>
+        <div class="signal"><span>Temporal graphs</span><strong>68%</strong></div>
+        <div class="signal"><span>RAG frameworks</span><strong>64%</strong></div>
+        <div class="signal"><span>Vector substrate</span><strong>76%</strong></div>
+      </div>
+
+      <div class="copy">
+        <h1>
+          <span>When AI agents</span>
+          <span>remember, what</span>
+          <span>survives</span>
+          <span>and why?</span>
+        </h1>
+        <p>
+          MemoryBench runs independent evaluations across memory APIs, temporal
+          graphs, RAG frameworks, vector infrastructure and stateful agent runtimes.
+        </p>
+        <div class="actions">
+          <a href="#research">See public research</a>
+          <a href="#benchmarks">Explore benchmark data</a>
+        </div>
+        <div class="tags">
+          <span>Mem0</span>
+          <span>Zep</span>
+          <span>Letta</span>
+          <span>LangGraph</span>
+          <span>LlamaIndex</span>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
