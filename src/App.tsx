@@ -323,7 +323,10 @@ function SurfaceSection() {
     <section className="surface-section" id="research">
       <div className="section-intro">
         <p className="eyebrow">memorybench / surfaces</p>
-        <h2>Read the research. Run the benchmark.</h2>
+        <h2 className="split-heading" aria-label="Read the research. Run the benchmark.">
+          <span>Read the research.</span>
+          <span>Run the benchmark.</span>
+        </h2>
       </div>
       <div className="surface-grid">
         <article>

@@ -465,6 +465,10 @@ h3 {
   line-height: 0.98;
 }
 
+.split-heading span {
+  display: block;
+}
+
 .surface-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
