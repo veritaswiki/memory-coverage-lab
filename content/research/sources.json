@@ -1,0 +1,76 @@
+{
+  "generatedFor": "MemoryBench AI memory research watch",
+  "githubRepos": [
+    {
+      "name": "Mem0",
+      "repo": "mem0ai/mem0",
+      "layer": "Memory API",
+      "reason": "Universal memory layer for AI agents and applications."
+    },
+    {
+      "name": "Zep Graphiti",
+      "repo": "getzep/graphiti",
+      "layer": "Temporal Graph Memory",
+      "reason": "Temporal context graph engine for agent memory."
+    },
+    {
+      "name": "Letta",
+      "repo": "letta-ai/letta",
+      "layer": "Stateful Agent Runtime",
+      "reason": "Stateful agent platform with advanced memory positioning."
+    },
+    {
+      "name": "LangMem",
+      "repo": "langchain-ai/langmem",
+      "layer": "Agent Memory Framework",
+      "reason": "Memory tools for LangGraph applications."
+    },
+    {
+      "name": "Cognee",
+      "repo": "topoteretes/cognee",
+      "layer": "Memory Control Plane",
+      "reason": "Memory and data control plane for AI agents."
+    },
+    {
+      "name": "Haystack",
+      "repo": "deepset-ai/haystack",
+      "layer": "RAG Framework",
+      "reason": "Open-source orchestration framework with retrieval, routing, memory, and generation."
+    }
+  ],
+  "arxivQueries": [
+    {
+      "name": "AI agent memory",
+      "query": "all:%22agent%20memory%22 OR all:%22AI%20memory%22",
+      "layer": "Research Literature"
+    },
+    {
+      "name": "Temporal graph memory",
+      "query": "all:%22temporal%20knowledge%20graph%22 AND all:%22agent%22",
+      "layer": "Temporal Graph Memory"
+    },
+    {
+      "name": "Long-term LLM memory",
+      "query": "all:%22long-term%20memory%22 AND all:%22LLM%22",
+      "layer": "Memory Evaluation"
+    }
+  ],
+  "manualFeeds": [
+    {
+      "name": "Letta blog",
+      "url": "https://www.letta.com/blog",
+      "layer": "Stateful Agent Runtime"
+    },
+    {
+      "name": "Mem0 blog",
+      "url": "https://mem0.ai/blog",
+      "layer": "Memory API"
+    },
+    {
+      "name": "Zep documentation",
+      "url": "https://help.getzep.com/",
+      "layer": "Temporal Graph Memory"
+    }
+  ]
+}
+

@@ -15,6 +15,11 @@ vector infrastructure, managed retrieval, and stateful agent runtimes.
 ## What It Shows
 
 - Editorial public research modeled as an intelligence publication.
+- A GitHub-readable research archive under `content/research/`, with Markdown
+  articles and daily AI memory watch digests.
+- A scheduled research watcher that tracks core AI memory repositories and
+  literature queries, saves digests to GitHub, and updates the public site
+  metadata.
 - A 16-criteria AI memory capability boundary.
 - A Plan / Review / QA / Ship / Learn operating loop for every scorecard.
 - A coverage map for each evaluated system.
@@ -64,6 +69,22 @@ pnpm typecheck
 pnpm test
 pnpm build
 ```
+
+## Research Operations
+
+Research source material lives in `content/research/` so articles can be read
+directly on GitHub as well as surfaced on the website.
+
+```bash
+pnpm research:collect
+pnpm research:index
+pnpm check:research
+```
+
+`research:collect` fetches the current watchlist, writes the daily Markdown
+digest, and rebuilds `src/data/researchDigest.json`. The scheduled workflow
+`.github/workflows/research-watch.yml` runs once per day on `ubuntu-latest` and
+commits generated research changes only when the corpus changes.
 
 ## Scoring Model
 

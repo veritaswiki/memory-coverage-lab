@@ -35,6 +35,7 @@ import {
   getProjectCoverage,
   getStrongestCapabilities,
 } from "./lib/coverage";
+import researchDigest from "./data/researchDigest.json";
 import { useMemoryBenchMotion } from "./useMemoryBenchMotion";
 
 const defaultStack = ["mem0", "zep-graphiti", "llamaindex", "vectorstack"];
@@ -89,32 +90,7 @@ const researchLanes = [
   "Stateful agent runtime",
 ];
 
-const researchCards = [
-  {
-    index: "01",
-    month: "may-2026",
-    dateTime: "2026-05",
-    title: "AI memory products are not one category",
-    body: "Memory APIs, temporal graphs, RAG frameworks and vector stores solve different parts of the agent memory problem.",
-    meta: "11 systems / 16 criteria / 4 capability layers",
-  },
-  {
-    index: "02",
-    month: "may-2026",
-    dateTime: "2026-05",
-    title: "Vector retrieval is mature, but not memory",
-    body: "Retrieval infrastructure scores high on read paths while leaving preference updates, contradiction repair and policy control elsewhere.",
-    meta: "Infrastructure baseline / category boundary",
-  },
-  {
-    index: "03",
-    month: "may-2026",
-    dateTime: "2026-05",
-    title: "Temporal graphs are the strongest fact-dynamics bet",
-    body: "Entity updates and relationship drift separate graph memory systems from simpler session recall or document search layers.",
-    meta: "Temporal KG / conflict repair / source tracing",
-  },
-];
+type ResearchDigestEntry = (typeof researchDigest.entries)[number];
 
 const platformSteps = [
   {
@@ -224,8 +200,12 @@ const siteCopy = {
       eyebrow: "Published",
       heading: "Public research",
       body:
-        "These briefing lines are the editorial front of the same benchmark model: category boundary first, score interpretation second, studio inspection third.",
+        "These briefing lines are the editorial front of the same benchmark model. Every article is stored as GitHub-readable Markdown, then promoted into the public site.",
       action: "View study",
+      githubAction: "Read on GitHub",
+      archiveLabel: "GitHub research archive",
+      generated: "generated",
+      sources: "sources",
     },
     platform: {
       rail: "Operational layer",
@@ -408,8 +388,12 @@ const siteCopy = {
       eyebrow: "公开研究",
       heading: "公开研究",
       body:
-        "这些研究条目是同一套基准模型的编辑层：先确定类别边界，再解释分数，最后进入工作台审查。",
+        "这些研究条目是同一套基准模型的编辑层。每篇文章先以 GitHub 可读 Markdown 保存，再发布到网站。",
       action: "查看研究",
+      githubAction: "在 GitHub 阅读",
+      archiveLabel: "GitHub 研究档案",
+      generated: "生成于",
+      sources: "来源",
     },
     platform: {
       rail: "运行层",
@@ -998,6 +982,8 @@ function SurfaceSection({ t, onSelectMode }: { t: SiteCopy; onSelectMode: Select
 }
 
 function PublishedResearch({ t, onSelectMode }: { t: SiteCopy; onSelectMode: SelectStudioMode }) {
+  const entries = researchDigest.entries.slice(0, 4) as ResearchDigestEntry[];
+
   return (
     <section className="published-section briefing-section" id="published">
       <div className="section-frame briefing-frame">
@@ -1010,24 +996,34 @@ function PublishedResearch({ t, onSelectMode }: { t: SiteCopy; onSelectMode: Sel
           <h2>{t.published.heading}</h2>
           <p>{t.published.body}</p>
         </div>
+        <div className="archive-status" aria-label={t.published.archiveLabel}>
+          <span>{t.published.generated}</span>
+          <strong>{new Date(researchDigest.generatedAt).toISOString().slice(0, 10)}</strong>
+          <a href={researchDigest.githubBaseUrl}>{t.published.archiveLabel}</a>
+        </div>
         <div className="research-list">
-          {researchCards.map((card) => (
-            <article key={card.title}>
+          {entries.map((entry, index) => (
+            <article key={entry.id}>
               <div className="research-index">
-                <b>{card.index}</b>
-                <time dateTime={card.dateTime}>{card.month}</time>
+                <b>{String(index + 1).padStart(2, "0")}</b>
+                <time dateTime={entry.date}>{entry.date.slice(0, 7)}</time>
               </div>
               <div>
-                <h3>{card.title}</h3>
-                <p>{card.body}</p>
+                <h3>{entry.title}</h3>
+                <p>{entry.summary}</p>
               </div>
-              <span>{card.meta}</span>
-              <a className="action-link action-link-text" href="#evidence" onClick={(event) => {
-                event.preventDefault();
-                onSelectMode("evidence", false, true);
-              }}>
-                {t.published.action}
-              </a>
+              <span>{entry.category} / {entry.sourceCount} {t.published.sources}</span>
+              <div className="research-actions">
+                <a className="action-link action-link-text" href="#evidence" onClick={(event) => {
+                  event.preventDefault();
+                  onSelectMode("evidence", false, true);
+                }}>
+                  {t.published.action}
+                </a>
+                <a className="action-link action-link-text" href={entry.githubUrl}>
+                  {t.published.githubAction}
+                </a>
+              </div>
             </article>
           ))}
         </div>

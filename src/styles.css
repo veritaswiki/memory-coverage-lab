@@ -953,9 +953,39 @@ h3 {
   background: rgba(20, 32, 28, 0.14);
 }
 
+.archive-status {
+  grid-column: 2;
+  min-height: 54px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--gold), var(--line) 64%);
+  background: color-mix(in srgb, var(--gold), transparent 88%);
+  color: #3f3832;
+}
+
+.archive-status span,
+.archive-status a {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.archive-status strong {
+  color: var(--ink);
+}
+
+.archive-status a {
+  margin-left: auto;
+  border-bottom: 2px solid var(--gold);
+}
+
 .research-list article {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr) minmax(190px, 0.44fr) 112px;
+  grid-template-columns: 92px minmax(0, 1fr) minmax(190px, 0.38fr) minmax(132px, auto);
   gap: clamp(14px, 2.4vw, 30px);
   align-items: start;
   min-height: 154px;
@@ -993,6 +1023,17 @@ h3 {
   font-size: 0.88rem;
   font-weight: 800;
   line-height: 1.45;
+}
+
+.research-actions {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.research-actions .action-link-text {
+  justify-self: end;
+  min-height: 30px;
 }
 
 .platform-frame {
@@ -2037,6 +2078,7 @@ tbody th button {
   .surface-section .continuity-lane,
   .surface-section .surface-grid,
   .published-section .section-intro,
+  .published-section .archive-status,
   .published-section .research-list,
   .studio-frame .workbench-frame {
     grid-column: 1;
@@ -2325,6 +2367,10 @@ tbody th button {
 
   .research-list article {
     grid-template-columns: 1fr;
+  }
+
+  .research-actions {
+    justify-items: start;
   }
 
   .research-list .action-link-text {

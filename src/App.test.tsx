@@ -49,6 +49,14 @@ describe("MemoryBench OpenDesign rebuild", () => {
     );
     expect(screen.getByRole("heading", { name: "Read the research. Run the benchmark." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Public research" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "GitHub research archive" })).toHaveAttribute(
+      "href",
+      "https://github.com/veritaswiki/memory-coverage-lab/blob/main/content/research",
+    );
+    expect(screen.getAllByRole("link", { name: "Read on GitHub" })[0]).toHaveAttribute(
+      "href",
+      expect.stringContaining("/blob/main/content/research/"),
+    );
     expect(screen.getByRole("heading", { name: /intelligence and optimization platform/i })).toBeInTheDocument();
     expect(
       container.querySelector('[data-opendesign-source="opendesign/mockups/memorybench-ai-studio"]'),

@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-05-25T04:00:59.611Z",
+  "sourcePath": "content/research",
+  "githubBaseUrl": "https://github.com/veritaswiki/memory-coverage-lab/blob/main/content/research",
+  "entries": [
+    {
+      "id": "2026-05-25-ai-memory-field-map",
+      "date": "2026-05-25",
+      "title": "AI memory is a field, not a feature",
+      "category": "field-map",
+      "status": "published",
+      "summary": "A category map for treating AI memory as APIs, temporal graphs, RAG frameworks, vector substrate, stateful runtimes, and governance rather than one interchangeable feature.",
+      "sourceCount": 6,
+      "githubPath": "content/research/articles/2026-05-25-ai-memory-field-map.md",
+      "githubUrl": "https://github.com/veritaswiki/memory-coverage-lab/blob/main/content/research/articles/2026-05-25-ai-memory-field-map.md"
+    },
+    {
+      "id": "2026-05-25-ai-memory-watch",
+      "date": "2026-05-25",
+      "title": "AI memory watch: 2026-05-25",
+      "category": "daily-watch",
+      "status": "published",
+      "summary": "Daily MemoryBench watch digest for AI memory repositories, papers, and project surfaces.",
+      "sourceCount": 9,
+      "githubPath": "content/research/daily/2026-05-25-ai-memory-watch.md",
+      "githubUrl": "https://github.com/veritaswiki/memory-coverage-lab/blob/main/content/research/daily/2026-05-25-ai-memory-watch.md"
+    }
+  ]
+}
