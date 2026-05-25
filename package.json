@@ -19,6 +19,7 @@
     "check:codex-browser": "node scripts/check-codex-browser-runtime.mjs",
     "check:codex-browser-probe": "node scripts/check-codex-browser-probe-contract.mjs",
     "check:strict-audit-contract": "node scripts/check-strict-audit-contract.mjs",
+    "cloudflare:bind-memory-domain": "node scripts/cloudflare-bind-memory-domain.mjs",
     "qa:runtime": "node scripts/browser-runtime-qa.mjs",
     "qa:strict": "node scripts/run-strict-audit.mjs",
     "verify:runtime": "pnpm qa:strict",
