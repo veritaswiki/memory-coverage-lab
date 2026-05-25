@@ -240,6 +240,41 @@ h3 {
   transform: scaleX(1);
 }
 
+.top-rail-actions {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.locale-toggle {
+  min-height: 44px;
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(34px, 1fr));
+  align-items: center;
+  padding: 3px;
+  border: 1px solid rgba(20, 32, 28, 0.24);
+  border-radius: 6px;
+  background: var(--control);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.locale-toggle span {
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0 7px;
+  border-radius: 4px;
+}
+
+.locale-toggle span[aria-current="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
 .action-link {
   justify-content: center;
   gap: 8px;
@@ -2126,10 +2161,13 @@ tbody th button {
     gap: 10px 18px;
   }
 
-  .top-rail .outline-link {
+  .top-rail-actions {
     grid-column: 2;
     grid-row: 1;
     justify-self: end;
+  }
+
+  .top-rail .outline-link {
     padding: 0 14px;
   }
 

@@ -2,7 +2,9 @@
 
 Objective third-party intelligence for AI memory products and adjacent tooling.
 
-Live site: <https://veritaswiki.github.io/memory-coverage-lab/>
+Live site: <https://memory.veritas.wiki/>
+
+Fallback GitHub Pages URL: <https://veritaswiki.github.io/memory-coverage-lab/>
 
 ## Why It Exists
 

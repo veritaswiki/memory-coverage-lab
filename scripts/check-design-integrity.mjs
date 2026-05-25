@@ -196,7 +196,7 @@ function scanContinuityStructure() {
   }
   expect(app.includes('className="workbench-frame"'), "studio must use the shared workbench frame");
   expect(
-    app.includes('tabIndex={0} aria-label="selected system dossier"'),
+    app.includes('tabIndex={0} aria-label={t.panels.dossierLabel}'),
     "desktop dossier internal scroll region must be keyboard focusable and explicitly labelled",
   );
   expect(app.includes('aria-current={isSelected ? "true" : undefined}'), "Evidence ledger must expose one current row aligned to the dossier");
@@ -377,11 +377,24 @@ function scanContinuityPerformance() {
 }
 
 function scanLanguageConsistency() {
-  const visibleSources = [app, capabilities, implementation, projects].join("\n");
+  const zhCopyStart = app.indexOf("  zh: {");
+  const copyEnd = app.indexOf("\n} as const;", zhCopyStart);
+  const appDefaultVoice =
+    zhCopyStart === -1 || copyEnd === -1
+      ? app
+      : `${app.slice(0, zhCopyStart)}${app.slice(copyEnd)}`;
+  const visibleSources = [appDefaultVoice, capabilities, implementation, projects].join("\n");
   const cjkMatches = [...visibleSources.matchAll(/[\u3400-\u9fff]/g)];
 
   expect(pkg.description.includes("Interactive comparison lab"), "package description should stay product-specific");
-  expect(cjkMatches.length === 0, "public interface source must not mix CJK copy into the English product voice");
+  expect(
+    app.includes("const siteCopy =") &&
+      app.includes("  en: {") &&
+      app.includes("  zh: {") &&
+      app.includes("locale-toggle"),
+    "bilingual interface copy must stay centralized behind the language toggle",
+  );
+  expect(cjkMatches.length === 0, "default English product voice must not mix CJK copy outside the zh locale dictionary");
   expect(styles.includes('html[lang="en"]') || html.includes('<html lang="en">'), "document language must stay English");
 }
 

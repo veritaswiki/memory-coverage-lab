@@ -47,6 +47,7 @@ const modes = [
 ] as const satisfies Array<{ id: StudioMode; label: string; icon: LucideIcon }>;
 
 type StudioMode = "map" | "matrix" | "stack" | "evidence";
+type Locale = "en" | "zh";
 type SelectStudioMode = (
   mode: StudioMode,
   shouldFocus?: boolean,
@@ -150,14 +151,430 @@ const continuityStages = [
   { number: "05", label: "Continue", body: "evidence trail" },
 ] as const;
 
+const siteCopy = {
+  en: {
+    title: "MemoryBench — AI Memory Intelligence",
+    description:
+      "Objective third-party intelligence and benchmark exploration for AI memory products, RAG frameworks, temporal graphs, vector infrastructure, and stateful agent runtimes.",
+    localeName: "English",
+    alternateLocaleName: "Chinese",
+    skip: "Skip to main content",
+    topRail: {
+      home: "MemoryBench home",
+      navLabel: "primary navigation",
+      research: "Research",
+      studio: "Studio",
+      evidence: "Evidence",
+      openStudio: "Open studio",
+      languageLabel: "Switch language",
+    },
+    modes: {
+      map: "Research map",
+      matrix: "Capability matrix",
+      stack: "Stack design",
+      evidence: "Evidence ledger",
+    },
+    hero: {
+      eyebrow: "Objective AI memory intelligence",
+      h1: "When AI agents remember, what survives and why?",
+      lines: ["When AI agents", "remember, what", "survives", "and why?"],
+      body:
+        "MemoryBench separates memory APIs, temporal graphs, RAG frameworks, vector infrastructure, and stateful runtimes before any score is allowed to look comparable.",
+      primary: "See public research",
+      secondary: "Explore benchmark data",
+      criteria: "criteria",
+      evidenceLoop: "Evidence loop",
+      categories: "memory categories",
+    },
+    workflow: heroWorkflow,
+    lanes: researchLanes,
+    continuity: continuityStages,
+    surface: {
+      rail: "Research thesis",
+      railLabel: "research sequence",
+      eyebrow: "memorybench / surfaces",
+      heading: "Read the research. Run the benchmark.",
+      lines: ["Read the research.", "Run the benchmark."],
+      body:
+        "MemoryBench is built as a public intelligence dossier first and an interactive benchmark second. Every lower section follows the same evidence sequence: define the category, show the research artifact, then move into the studio where the claim can be tested.",
+      cards: [
+        {
+          label: "Evidence archive",
+          title: "Research archive",
+          body: "The public layer holds category boundaries, method notes, raw scoring assumptions, and study summaries behind the studio.",
+          action: "View studies",
+        },
+        {
+          label: "Method spine",
+          title: "One evidence chain",
+          body: "Every section uses the same sequence: define the layer, show the public claim, expose the score, then point back to evidence.",
+          action: "Open ledger",
+        },
+        {
+          label: "Interactive layer",
+          title: "Benchmark studio",
+          body: "Dense controls and dossier panels let teams inspect where a memory product fits, where it breaks, and what should be retested.",
+          action: "Open studio",
+        },
+      ],
+    },
+    published: {
+      rail: "Published evidence",
+      railLabel: "published sequence",
+      eyebrow: "Published",
+      heading: "Public research",
+      body:
+        "These briefing lines are the editorial front of the same benchmark model: category boundary first, score interpretation second, studio inspection third.",
+      action: "View study",
+    },
+    platform: {
+      rail: "Operational layer",
+      railLabel: "platform sequence",
+      eyebrow: "Platform / for memory companies",
+      heading: "An intelligence and optimization platform for AI memory products.",
+      body:
+        "Per-category benchmarks for the memory layers that agents actually use: APIs, temporal graphs, RAG frameworks, retrieval substrate, and stateful runtimes. The public research, studio controls, and proof ledger now share one operating model.",
+      action: "See the benchmark",
+      steps: platformSteps,
+    },
+    studio: {
+      rail: "Benchmark studio",
+      railLabel: "studio sequence",
+      eyebrow: "MemoryBench Intelligence Studio",
+      heading: "Category-first intelligence for AI memory systems",
+      body:
+        "The interface starts from first principles: define the category, inspect the evidence, compare the capability boundary, then design a stack with visible gaps.",
+      metricLabel: "current benchmark context",
+      visibleSystems: "Visible systems",
+      criteria: "Criteria",
+      filteredStack: "Filtered stack",
+      stackCoverage: "Stack coverage",
+      pending: "Pending",
+      openGaps: "Open gaps",
+      focusScore: "Focus score",
+      controlsLabel: "studio controls",
+      searchPlaceholder: "Search systems, layers, evidence, risks",
+      searchLabel: "Search systems, layers, evidence, and risks",
+      viewsLabel: "MemoryBench studio views",
+      primaryArea: "MemoryBench primary work area",
+    },
+    empty: {
+      eyebrow: "No matching dossier",
+      heading: "No system or evidence line matches this filter.",
+      body: "Try category terms such as graph, RAG, vector, runtime, governance, or API.",
+    },
+    panels: {
+      boundaryMap: "AI memory boundary map",
+      boundaryTitle: "AI memory boundary",
+      circleMap: "Selectable AI memory coverage circle map",
+      strongest: "Strongest signals",
+      priorityGaps: "Priority gaps",
+      noMajorGap: "No major gap",
+      matrix: "capability matrix",
+      matrixEyebrow: "Scientific capability matrix",
+      matrixHeading: "Sixteen-axis category comparison",
+      matrixBody: "Scores are heuristic research signals, not vendor endorsements.",
+      system: "System",
+      layer: "Layer",
+      score: "Score",
+      stackPlanner: "stack planner",
+      stackEyebrow: "Portfolio design",
+      stackHeading: "Compose a memory stack by category boundary",
+      selectStack: "select stack systems",
+      toggleStack: "Toggle",
+      inStack: "in stack",
+      noSystems: "No systems selected",
+      selectOne: "Select at least one project to compute combined memory coverage.",
+      combinedCoverage: "combined coverage",
+      evidenceLedger: "evidence ledger",
+      evidenceEyebrow: "Governance evidence",
+      evidenceHeading: "Public surface, risk, case, and signal ledger",
+      evidenceBody: "Evidence is separated from scores so category claims stay auditable.",
+      selectDossier: "Select",
+      dossierSuffix: "dossier",
+      unscheduled: "Unscheduled",
+      evidenceMore: "evidence",
+      dossierLabel: "selected system dossier",
+      researchState: "Research state",
+      researchProgress: "research progress",
+      capabilityGroups: "Capability groups",
+      evidenceSplit: "Evidence split",
+      productSurface: "Product surface",
+      technologySignal: "Technology signal",
+      researchProgressLabel: "Research progress",
+      averageProgress: "average visible progress",
+      highUncertainty: "high uncertainty line(s).",
+      pairingCandidates: "Pairing candidates",
+    },
+    footer: {
+      rail: "Method handoff",
+      railLabel: "method handoff sequence",
+      eyebrow: "MemoryBench / AI memory intelligence",
+      heading: "Follow the evidence trail.",
+      body:
+        "The public surface closes where the studio starts: category boundary, benchmark evidence, implementation risk, and source trace remain part of one research loop.",
+      linksLabel: "MemoryBench footer links",
+      research: "Research thesis",
+      evidence: "Evidence ledger",
+      proofLabel: "MemoryBench proof summary",
+      proof: [
+        ["Method", "16 criteria", "same scoring model"],
+        ["Coverage", "11 systems", "one category map"],
+        ["Refresh", "continuous QA", "audited motion path"],
+      ],
+    },
+  },
+  zh: {
+    title: "MemoryBench — AI 记忆产品情报",
+    description:
+      "面向 AI 记忆产品、RAG 框架、时间图谱、向量基础设施和有状态智能体运行时的第三方基准与研究情报。",
+    localeName: "中文",
+    alternateLocaleName: "English",
+    skip: "跳到主要内容",
+    topRail: {
+      home: "MemoryBench 首页",
+      navLabel: "主导航",
+      research: "研究",
+      studio: "工作台",
+      evidence: "证据",
+      openStudio: "打开工作台",
+      languageLabel: "切换语言",
+    },
+    modes: {
+      map: "研究地图",
+      matrix: "能力矩阵",
+      stack: "栈设计",
+      evidence: "证据台账",
+    },
+    hero: {
+      eyebrow: "客观 AI 记忆产品情报",
+      h1: "当 AI 智能体开始记忆，什么会留下，为什么？",
+      lines: ["当 AI 智能体", "开始记忆时，", "什么会留下，", "为什么？"],
+      body:
+        "MemoryBench 先拆开记忆 API、时间图谱、RAG 框架、向量基础设施和有状态运行时，再允许任何分数进入同一张比较表。",
+      primary: "查看公开研究",
+      secondary: "探索基准数据",
+      criteria: "指标",
+      evidenceLoop: "证据循环",
+      categories: "记忆产品类别",
+    },
+    workflow: [
+      { label: "定义", value: "类别边界", state: "done" },
+      { label: "发布", value: "公开证据", state: "done" },
+      { label: "运行", value: "基准在线", state: "current" },
+      { label: "验证", value: "工作台审查", state: "queued" },
+      { label: "追踪", value: "证据持续更新", state: "watch" },
+    ],
+    lanes: ["记忆 API", "时间图谱记忆", "RAG 框架", "检索底座", "有状态智能体运行时"],
+    continuity: [
+      { number: "01", label: "定义", body: "类别边界" },
+      { number: "02", label: "发布", body: "公开证据" },
+      { number: "03", label: "运行", body: "基准流程" },
+      { number: "04", label: "验证", body: "工作台审查" },
+      { number: "05", label: "追踪", body: "证据链路" },
+    ],
+    surface: {
+      rail: "研究命题",
+      railLabel: "研究序列",
+      eyebrow: "memorybench / 研究表面",
+      heading: "先读研究，再跑基准。",
+      lines: ["先读研究。", "再跑基准。"],
+      body:
+        "MemoryBench 先是公开情报档案，其次才是交互式基准。页面下方每一段都遵循同一条证据顺序：定义类别、展示研究材料，再进入可检验主张的工作台。",
+      cards: [
+        {
+          label: "证据档案",
+          title: "研究档案",
+          body: "公开层保存类别边界、方法说明、评分假设和工作台背后的研究摘要。",
+          action: "查看研究",
+        },
+        {
+          label: "方法主线",
+          title: "同一条证据链",
+          body: "每个段落都先定义层级，再呈现公开主张、暴露分数，最后回到证据。",
+          action: "打开台账",
+        },
+        {
+          label: "交互层",
+          title: "基准工作台",
+          body: "高密度控件和档案面板帮助团队判断一个记忆产品适合哪里、断在哪里、需要重测什么。",
+          action: "打开工作台",
+        },
+      ],
+    },
+    published: {
+      rail: "公开证据",
+      railLabel: "发布序列",
+      eyebrow: "公开研究",
+      heading: "公开研究",
+      body:
+        "这些研究条目是同一套基准模型的编辑层：先确定类别边界，再解释分数，最后进入工作台审查。",
+      action: "查看研究",
+    },
+    platform: {
+      rail: "运行层",
+      railLabel: "平台序列",
+      eyebrow: "平台 / 面向记忆产品团队",
+      heading: "面向 AI 记忆产品的情报与优化平台。",
+      body:
+        "按照智能体真实使用的记忆层分别建立基准：API、时间图谱、RAG 框架、检索底座和有状态运行时。公开研究、工作台控件和证据台账现在共享同一个运行模型。",
+      action: "查看基准",
+      steps: [
+        {
+          number: "01",
+          label: "定义",
+          title: "记忆基准数据集",
+          body: "按偏好、实体更新、检索落地、删除和多会话连续性拆分类别运行。",
+        },
+        {
+          number: "02",
+          label: "发布",
+          title: "能力边界浏览器",
+          body: "覆盖地图、项目矩阵、栈设计和证据台账让相邻产品可比较但不混为一类。",
+        },
+        {
+          number: "03",
+          label: "运行",
+          title: "持续复测",
+          body: "当厂商发布 API、框架变化、模型记忆模式漂移时，评分卡可以持续刷新。",
+        },
+        {
+          number: "04",
+          label: "验证",
+          title: "中立采用简报",
+          body: "基于证据的说明展示每层记忆适合哪里、不覆盖什么、哪些主张仍需验证。",
+        },
+      ],
+    },
+    studio: {
+      rail: "基准工作台",
+      railLabel: "工作台序列",
+      eyebrow: "MemoryBench 情报工作台",
+      heading: "面向 AI 记忆系统的类别优先情报",
+      body:
+        "界面从第一性原理出发：定义类别、审查证据、比较能力边界，再设计带有可见缺口的组合栈。",
+      metricLabel: "当前基准上下文",
+      visibleSystems: "可见系统",
+      criteria: "指标",
+      filteredStack: "筛选栈",
+      stackCoverage: "栈覆盖",
+      pending: "待选择",
+      openGaps: "开放缺口",
+      focusScore: "焦点分数",
+      controlsLabel: "工作台控件",
+      searchPlaceholder: "搜索系统、层级、证据、风险",
+      searchLabel: "搜索系统、层级、证据和风险",
+      viewsLabel: "MemoryBench 工作台视图",
+      primaryArea: "MemoryBench 主工作区",
+    },
+    empty: {
+      eyebrow: "没有匹配档案",
+      heading: "没有系统或证据条目匹配当前筛选。",
+      body: "可以尝试图谱、RAG、向量、运行时、治理或 API 等类别词。",
+    },
+    panels: {
+      boundaryMap: "AI 记忆边界地图",
+      boundaryTitle: "AI 记忆边界",
+      circleMap: "可选择的 AI 记忆覆盖圆图",
+      strongest: "最强信号",
+      priorityGaps: "优先缺口",
+      noMajorGap: "暂无主要缺口",
+      matrix: "能力矩阵",
+      matrixEyebrow: "科学能力矩阵",
+      matrixHeading: "十六轴类别比较",
+      matrixBody: "分数是启发式研究信号，不是厂商背书。",
+      system: "系统",
+      layer: "层级",
+      score: "分数",
+      stackPlanner: "栈规划器",
+      stackEyebrow: "组合设计",
+      stackHeading: "按类别边界组合记忆栈",
+      selectStack: "选择栈内系统",
+      toggleStack: "切换",
+      inStack: "已在栈内",
+      noSystems: "尚未选择系统",
+      selectOne: "至少选择一个项目来计算组合记忆覆盖。",
+      combinedCoverage: "组合覆盖",
+      evidenceLedger: "证据台账",
+      evidenceEyebrow: "治理证据",
+      evidenceHeading: "公开表面、风险、案例和信号台账",
+      evidenceBody: "证据与分数分开呈现，让类别主张保持可审计。",
+      selectDossier: "选择",
+      dossierSuffix: "档案",
+      unscheduled: "未排期",
+      evidenceMore: "条证据",
+      dossierLabel: "已选系统档案",
+      researchState: "研究状态",
+      researchProgress: "研究进度",
+      capabilityGroups: "能力组",
+      evidenceSplit: "证据拆分",
+      productSurface: "产品表面",
+      technologySignal: "技术信号",
+      researchProgressLabel: "研究进度",
+      averageProgress: "平均可见进度",
+      highUncertainty: "条高不确定性线索。",
+      pairingCandidates: "组合候选",
+    },
+    footer: {
+      rail: "方法交接",
+      railLabel: "方法交接序列",
+      eyebrow: "MemoryBench / AI 记忆产品情报",
+      heading: "沿着证据链继续追踪。",
+      body:
+        "公开表面结束的地方，正是工作台开始的地方：类别边界、基准证据、实现风险和来源追踪仍然属于同一个研究循环。",
+      linksLabel: "MemoryBench 页脚链接",
+      research: "研究命题",
+      evidence: "证据台账",
+      proofLabel: "MemoryBench 证明摘要",
+      proof: [
+        ["方法", "16 项指标", "同一套评分模型"],
+        ["覆盖", "11 个系统", "一张类别地图"],
+        ["刷新", "持续 QA", "已审计动效路径"],
+      ],
+    },
+  },
+} as const;
+
+type SiteCopy = (typeof siteCopy)[Locale];
+
+function getInitialLocale(): Locale {
+  if (typeof window === "undefined") {
+    return "en";
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const queryLocale = params.get("lang");
+  if (queryLocale === "zh" || queryLocale === "en") {
+    return queryLocale;
+  }
+
+  const storedLocale = window.localStorage.getItem("memorybench-locale");
+  if (storedLocale === "zh" || storedLocale === "en") {
+    return storedLocale;
+  }
+
+  return window.navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en";
+}
+
+function setMetaContent(selector: string, content: string) {
+  const node = document.querySelector<HTMLMetaElement>(selector);
+  if (node) {
+    node.content = content;
+  }
+}
+
 function App() {
   const appRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<StudioMode>(() =>
     typeof window === "undefined" ? "map" : studioModeFromHash(window.location.hash) ?? "map",
   );
+  const [locale, setLocale] = useState<Locale>(getInitialLocale);
   const [selectedSlug, setSelectedSlug] = useState("mem0");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() =>
+    typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("q") ?? "",
+  );
   const [stackSlugs, setStackSlugs] = useState<string[]>(defaultStack);
+  const t = siteCopy[locale];
   const normalizedQuery = query.trim().toLowerCase();
 
   const filteredProjects = useMemo(() => {
@@ -219,6 +636,19 @@ function App() {
       delete document.documentElement.dataset.motionReduce;
     };
   }, [hasMotionReduceOverride]);
+
+  useEffect(() => {
+    document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
+    document.documentElement.dataset.locale = locale;
+    document.title = t.title;
+    window.localStorage.setItem("memorybench-locale", locale);
+    setMetaContent('meta[name="description"]', t.description);
+    setMetaContent('meta[property="og:title"]', t.title);
+    setMetaContent('meta[property="og:description"]', t.description);
+    setMetaContent('meta[property="og:locale"]', locale === "zh" ? "zh_CN" : "en_US");
+    setMetaContent('meta[name="twitter:title"]', t.title);
+    setMetaContent('meta[name="twitter:description"]', t.description);
+  }, [locale, t.description, t.title]);
 
   useEffect(() => {
     const syncModeFromHash = () => {
@@ -340,49 +770,50 @@ function App() {
       ref={appRef}
     >
       <a className="skip-link" href="#main-content">
-        Skip to main content
+        {t.skip}
       </a>
-      <TopRail onSelectMode={activateMode} />
+      <TopRail
+        locale={locale}
+        t={t}
+        onLocaleChange={setLocale}
+        onSelectMode={activateMode}
+      />
       <main className="site-main" id="main-content" tabIndex={-1}>
-        <Hero onSelectMode={activateMode} />
+        <Hero t={t} onSelectMode={activateMode} />
         <div className="page-continuum">
-          <SurfaceSection onSelectMode={activateMode} />
-          <PublishedResearch onSelectMode={activateMode} />
-          <PlatformSection onSelectMode={activateMode} />
+          <SurfaceSection t={t} onSelectMode={activateMode} />
+          <PublishedResearch t={t} onSelectMode={activateMode} />
+          <PlatformSection t={t} onSelectMode={activateMode} />
 
           <section className="studio-workbench briefing-section" id="benchmarks" aria-labelledby="studio-heading">
             <span id="evidence" className="scroll-anchor" aria-hidden="true" />
             <div className="section-frame briefing-frame studio-frame">
-              <aside className="briefing-rail" aria-label="studio sequence">
+              <aside className="briefing-rail" aria-label={t.studio.railLabel}>
                 <span>04</span>
-                <p>Benchmark studio</p>
+                <p>{t.studio.rail}</p>
               </aside>
               <div className="workbench-frame">
                 <header className="workbench-head">
                   <div>
-                    <p className="eyebrow">MemoryBench Intelligence Studio</p>
-                    <h2 id="studio-heading">Category-first intelligence for AI memory systems</h2>
+                    <p className="eyebrow">{t.studio.eyebrow}</p>
+                    <h2 id="studio-heading">{t.studio.heading}</h2>
                   </div>
-                  <p>
-                    The interface starts from first principles: define the category,
-                    inspect the evidence, compare the capability boundary, then design a
-                    stack with visible gaps.
-                  </p>
+                  <p>{t.studio.body}</p>
                 </header>
 
-                <section className="metric-ribbon" aria-label="current benchmark context">
-                  <Metric icon={Boxes} label="Visible systems" value={String(filteredProjects.length)} />
-                  <Metric icon={Radar} label="Criteria" value={String(capabilityDefinitions.length)} />
+                <section className="metric-ribbon" aria-label={t.studio.metricLabel}>
+                  <Metric icon={Boxes} label={t.studio.visibleSystems} value={String(filteredProjects.length)} />
+                  <Metric icon={Radar} label={t.studio.criteria} value={String(capabilityDefinitions.length)} />
                   <Metric
                     icon={Layers3}
-                    label={normalizedQuery ? "Filtered stack" : "Stack coverage"}
-                    value={stackProjects.length === 0 ? "Pending" : `${stackCoverage}%`}
+                    label={normalizedQuery ? t.studio.filteredStack : t.studio.stackCoverage}
+                    value={stackProjects.length === 0 ? t.studio.pending : `${stackCoverage}%`}
                   />
-                  <Metric icon={TriangleAlert} label="Open gaps" value={String(stackGaps.length)} />
-                  <Metric icon={Target} label="Focus score" value={`${focusCoverage}%`} strong />
+                  <Metric icon={TriangleAlert} label={t.studio.openGaps} value={String(stackGaps.length)} />
+                  <Metric icon={Target} label={t.studio.focusScore} value={`${focusCoverage}%`} strong />
                 </section>
 
-                <section className="studio-controls" aria-label="studio controls">
+                <section className="studio-controls" aria-label={t.studio.controlsLabel}>
                   <label className="search-control" htmlFor="memorybench-search">
                     <Search aria-hidden="true" size={18} />
                     <input
@@ -390,12 +821,12 @@ function App() {
                       type="search"
                       value={query}
                       onChange={(event) => setQuery(event.target.value)}
-                      placeholder="Search systems, layers, evidence, risks"
-                      aria-label="Search systems, layers, evidence, and risks"
+                      placeholder={t.studio.searchPlaceholder}
+                      aria-label={t.studio.searchLabel}
                     />
                   </label>
 
-                  <div className="mode-tabs" role="tablist" aria-label="MemoryBench studio views">
+                  <div className="mode-tabs" role="tablist" aria-label={t.studio.viewsLabel}>
                     {modes.map((item) => {
                       const Icon = item.icon;
 
@@ -413,7 +844,7 @@ function App() {
                           onKeyDown={(event) => handleModeKeyDown(event, item.id)}
                         >
                           <Icon aria-hidden="true" size={17} />
-                          <span>{item.label}</span>
+                          <span>{t.modes[item.id]}</span>
                         </button>
                       );
                     })}
@@ -428,9 +859,9 @@ function App() {
                     aria-labelledby={`studio-tab-${mode}`}
                     aria-live="polite"
                   >
-                    <p className="eyebrow">No matching dossier</p>
-                    <h3>No system or evidence line matches this filter.</h3>
-                    <p>Try category terms such as graph, RAG, vector, runtime, governance, or API.</p>
+                    <p className="eyebrow">{t.empty.eyebrow}</p>
+                    <h3>{t.empty.heading}</h3>
+                    <p>{t.empty.body}</p>
                   </section>
                 ) : (
                   <section className="studio-grid">
@@ -439,10 +870,11 @@ function App() {
                       id="studio-panel"
                       role="tabpanel"
                       aria-labelledby={`studio-tab-${mode}`}
-                      aria-label="MemoryBench primary work area"
+                      aria-label={t.studio.primaryArea}
                     >
                       {mode === "map" ? (
                         <BoundaryMap
+                          t={t}
                           projects={filteredProjects}
                           selectedProject={selectedProject}
                           selectedStackSlugs={stackProjects.map((project) => project.slug)}
@@ -452,6 +884,7 @@ function App() {
 
                       {mode === "matrix" ? (
                         <CapabilityMatrix
+                          t={t}
                           projects={filteredProjects}
                           selectedProject={selectedProject}
                           onSelectProject={selectProject}
@@ -460,6 +893,7 @@ function App() {
 
                       {mode === "stack" ? (
                         <StackStudio
+                          t={t}
                           projects={scopeProjects}
                           selectedSlugs={stackSlugs}
                           stackProjects={stackProjects}
@@ -470,6 +904,7 @@ function App() {
 
                       {mode === "evidence" ? (
                         <EvidenceLedger
+                          t={t}
                           projects={filteredProjects}
                           selectedProject={selectedProject}
                           onSelectProject={selectProject}
@@ -478,6 +913,7 @@ function App() {
                     </section>
 
                     <Dossier
+                      t={t}
                       project={selectedProject}
                       implementation={selectedImplementation}
                       allProjects={memoryProjects}
@@ -488,36 +924,32 @@ function App() {
               </div>
             </div>
           </section>
-          <SiteFooter onSelectMode={activateMode} />
+          <SiteFooter t={t} onSelectMode={activateMode} />
         </div>
       </main>
     </div>
   );
 }
 
-function SurfaceSection({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
+function SurfaceSection({ t, onSelectMode }: { t: SiteCopy; onSelectMode: SelectStudioMode }) {
   return (
     <section className="surface-section briefing-section" id="research">
       <div className="section-frame briefing-frame">
-        <aside className="briefing-rail" aria-label="research sequence">
+        <aside className="briefing-rail" aria-label={t.surface.railLabel}>
           <span>01</span>
-          <p>Research thesis</p>
+          <p>{t.surface.rail}</p>
         </aside>
         <div className="section-intro">
-          <p className="eyebrow">memorybench / surfaces</p>
-          <h2 className="split-heading" aria-label="Read the research. Run the benchmark.">
-            <span>Read the research.</span>
-            <span>Run the benchmark.</span>
+          <p className="eyebrow">{t.surface.eyebrow}</p>
+          <h2 className="split-heading" aria-label={t.surface.heading}>
+            {t.surface.lines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
           </h2>
-          <p>
-            MemoryBench is built as a public intelligence dossier first and an
-            interactive benchmark second. Every lower section follows the same
-            evidence sequence: define the category, show the research artifact,
-            then move into the studio where the claim can be tested.
-          </p>
+          <p>{t.surface.body}</p>
         </div>
         <div className="continuity-lane" aria-label="MemoryBench evidence flow">
-          {continuityStages.map((stage) => (
+          {t.continuity.map((stage) => (
             <article key={stage.number}>
               <span>{stage.number}</span>
               <strong>{stage.label}</strong>
@@ -527,44 +959,35 @@ function SurfaceSection({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
         </div>
         <div className="surface-grid">
           <article>
-            <span>Evidence archive</span>
-            <h3>Research archive</h3>
-            <p>
-              The public layer holds category boundaries, method notes, raw
-              scoring assumptions, and study summaries behind the studio.
-            </p>
+            <span>{t.surface.cards[0].label}</span>
+            <h3>{t.surface.cards[0].title}</h3>
+            <p>{t.surface.cards[0].body}</p>
             <a className="action-link action-link-dark" href="#published">
-              View studies
+              {t.surface.cards[0].action}
               <ArrowRight aria-hidden="true" size={17} />
             </a>
           </article>
           <article>
-            <span>Method spine</span>
-            <h3>One evidence chain</h3>
-            <p>
-              Every section uses the same sequence: define the layer, show the
-              public claim, expose the score, then point back to evidence.
-            </p>
+            <span>{t.surface.cards[1].label}</span>
+            <h3>{t.surface.cards[1].title}</h3>
+            <p>{t.surface.cards[1].body}</p>
             <a className="action-link action-link-dark" href="#evidence" onClick={(event) => {
               event.preventDefault();
               onSelectMode("evidence", false, true);
             }}>
-              Open ledger
+              {t.surface.cards[1].action}
               <ArrowRight aria-hidden="true" size={17} />
             </a>
           </article>
           <article>
-            <span>Interactive layer</span>
-            <h3>Benchmark studio</h3>
-            <p>
-              Dense controls and dossier panels let teams inspect where a memory
-              product fits, where it breaks, and what should be retested.
-            </p>
+            <span>{t.surface.cards[2].label}</span>
+            <h3>{t.surface.cards[2].title}</h3>
+            <p>{t.surface.cards[2].body}</p>
             <a className="action-link action-link-dark" href="#benchmarks" onClick={(event) => {
               event.preventDefault();
               onSelectMode("map", false, true);
             }}>
-              Open studio
+              {t.surface.cards[2].action}
               <ArrowRight aria-hidden="true" size={17} />
             </a>
           </article>
@@ -574,22 +997,18 @@ function SurfaceSection({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
   );
 }
 
-function PublishedResearch({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
+function PublishedResearch({ t, onSelectMode }: { t: SiteCopy; onSelectMode: SelectStudioMode }) {
   return (
     <section className="published-section briefing-section" id="published">
       <div className="section-frame briefing-frame">
-        <aside className="briefing-rail" aria-label="published sequence">
+        <aside className="briefing-rail" aria-label={t.published.railLabel}>
           <span>02</span>
-          <p>Published evidence</p>
+          <p>{t.published.rail}</p>
         </aside>
         <div className="section-intro compact">
-          <p className="eyebrow">Published</p>
-          <h2>Public research</h2>
-          <p>
-            These briefing lines are the editorial front of the same benchmark
-            model: category boundary first, score interpretation second, studio
-            inspection third.
-          </p>
+          <p className="eyebrow">{t.published.eyebrow}</p>
+          <h2>{t.published.heading}</h2>
+          <p>{t.published.body}</p>
         </div>
         <div className="research-list">
           {researchCards.map((card) => (
@@ -607,7 +1026,7 @@ function PublishedResearch({ onSelectMode }: { onSelectMode: SelectStudioMode })
                 event.preventDefault();
                 onSelectMode("evidence", false, true);
               }}>
-                View study
+                {t.published.action}
               </a>
             </article>
           ))}
@@ -617,23 +1036,18 @@ function PublishedResearch({ onSelectMode }: { onSelectMode: SelectStudioMode })
   );
 }
 
-function PlatformSection({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
+function PlatformSection({ t, onSelectMode }: { t: SiteCopy; onSelectMode: SelectStudioMode }) {
   return (
     <section className="platform-section briefing-section" id="platform">
       <div className="section-frame briefing-frame platform-frame">
-        <aside className="briefing-rail" aria-label="platform sequence">
+        <aside className="briefing-rail" aria-label={t.platform.railLabel}>
           <span>03</span>
-          <p>Operational layer</p>
+          <p>{t.platform.rail}</p>
         </aside>
         <div className="platform-copy">
-          <p className="eyebrow">Platform / for memory companies</p>
-          <h2>An intelligence and optimization platform for AI memory products.</h2>
-          <p>
-            Per-category benchmarks for the memory layers that agents actually use:
-            APIs, temporal graphs, RAG frameworks, retrieval substrate, and
-            stateful runtimes. The public research, studio controls, and proof
-            ledger now share one operating model.
-          </p>
+          <p className="eyebrow">{t.platform.eyebrow}</p>
+          <h2>{t.platform.heading}</h2>
+          <p>{t.platform.body}</p>
           <a
             className="outline-link action-link action-link-outline dark"
             href="#benchmarks"
@@ -642,11 +1056,11 @@ function PlatformSection({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
               onSelectMode("map", false, true);
             }}
           >
-            See the benchmark
+            {t.platform.action}
           </a>
         </div>
         <div className="platform-steps">
-          {platformSteps.map((step) => (
+          {t.platform.steps.map((step) => (
             <article key={step.number}>
               <div>
                 <span>{step.number}</span>
@@ -663,79 +1077,90 @@ function PlatformSection({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
   );
 }
 
-function SiteFooter({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
+function SiteFooter({ t, onSelectMode }: { t: SiteCopy; onSelectMode: SelectStudioMode }) {
   return (
     <footer className="site-footer briefing-section" id="subscribe">
       <div className="section-frame briefing-frame footer-frame">
-        <aside className="briefing-rail" aria-label="method handoff sequence">
+        <aside className="briefing-rail" aria-label={t.footer.railLabel}>
           <span>05</span>
-          <p>Method handoff</p>
+          <p>{t.footer.rail}</p>
         </aside>
         <div className="footer-copy">
-          <p className="eyebrow">MemoryBench / AI memory intelligence</p>
-          <h2>Follow the evidence trail.</h2>
-          <p>
-            The public surface closes where the studio starts: category boundary,
-            benchmark evidence, implementation risk, and source trace remain part
-            of one research loop.
-          </p>
-          <div className="footer-actions" aria-label="MemoryBench footer links">
-            <a className="action-link action-link-outline" href="#research">Research thesis</a>
+          <p className="eyebrow">{t.footer.eyebrow}</p>
+          <h2>{t.footer.heading}</h2>
+          <p>{t.footer.body}</p>
+          <div className="footer-actions" aria-label={t.footer.linksLabel}>
+            <a className="action-link action-link-outline" href="#research">{t.footer.research}</a>
             <a className="action-link action-link-accent" href="#evidence" onClick={(event) => {
               event.preventDefault();
               onSelectMode("evidence", false, true);
             }}>
-              Evidence ledger
+              {t.footer.evidence}
             </a>
             <a className="action-link action-link-outline" href="https://github.com/veritaswiki/memory-coverage-lab">GitHub</a>
           </div>
         </div>
-        <div className="footer-proof-grid" aria-label="MemoryBench proof summary">
-          <article>
-            <span>Method</span>
-            <strong>16 criteria</strong>
-            <p>same scoring model</p>
-          </article>
-          <article>
-            <span>Coverage</span>
-            <strong>11 systems</strong>
-            <p>one category map</p>
-          </article>
-          <article>
-            <span>Refresh</span>
-            <strong>continuous QA</strong>
-            <p>audited motion path</p>
-          </article>
+        <div className="footer-proof-grid" aria-label={t.footer.proofLabel}>
+          {t.footer.proof.map(([label, value, body]) => (
+            <article key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+              <p>{body}</p>
+            </article>
+          ))}
         </div>
       </div>
     </footer>
   );
 }
 
-function TopRail({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
+function TopRail({
+  locale,
+  t,
+  onLocaleChange,
+  onSelectMode,
+}: {
+  locale: Locale;
+  t: SiteCopy;
+  onLocaleChange: (locale: Locale) => void;
+  onSelectMode: SelectStudioMode;
+}) {
+  const nextLocale = locale === "en" ? "zh" : "en";
+
   return (
     <header className="top-rail">
-      <a className="wordmark" href="#top" aria-label="MemoryBench home">
+      <a className="wordmark" href="#top" aria-label={t.topRail.home}>
         <span>MemoryBench</span>
         <b>/ai-memory-intelligence</b>
       </a>
-      <nav aria-label="primary navigation">
-        <a href="#research">Research</a>
+      <nav aria-label={t.topRail.navLabel}>
+        <a href="#research">{t.topRail.research}</a>
         <a href="#benchmarks" onClick={(event) => {
           event.preventDefault();
           onSelectMode("map", false, true);
-        }}>Studio</a>
+        }}>{t.topRail.studio}</a>
         <a href="#evidence" onClick={(event) => {
           event.preventDefault();
           onSelectMode("evidence", false, true);
-        }}>Evidence</a>
+        }}>{t.topRail.evidence}</a>
       </nav>
-      <a className="outline-link action-link action-link-outline" href="#benchmarks" onClick={(event) => {
-        event.preventDefault();
-        onSelectMode("map", false, true);
-      }}>
-        Open studio
-      </a>
+      <div className="top-rail-actions">
+        <button
+          className="locale-toggle"
+          type="button"
+          aria-label={`${t.topRail.languageLabel}: ${t.alternateLocaleName}`}
+          onClick={() => onLocaleChange(nextLocale)}
+        >
+          <span aria-current={locale === "en" ? "true" : undefined}>EN</span>
+          <span aria-current={locale === "zh" ? "true" : undefined}>{"\u4e2d"}</span>
+        </button>
+        <a className="outline-link action-link action-link-outline" href="#benchmarks" onClick={(event) => {
+          event.preventDefault();
+          onSelectMode("map", false, true);
+        }}>
+          {t.topRail.openStudio}
+        </a>
+      </div>
       <div className="reading-progress" aria-hidden="true">
         <span />
       </div>
@@ -743,7 +1168,7 @@ function TopRail({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
   );
 }
 
-function Hero({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
+function Hero({ t, onSelectMode }: { t: SiteCopy; onSelectMode: SelectStudioMode }) {
   const signalValues = studioSignals.map((signal) => ({
     ...signal,
     value: averageCoverage(signal.match),
@@ -762,7 +1187,7 @@ function Hero({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
         <div className="signal-polygon" />
         <div className="criteria-core">
           <span>16</span>
-          <b>criteria</b>
+          <b>{t.hero.criteria}</b>
         </div>
         {signalValues.map((signal, index) => {
           const Icon = signal.icon;
@@ -778,9 +1203,9 @@ function Hero({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
         <div className="workflow-strip" aria-label="Hero evidence loop">
           <div>
             <Activity aria-hidden="true" size={16} />
-            <span>Evidence loop</span>
+            <span>{t.hero.evidenceLoop}</span>
           </div>
-          {heroWorkflow.map((stage) => (
+          {t.workflow.map((stage) => (
             <article key={stage.label} data-state={stage.state}>
               <span>{stage.label}</span>
               <strong>{stage.value}</strong>
@@ -790,32 +1215,27 @@ function Hero({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
       </div>
 
       <div className="hero-copy">
-        <p className="eyebrow">Objective AI memory intelligence</p>
-        <h1 aria-label="When AI agents remember, what survives and why?">
-          <span>When AI agents</span>
-          <span>remember, what</span>
-          <span>survives</span>
-          <span>and why?</span>
+        <p className="eyebrow">{t.hero.eyebrow}</p>
+        <h1 aria-label={t.hero.h1}>
+          {t.hero.lines.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
         </h1>
-        <p>
-          MemoryBench separates memory APIs, temporal graphs, RAG frameworks,
-          vector infrastructure, and stateful runtimes before any score is allowed
-          to look comparable.
-        </p>
+        <p>{t.hero.body}</p>
         <div className="hero-actions">
           <a className="action-link action-link-primary" href="#research">
-            See public research
+            {t.hero.primary}
             <ArrowRight aria-hidden="true" size={18} />
           </a>
           <a className="action-link action-link-accent" href="#benchmarks" onClick={(event) => {
             event.preventDefault();
             onSelectMode("map", false, true);
           }}>
-            Explore benchmark data
+            {t.hero.secondary}
           </a>
         </div>
-        <div className="lane-strip" id="memory-categories" aria-label="memory categories">
-          {researchLanes.map((lane) => (
+        <div className="lane-strip" id="memory-categories" aria-label={t.hero.categories}>
+          {t.lanes.map((lane) => (
             <span key={lane}>{lane}</span>
           ))}
         </div>
@@ -847,11 +1267,13 @@ function Metric({
 }
 
 function BoundaryMap({
+  t,
   projects,
   selectedProject,
   selectedStackSlugs,
   onSelectProject,
 }: {
+  t: SiteCopy;
   projects: MemoryProject[];
   selectedProject: MemoryProject;
   selectedStackSlugs: string[];
@@ -865,17 +1287,17 @@ function BoundaryMap({
   const gaps = getCoverageGaps(selectedProject.scores, 0.62).slice(0, 4);
 
   return (
-    <div className="boundary-workbench" aria-label="AI memory boundary map">
+    <div className="boundary-workbench" aria-label={t.panels.boundaryMap}>
       <div className="boundary-canvas">
         <header className="panel-title">
           <div>
-            <p className="eyebrow">AI memory boundary</p>
+            <p className="eyebrow">{t.panels.boundaryTitle}</p>
             <h3>{selectedProject.name}</h3>
           </div>
           <strong>{getProjectCoverage(selectedProject)}%</strong>
         </header>
 
-        <div className="circle-stage" role="group" aria-label="Selectable AI memory coverage circle map">
+        <div className="circle-stage" role="group" aria-label={t.panels.circleMap}>
           <div className="ring ring-1" />
           <div className="ring ring-2" />
           <div className="ring ring-3" />
@@ -900,7 +1322,7 @@ function BoundaryMap({
                 type="button"
                 className={isSelected ? "map-node active" : "map-node"}
                 aria-current={isSelected ? "true" : undefined}
-                aria-label={`Open ${project.shortName} dossier${isStacked ? ", in stack" : ""}`}
+                aria-label={`Open ${project.shortName} dossier${isStacked ? `, ${t.panels.inStack}` : ""}`}
                 style={style}
                 onClick={() => onSelectProject(project.slug)}
               >
@@ -926,10 +1348,10 @@ function BoundaryMap({
             </article>
           ))}
         </div>
-        <SignalList title="Strongest signals" items={topCapabilities.map((item) => item.label)} />
+        <SignalList title={t.panels.strongest} items={topCapabilities.map((item) => item.label)} />
         <SignalList
-          title="Priority gaps"
-          items={gaps.length > 0 ? gaps.map((item) => item.label) : ["No major gap"]}
+          title={t.panels.priorityGaps}
+          items={gaps.length > 0 ? gaps.map((item) => item.label) : [t.panels.noMajorGap]}
         />
       </aside>
     </div>
@@ -937,31 +1359,33 @@ function BoundaryMap({
 }
 
 function CapabilityMatrix({
+  t,
   projects,
   selectedProject,
   onSelectProject,
 }: {
+  t: SiteCopy;
   projects: MemoryProject[];
   selectedProject: MemoryProject;
   onSelectProject: (slug: string) => void;
 }) {
   return (
-    <div className="matrix-workbench" aria-label="capability matrix">
+    <div className="matrix-workbench" aria-label={t.panels.matrix}>
       <header className="panel-title">
         <div>
-          <p className="eyebrow">Scientific capability matrix</p>
-          <h3>Sixteen-axis category comparison</h3>
+          <p className="eyebrow">{t.panels.matrixEyebrow}</p>
+          <h3>{t.panels.matrixHeading}</h3>
         </div>
-        <p>Scores are heuristic research signals, not vendor endorsements.</p>
+        <p>{t.panels.matrixBody}</p>
       </header>
 
       <div className="matrix-scroll">
         <table>
           <thead>
             <tr>
-              <th>System</th>
-              <th>Layer</th>
-              <th>Score</th>
+              <th>{t.panels.system}</th>
+              <th>{t.panels.layer}</th>
+              <th>{t.panels.score}</th>
               {capabilityDefinitions.map((capability) => (
                 <th key={capability.key}>{capability.label}</th>
               ))}
@@ -998,12 +1422,14 @@ function CapabilityMatrix({
 }
 
 function StackStudio({
+  t,
   projects,
   selectedSlugs,
   stackProjects,
   stackCoverage,
   onToggleProject,
 }: {
+  t: SiteCopy;
   projects: MemoryProject[];
   selectedSlugs: string[];
   stackProjects: MemoryProject[];
@@ -1015,17 +1441,17 @@ function StackStudio({
   const gaps = getCoverageGaps(combinedScores);
 
   return (
-    <div className="stack-workbench" aria-label="stack planner">
+    <div className="stack-workbench" aria-label={t.panels.stackPlanner}>
       <header className="panel-title">
         <div>
-          <p className="eyebrow">Portfolio design</p>
-          <h3>Compose a memory stack by category boundary</h3>
+          <p className="eyebrow">{t.panels.stackEyebrow}</p>
+          <h3>{t.panels.stackHeading}</h3>
         </div>
-        <strong>{stackProjects.length === 0 ? "Pending" : `${stackCoverage}%`}</strong>
+        <strong>{stackProjects.length === 0 ? t.studio.pending : `${stackCoverage}%`}</strong>
       </header>
 
       <div className="stack-grid">
-        <section className="selector-panel" aria-label="select stack systems">
+        <section className="selector-panel" aria-label={t.panels.selectStack}>
           {projects.map((project) => {
             const active = selectedSlugs.includes(project.slug);
             const implementation = getProjectImplementation(project.slug);
@@ -1035,7 +1461,7 @@ function StackStudio({
                 key={project.slug}
                 type="button"
                 aria-pressed={active}
-                aria-label={`Toggle ${project.shortName} in stack`}
+                aria-label={`${t.panels.toggleStack} ${project.shortName} ${t.panels.inStack}`}
                 className={active ? "active" : ""}
                 onClick={() => onToggleProject(project.slug)}
               >
@@ -1053,8 +1479,8 @@ function StackStudio({
         <section className="combined-panel" aria-live="polite">
           {stackProjects.length === 0 ? (
             <div className="empty-stack">
-              <h4>No systems selected</h4>
-              <p>Select at least one project to compute combined memory coverage.</p>
+              <h4>{t.panels.noSystems}</h4>
+              <p>{t.panels.selectOne}</p>
             </div>
           ) : (
             <>
@@ -1067,8 +1493,8 @@ function StackStudio({
                 ))}
               </div>
               <div className="gap-column">
-                <h4>Priority gaps</h4>
-                {(gaps.length > 0 ? gaps.slice(0, 6) : [{ key: "none", label: "No major gap", value: 1 }]).map(
+                <h4>{t.panels.priorityGaps}</h4>
+                {(gaps.length > 0 ? gaps.slice(0, 6) : [{ key: "none", label: t.panels.noMajorGap, value: 1 }]).map(
                   (gap) => (
                     <div key={gap.key} className="meter-row">
                       <span>{gap.label}</span>
@@ -1076,7 +1502,7 @@ function StackStudio({
                       <div
                         className="meter"
                         role="progressbar"
-                        aria-label={`${gap.label} combined coverage`}
+                        aria-label={`${gap.label} ${t.panels.combinedCoverage}`}
                         aria-valuemin={0}
                         aria-valuemax={100}
                         aria-valuenow={Math.round(gap.value * 100)}
@@ -1096,10 +1522,12 @@ function StackStudio({
 }
 
 function EvidenceLedger({
+  t,
   projects,
   selectedProject,
   onSelectProject,
 }: {
+  t: SiteCopy;
   projects: MemoryProject[];
   selectedProject: MemoryProject;
   onSelectProject: (slug: string) => void;
@@ -1114,13 +1542,13 @@ function EvidenceLedger({
   }
 
   return (
-    <div className="evidence-workbench" aria-label="evidence ledger">
+    <div className="evidence-workbench" aria-label={t.panels.evidenceLedger}>
       <header className="panel-title">
         <div>
-          <p className="eyebrow">Governance evidence</p>
-          <h3>Public surface, risk, case, and signal ledger</h3>
+          <p className="eyebrow">{t.panels.evidenceEyebrow}</p>
+          <h3>{t.panels.evidenceHeading}</h3>
         </div>
-        <p>Evidence is separated from scores so category claims stay auditable.</p>
+        <p>{t.panels.evidenceBody}</p>
       </header>
 
       <div className="evidence-list">
@@ -1138,7 +1566,7 @@ function EvidenceLedger({
               role="button"
               tabIndex={0}
               aria-current={isSelected ? "true" : undefined}
-              aria-label={`Select ${project.name} dossier`}
+              aria-label={`${t.panels.selectDossier} ${project.name} ${t.panels.dossierSuffix}`}
               onClick={() => onSelectProject(project.slug)}
               onKeyDown={(event) => handleLedgerKeyDown(event, project.slug)}
             >
@@ -1152,7 +1580,7 @@ function EvidenceLedger({
                 <p>{implementation.risk}</p>
               </div>
               <div>
-                <b>{project.cases[0]?.when ?? "Unscheduled"}</b>
+                <b>{project.cases[0]?.when ?? t.panels.unscheduled}</b>
                 <p>{project.cases[0]?.title ?? implementation.nextMilestone}</p>
               </div>
               <div className="signal-chips">
@@ -1164,7 +1592,7 @@ function EvidenceLedger({
                 {strongest.slice(0, 1).map((capability) => (
                   <span key={capability.key}>{capability.label}</span>
                 ))}
-                {hiddenSignalCount > 0 ? <span>+{hiddenSignalCount} evidence</span> : null}
+                {hiddenSignalCount > 0 ? <span>+{hiddenSignalCount} {t.panels.evidenceMore}</span> : null}
               </div>
             </article>
           );
@@ -1175,11 +1603,13 @@ function EvidenceLedger({
 }
 
 function Dossier({
+  t,
   project,
   implementation,
   allProjects,
   stats,
 }: {
+  t: SiteCopy;
   project: MemoryProject;
   implementation: ReturnType<typeof getProjectImplementation>;
   allProjects: MemoryProject[];
@@ -1190,7 +1620,7 @@ function Dossier({
   const workflow = getProjectWorkflow(project.slug);
 
   return (
-    <aside className="dossier-panel" tabIndex={0} aria-label="selected system dossier">
+    <aside className="dossier-panel" tabIndex={0} aria-label={t.panels.dossierLabel}>
       <div className="dossier-head">
         <div>
           <p className="eyebrow">{project.layer}</p>
@@ -1202,7 +1632,7 @@ function Dossier({
       <p>{project.summary}</p>
 
       <section className="dossier-section">
-        <h4>Research state</h4>
+        <h4>{t.panels.researchState}</h4>
         <div className="progress-block">
           <div>
             <span>{implementation.lane}</span>
@@ -1211,7 +1641,7 @@ function Dossier({
           <div
             className="meter"
             role="progressbar"
-            aria-label={`${project.shortName} research progress`}
+            aria-label={`${project.shortName} ${t.panels.researchProgress}`}
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={implementation.progress}
@@ -1232,7 +1662,7 @@ function Dossier({
       </section>
 
       <section className="dossier-section">
-        <h4>Capability groups</h4>
+        <h4>{t.panels.capabilityGroups}</h4>
         <div className="group-grid compact">
           {groups.map((group) => (
             <article key={group.key}>
@@ -1244,37 +1674,36 @@ function Dossier({
       </section>
 
       <section className="dossier-section">
-        <h4>Evidence split</h4>
+        <h4>{t.panels.evidenceSplit}</h4>
         <dl className="fact-list">
           <div>
             <dt>
               <BadgeCheck aria-hidden="true" size={15} />
-              Product surface
+              {t.panels.productSurface}
             </dt>
             <dd>{project.officialSupport}</dd>
           </div>
           <div>
             <dt>
               <Network aria-hidden="true" size={15} />
-              Technology signal
+              {t.panels.technologySignal}
             </dt>
             <dd>{project.technologySignal}</dd>
           </div>
           <div>
             <dt>
               <ClipboardCheck aria-hidden="true" size={15} />
-              Research progress
+              {t.panels.researchProgressLabel}
             </dt>
             <dd>
-              {stats.averageProgress}% average visible progress; {stats.highRisk} high
-              uncertainty line(s).
+              {stats.averageProgress}% {t.panels.averageProgress}; {stats.highRisk} {t.panels.highUncertainty}
             </dd>
           </div>
         </dl>
       </section>
 
       <section className="dossier-section">
-        <h4>Pairing candidates</h4>
+        <h4>{t.panels.pairingCandidates}</h4>
         <div className="pair-list">
           {pairings.map((pairing) => (
             <span key={pairing.slug} style={{ borderColor: pairing.accent }}>

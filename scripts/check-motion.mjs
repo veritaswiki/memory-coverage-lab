@@ -93,7 +93,7 @@ expectIncludes(app, 'id="main-content"', "Main landmark must expose a stable ski
 expectIncludes(app, '<div className="page-continuum">', "Below-hero sections must use one continuous page system");
 expectIncludes(app, '<div className="workbench-frame">', "Studio must share the page frame system");
 expectIncludes(app, 'className="studio-workbench briefing-section"', "Studio workbench must be part of the unified briefing sequence");
-expectIncludes(app, 'aria-label="studio sequence"', "Studio must have its own briefing rail");
+expectIncludes(app, "aria-label={t.studio.railLabel}", "Studio must have its own briefing rail");
 expectIncludes(app, '<SiteFooter ', "Footer must be part of the page continuum");
 expectIncludes(app, 'className="site-footer briefing-section"', "Footer must use the unified briefing section grammar");
 expectExcludes(app, '</main>\n\n      <footer', "Footer must not sit outside the continuous main page flow");
@@ -664,7 +664,7 @@ expectIncludes(runtimeQa, "function checkMatrixUsability", "Runtime QA must vali
 expectIncludes(runtimeQa, "matrix first column is not sticky", "Runtime QA must fail if the matrix first column is not sticky");
 expectIncludes(runtimeQa, 'runBrowse(["press", "PageDown"]', "Runtime QA must prove the desktop dossier scroll region responds to real keyboard PageDown");
 expectIncludes(runtimeQa, "selected system dossier", "Runtime QA must validate the dossier scroll region accessible label");
-expectIncludes(readFileSync("src/App.tsx", "utf8"), 'tabIndex={0} aria-label="selected system dossier"', "Desktop dossier scroll region must be keyboard focusable and labelled");
+expectIncludes(readFileSync("src/App.tsx", "utf8"), "tabIndex={0} aria-label={t.panels.dossierLabel}", "Desktop dossier scroll region must be keyboard focusable and labelled");
 expectIncludes(readFileSync("scripts/run-strict-audit.mjs", "utf8"), "dossierKeyboardScrolled", "Strict audit must require keyboard-reachable dossier internal scrolling");
 expectIncludes(readFileSync("scripts/run-strict-audit.mjs", "utf8"), "dossierKeyboardFocusRetained", "Strict audit must prove focus remains on the dossier scroll region after keyboard scroll");
 expectIncludes(runtimeQa, "function checkAnchorNavigation", "Runtime QA must validate anchor navigation");

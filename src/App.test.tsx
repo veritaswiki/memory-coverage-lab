@@ -31,6 +31,8 @@ describe("MemoryBench OpenDesign rebuild", () => {
   afterEach(() => {
     window.history.pushState({}, "", "/");
     document.documentElement.removeAttribute("data-motion-reduce");
+    document.documentElement.removeAttribute("data-locale");
+    window.localStorage.clear();
     delete window.__memoryBenchMotion;
     delete window.__memoryBenchMotionInspect;
   });
@@ -78,6 +80,33 @@ describe("MemoryBench OpenDesign rebuild", () => {
     }
     expect(container.querySelectorAll("#research")).toHaveLength(1);
     expect(container.querySelector("#memory-categories")).toBeInTheDocument();
+  });
+
+  it("switches the publication shell between English and Chinese", async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    expect(document.documentElement.lang).toBe("en");
+    await user.click(screen.getByRole("button", { name: /Switch language: Chinese/ }));
+
+    expect(document.documentElement.lang).toBe("zh-CN");
+    expect(document.title).toBe("MemoryBench — AI 记忆产品情报");
+    expect(screen.getByRole("heading", { name: /当 AI 智能体开始记忆/ })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /查看公开研究/ })).toHaveAttribute("href", "#research");
+    expect(screen.getByRole("tab", { name: "研究地图" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByPlaceholderText("搜索系统、层级、证据、风险")).toBeInTheDocument();
+    expect(window.localStorage.getItem("memorybench-locale")).toBe("zh");
+  });
+
+  it("hydrates language and search state from SEO query parameters", () => {
+    window.history.pushState({}, "", "/?lang=zh&q=Mem0");
+
+    render(<App />);
+
+    expect(document.documentElement.lang).toBe("zh-CN");
+    expect(screen.getByLabelText("搜索系统、层级、证据和风险")).toHaveValue("Mem0");
+    expect(screen.getByText("可见系统")).toBeInTheDocument();
   });
 
   it("starts in the research map with a selected dossier and evidence workflow", () => {
