@@ -9,7 +9,7 @@ export type SupportKind =
 
 export interface EvidenceSignal {
   label: string;
-  strength: "强" | "中" | "弱" | "观察";
+  strength: "Strong" | "Medium" | "Weak" | "Watch";
   detail: string;
 }
 
@@ -68,15 +68,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "Mem0",
     layer: "Memory API",
     summary:
-      "面向 AI 应用的长期用户记忆 API/SDK，覆盖写入、抽取、检索和应用集成。",
-    role: "产品化 memory API、用户级长期记忆、应用侧召回。",
+      "A long-term user-memory API and SDK for AI applications, covering writes, extraction, retrieval, and app integration.",
+    role: "Productized memory API, user-level long-term memory, and application-side recall.",
     supportKind: "official-oss",
     officialSupport:
-      "公开文档、SDK、托管服务和开源仓库形成较完整的产品入口。",
+      "Public docs, SDKs, hosted service, and open-source repositories form a relatively complete product surface.",
     technologySignal:
-      "开发者讨论集中在 agent memory、用户偏好留存、跨会话召回和应用嵌入。",
+      "Developer discussion centers on agent memory, preference retention, cross-session recall, and app embedding.",
     fitPosition:
-      "适合作为用户记忆层候选；治理、留存和评测需要单独验证。",
+      "A plausible user-memory-layer candidate; governance, retention, and evaluation need separate validation.",
     color: "#8e4a66",
     accent: "#ff9f0a",
     map: { x: 0.62, y: 0.42 },
@@ -102,20 +102,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "SDK/API surface",
-        strength: "强",
-        detail: "API、SDK 与托管入口降低了产品接入成本。",
+        strength: "Strong",
+        detail: "APIs, SDKs, and hosted entry points reduce product integration cost.",
       },
       {
         label: "Retention questions",
-        strength: "中",
-        detail: "需要在评测中单独检查删除、更新、冲突和权限边界。",
+        strength: "Medium",
+        detail: "Deletion, update, conflict, and permission boundaries need separate benchmark checks.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "User memory API benchmark",
-        detail: "验证偏好写入、事实更新、召回延迟和跨会话稳定性。",
+        detail: "Validate preference writes, fact updates, recall latency, and cross-session stability.",
       },
     ],
     pairsWith: ["zep-graphiti", "vectorstack", "ragie"],
@@ -126,15 +126,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "Zep",
     layer: "Temporal Graph Memory",
     summary:
-      "面向 Agent 的时序知识图谱记忆，强调实体、关系、事实更新和时间上下文。",
-    role: "实体关系、事实演化、图谱召回、时间语义。",
+      "Temporal knowledge-graph memory for agents, emphasizing entities, relationships, fact updates, and time context.",
+    role: "Entity relations, fact evolution, graph recall, and temporal semantics.",
     supportKind: "official-oss",
     officialSupport:
-      "公开产品、文档和开源路线提供 temporal graph memory 的明确入口。",
+      "Public product, docs, and open-source route provide a clear temporal graph memory entry point.",
     technologySignal:
-      "技术传播围绕 temporal knowledge graph、Agent memory 和 GraphRAG。",
+      "Technical distribution centers on temporal knowledge graphs, agent memory, and GraphRAG.",
     fitPosition:
-      "适合评测复杂事实变化；弱点通常在应用侧集成和治理闭环。",
+      "Well suited to complex fact-change evaluation; weaknesses usually sit in app integration and governance loops.",
     color: "#456b2f",
     accent: "#dd7c48",
     map: { x: 0.48, y: 0.75 },
@@ -160,20 +160,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "Temporal graph",
-        strength: "强",
-        detail: "图谱和时间维度贴近长期 Agent memory 的核心问题。",
+        strength: "Strong",
+        detail: "Graph and time dimensions sit close to the core problem of long-term agent memory.",
       },
       {
         label: "Boundary clarity",
-        strength: "中",
-        detail: "评测需要区分事实更新、事实来源和最终采用策略。",
+        strength: "Medium",
+        detail: "Evaluation must separate fact updates, fact sources, and final adoption strategy.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Contradictory entity benchmark",
-        detail: "观察同一实体在多轮会话中的冲突、修正和可追溯性。",
+        detail: "Observe conflict, correction, and traceability for one entity across multiple sessions.",
       },
     ],
     pairsWith: ["mem0", "letta", "llamaindex"],
@@ -184,15 +184,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "Supermemory",
     layer: "Personal Memory API",
     summary:
-      "面向应用与个人资料源的记忆 API，强调跨来源数据摄取、搜索和上下文注入。",
-    role: "个人记忆、资料源连接、上下文检索、应用集成。",
+      "A memory API for applications and personal sources, emphasizing cross-source ingestion, search, and context injection.",
+    role: "Personal memory, source connections, context retrieval, and application integration.",
     supportKind: "official-cloud",
     officialSupport:
-      "公开产品入口和 API 定位清晰，适合评估应用级记忆体验。",
+      "Public product entry and API positioning are clear, making it useful for application-level memory evaluation.",
     technologySignal:
-      "讨论多集中在个人记忆、搜索、资料源连接和 AI 应用上下文层。",
+      "Discussion focuses on personal memory, search, source connections, and AI application context layers.",
     fitPosition:
-      "适合作为端用户记忆体验候选；需要关注数据来源授权和召回解释。",
+      "A candidate for end-user memory experience; source authorization and recall explanation need attention.",
     color: "#7a4e9b",
     accent: "#73a942",
     map: { x: 0.73, y: 0.49 },
@@ -218,20 +218,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "User context",
-        strength: "强",
-        detail: "产品定位直接面向个人上下文与应用侧记忆。",
+        strength: "Strong",
+        detail: "Product positioning is directly aimed at personal context and application-side memory.",
       },
       {
         label: "Explainability",
-        strength: "中",
-        detail: "需要在 benchmark 中检查召回来源和用户可控性。",
+        strength: "Medium",
+        detail: "Recall sources and user control need explicit benchmark checks.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Personal source recall",
-        detail: "测试多来源资料进入模型上下文后的准确率和可解释性。",
+        detail: "Test accuracy and explainability after multi-source material enters model context.",
       },
     ],
     pairsWith: ["mem0", "vectorstack", "llamaindex"],
@@ -242,15 +242,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "Letta",
     layer: "Stateful Agent Runtime",
     summary:
-      "围绕 stateful agent 和 memory blocks 的 Agent runtime / framework 路线。",
-    role: "Agent 状态、工具调用、记忆上下文、运行时编排。",
+      "An agent runtime and framework route around stateful agents and memory blocks.",
+    role: "Agent state, tool calls, memory context, and runtime orchestration.",
     supportKind: "official-oss",
     officialSupport:
-      "开源项目、文档和框架路线为 stateful agent 提供明确产品面。",
+      "Open-source project, docs, and framework route provide a clear product surface for stateful agents.",
     technologySignal:
-      "技术传播集中在 stateful agents、tool use、memory blocks 和 agent runtime。",
+      "Technical distribution concentrates on stateful agents, tool use, memory blocks, and agent runtime.",
     fitPosition:
-      "适合评测 Agent 如何管理自己的长期状态；不应和纯检索层混为一类。",
+      "Useful for evaluating how agents manage long-term state; it should not be collapsed into pure retrieval layers.",
     color: "#5f5a1f",
     accent: "#b7557b",
     map: { x: 0.8, y: 0.68 },
@@ -276,20 +276,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "Runtime signal",
-        strength: "强",
-        detail: "stateful agent 的状态管理是清晰差异化能力。",
+        strength: "Strong",
+        detail: "State management for stateful agents is a clear differentiating capability.",
       },
       {
         label: "Operational scope",
-        strength: "中",
-        detail: "引入 runtime 会扩大工程面，需要和现有应用边界分开评估。",
+        strength: "Medium",
+        detail: "Introducing runtime expands the engineering surface and needs separate evaluation from existing app boundaries.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Stateful agent scenario",
-        detail: "评测 Agent 在长期目标、工具状态和用户偏好之间的取舍。",
+        detail: "Evaluate tradeoffs across long-term goals, tool state, and user preferences.",
       },
     ],
     pairsWith: ["zep-graphiti", "mem0", "langmem"],
@@ -300,15 +300,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "LangMem",
     layer: "Framework Memory",
     summary:
-      "LangChain/LangGraph 生态下的状态、checkpoint、memory helper 与工作流编排。",
-    role: "框架级状态、workflow memory、checkpoint、agent orchestration。",
+      "State, checkpoints, memory helpers, and workflow orchestration within the LangChain and LangGraph ecosystem.",
+    role: "Framework-level state, workflow memory, checkpoints, and agent orchestration.",
     supportKind: "framework",
     officialSupport:
-      "依托 LangChain/LangGraph 官方生态、文档和开发者工作流。",
+      "Backed by the official LangChain and LangGraph ecosystem, docs, and developer workflows.",
     technologySignal:
-      "教程、模板和工程案例丰富，便于快速对接通用 Agent workflow。",
+      "Tutorials, templates, and engineering examples make it easy to connect general agent workflows.",
     fitPosition:
-      "适合在既有 agent workflow 中落地；独立长期记忆能力需要外部组件补齐。",
+      "Fits existing agent workflows; standalone long-term memory needs external components.",
     color: "#2d6372",
     accent: "#d2a642",
     map: { x: 0.88, y: 0.55 },
@@ -334,20 +334,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "Framework adoption",
-        strength: "强",
-        detail: "生态案例多，接入路径清晰。",
+        strength: "Strong",
+        detail: "The ecosystem has many examples and a clear integration path.",
       },
       {
         label: "Memory depth",
-        strength: "中",
-        detail: "更像 workflow 能力，需要与图谱、检索和治理层组合。",
+        strength: "Medium",
+        detail: "It reads more like workflow capability and needs composition with graph, retrieval, and governance layers.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Workflow checkpoint benchmark",
-        detail: "测试多步骤 Agent 任务中的状态恢复、分支和回放能力。",
+        detail: "Test state recovery, branching, and replay in multi-step agent tasks.",
       },
     ],
     pairsWith: ["letta", "mem0", "vectorstack"],
@@ -358,15 +358,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "LlamaIndex",
     layer: "RAG + Agent Memory",
     summary:
-      "围绕索引、检索、Agent 工具和上下文编排的知识应用框架。",
-    role: "文档索引、检索增强、agent tools、上下文构建。",
+      "A knowledge-application framework around indexing, retrieval, agent tools, and context orchestration.",
+    role: "Document indexing, retrieval augmentation, agent tools, and context construction.",
     supportKind: "framework",
     officialSupport:
-      "公开框架、文档和生态组件覆盖知识应用开发的主要入口。",
+      "Public framework, docs, and ecosystem components cover the main entry points for knowledge-app development.",
     technologySignal:
-      "开发者材料丰富，常用于 RAG、agentic retrieval 和知识库应用。",
+      "Developer materials are extensive and commonly used for RAG, agentic retrieval, and knowledge-base apps.",
     fitPosition:
-      "适合作为知识应用编排层；长期记忆治理与用户记忆仍需独立设计。",
+      "Works as a knowledge-application orchestration layer; long-term memory governance and user memory still need separate design.",
     color: "#354f9a",
     accent: "#d26945",
     map: { x: 0.32, y: 0.56 },
@@ -392,20 +392,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "RAG maturity",
-        strength: "强",
-        detail: "索引、检索和 agent tool 链路成熟度高。",
+        strength: "Strong",
+        detail: "Indexing, retrieval, and agent-tool paths are mature.",
       },
       {
         label: "Long memory gap",
-        strength: "中",
-        detail: "长期事实更新、用户记忆和治理策略需要外部评估。",
+        strength: "Medium",
+        detail: "Long-term fact updates, user memory, and governance strategy need external evaluation.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Corpus-grounded recall",
-        detail: "评测文档索引、检索准确率和多跳引用完整性。",
+        detail: "Evaluate document indexing, retrieval accuracy, and multi-hop citation completeness.",
       },
     ],
     pairsWith: ["zep-graphiti", "mem0", "cognee"],
@@ -416,15 +416,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "Cognee",
     layer: "Knowledge Pipeline",
     summary:
-      "把文档、图谱、检索和 AI 记忆管道整合成可编排的知识处理链。",
-    role: "文档摄取、知识图谱、RAG 管道、数据编排。",
+      "Combines documents, graphs, retrieval, and AI memory pipelines into an orchestrated knowledge-processing chain.",
+    role: "Document ingestion, knowledge graphs, RAG pipelines, and data orchestration.",
     supportKind: "official-oss",
     officialSupport:
-      "开源项目、文档和 AI memory/RAG 定位提供较强研究入口。",
+      "Open-source project, docs, and AI memory/RAG positioning provide a strong research entry point.",
     technologySignal:
-      "技术交流主要围绕 AI memory、GraphRAG 和 data pipeline。",
+      "Technical conversation centers on AI memory, GraphRAG, and data pipelines.",
     fitPosition:
-      "适合补强文档摄取和图谱生成；最终记忆策略仍需 benchmark 判定。",
+      "Useful for document ingestion and graph generation; final memory strategy still needs benchmark judgment.",
     color: "#9a5b1f",
     accent: "#2d8fb8",
     map: { x: 0.18, y: 0.72 },
@@ -450,20 +450,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "Pipeline fit",
-        strength: "中",
-        detail: "文档到图谱的自动化路径适合单独评测。",
+        strength: "Medium",
+        detail: "The document-to-graph automation path deserves separate evaluation.",
       },
       {
         label: "Governance need",
-        strength: "中",
-        detail: "自动摄取需要来源、版本和更新策略约束。",
+        strength: "Medium",
+        detail: "Automated ingestion needs source, version, and update-policy constraints.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Ingestion-to-graph benchmark",
-        detail: "观察文档摄取后的实体准确率、关系噪声和更新成本。",
+        detail: "Observe entity accuracy, relationship noise, and update cost after document ingestion.",
       },
     ],
     pairsWith: ["llamaindex", "zep-graphiti", "vectorstack"],
@@ -474,15 +474,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "Vector DB",
     layer: "Retrieval Substrate",
     summary:
-      "以 Qdrant、Weaviate、Pinecone 等为代表的向量检索底座，用于语义召回和 RAG 索引。",
-    role: "向量索引、混合检索、召回层、基础设施。",
+      "A vector retrieval substrate represented by Qdrant, Weaviate, Pinecone, and similar systems for semantic recall and RAG indexing.",
+    role: "Vector indexing, hybrid retrieval, recall layer, and infrastructure.",
     supportKind: "infrastructure",
     officialSupport:
-      "多个成熟产品和开源项目提供稳定的检索基础设施选择。",
+      "Multiple mature products and open-source projects provide stable retrieval-infrastructure options.",
     technologySignal:
-      "工程资料丰富，但多数关注检索性能而不是完整记忆行为。",
+      "Engineering material is rich, but most of it focuses on retrieval performance rather than complete memory behavior.",
     fitPosition:
-      "适合作为底层检索组件；不能单独代表长期记忆系统。",
+      "Useful as a lower-level retrieval component; it cannot alone represent a long-term memory system.",
     color: "#2d6f6a",
     accent: "#c8842e",
     map: { x: 0.35, y: 0.38 },
@@ -508,20 +508,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "Retrieval maturity",
-        strength: "强",
-        detail: "向量检索的产品成熟度和可替换性较高。",
+        strength: "Strong",
+        detail: "Vector retrieval has high product maturity and substitutability.",
       },
       {
         label: "Memory mismatch",
-        strength: "强",
-        detail: "只解决召回底座，不负责事实演化和策略治理。",
+        strength: "Strong",
+        detail: "It solves the recall substrate, not fact evolution or policy governance.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Retrieval substrate benchmark",
-        detail: "评测召回精度、延迟、过滤、重排和多租户边界。",
+        detail: "Evaluate recall precision, latency, filtering, reranking, and multi-tenant boundaries.",
       },
     ],
     pairsWith: ["mem0", "llamaindex", "cognee"],
@@ -532,15 +532,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "OpenMemory",
     layer: "Open Local Memory",
     summary:
-      "开放式本地记忆存储路线，强调用户可控、私有化部署和跨应用读取。",
-    role: "本地记忆、隐私控制、开放存储、跨应用上下文。",
+      "An open local-memory storage route emphasizing user control, private deployment, and cross-application reads.",
+    role: "Local memory, privacy control, open storage, and cross-application context.",
     supportKind: "plugin",
     officialSupport:
-      "公开生态仍在形成，适合放在观察组做隐私和可携带性评测。",
+      "The public ecosystem is still forming, making it suitable for privacy and portability watchlist evaluation.",
     technologySignal:
-      "开发者讨论聚焦本地优先、MCP memory、跨工具记忆和数据可携带性。",
+      "Developer discussion focuses on local-first behavior, MCP memory, cross-tool memory, and data portability.",
     fitPosition:
-      "适合隐私敏感场景；产品成熟度、迁移能力和权限模型要重点验证。",
+      "Fits privacy-sensitive scenarios; product maturity, migration, and permission models need focused validation.",
     color: "#245f4f",
     accent: "#ec9f3e",
     map: { x: 0.22, y: 0.25 },
@@ -566,20 +566,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "Privacy posture",
-        strength: "中",
-        detail: "本地优先路线对隐私和数据主权更友好。",
+        strength: "Medium",
+        detail: "The local-first route is friendlier to privacy and data sovereignty.",
       },
       {
         label: "Maturity watch",
-        strength: "观察",
-        detail: "不同实现成熟度差异大，需要按具体项目复测。",
+        strength: "Watch",
+        detail: "Implementation maturity varies widely and must be retested by project.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Local-first memory review",
-        detail: "比较本地存储、同步、权限和跨工具读取边界。",
+        detail: "Compare local storage, sync, permissions, and cross-tool read boundaries.",
       },
     ],
     pairsWith: ["letta", "langmem", "vectorstack"],
@@ -590,15 +590,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "Managed RAG",
     layer: "Managed Retrieval",
     summary:
-      "托管型 RAG 与文档摄取服务，面向快速把企业或应用资料变成可检索上下文。",
-    role: "文档摄取、托管检索、连接器、上下文 API。",
+      "Managed RAG and document-ingestion services for quickly turning company or application material into retrievable context.",
+    role: "Document ingestion, managed retrieval, connectors, and context APIs.",
     supportKind: "official-cloud",
     officialSupport:
-      "托管产品入口适合快速验证资料摄取和检索效果。",
+      "Managed product entry points are useful for quickly validating material ingestion and retrieval quality.",
     technologySignal:
-      "工程讨论集中在连接器、文档处理、RAG API 和上线速度。",
+      "Engineering discussion centers on connectors, document processing, RAG APIs, and launch speed.",
     fitPosition:
-      "适合评估上线速度；长期记忆、冲突修复和用户级策略需要外部组合。",
+      "Useful for evaluating launch speed; long-term memory, conflict repair, and user-level policy need external composition.",
     color: "#b7553e",
     accent: "#0f8b75",
     map: { x: 0.42, y: 0.6 },
@@ -624,20 +624,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "Managed speed",
-        strength: "中",
-        detail: "托管摄取和检索适合快速试点。",
+        strength: "Medium",
+        detail: "Managed ingestion and retrieval are suitable for fast pilots.",
       },
       {
         label: "Memory depth",
-        strength: "弱",
-        detail: "完整长期记忆能力通常需要额外编排和治理层。",
+        strength: "Weak",
+        detail: "Complete long-term memory capability usually needs additional orchestration and governance layers.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "Managed ingestion run",
-        detail: "评测从文档上传到可用上下文的延迟、准确率和成本。",
+        detail: "Evaluate latency, accuracy, and cost from document upload to usable context.",
       },
     ],
     pairsWith: ["mem0", "llamaindex", "vectorstack"],
@@ -648,15 +648,15 @@ export const memoryProjects: MemoryProject[] = [
     shortName: "Haystack",
     layer: "Search + RAG Framework",
     summary:
-      "用于构建搜索、RAG 和问答管道的开源框架，适合检索工作流对照。",
-    role: "检索管道、RAG flow、组件编排、评测样例。",
+      "An open-source framework for building search, RAG, and QA pipelines, useful as a retrieval-workflow comparator.",
+    role: "Retrieval pipelines, RAG flow, component orchestration, and evaluation samples.",
     supportKind: "framework",
     officialSupport:
-      "公开文档、组件生态和开源路线提供成熟的检索工程基础。",
+      "Public docs, component ecosystem, and open-source route provide a mature retrieval-engineering foundation.",
     technologySignal:
-      "开发者资料围绕 search、RAG、document pipelines 和 evaluation。",
+      "Developer material centers on search, RAG, document pipelines, and evaluation.",
     fitPosition:
-      "适合评估检索管道质量；不是用户级长期记忆产品。",
+      "Useful for evaluating retrieval-pipeline quality; it is not a user-level long-term memory product.",
     color: "#7a5a12",
     accent: "#1a8172",
     map: { x: 0.54, y: 0.29 },
@@ -682,20 +682,20 @@ export const memoryProjects: MemoryProject[] = [
     evidence: [
       {
         label: "Pipeline maturity",
-        strength: "中",
-        detail: "检索工作流和组件化能力适合工程对照。",
+        strength: "Medium",
+        detail: "Retrieval workflow and componentization are suitable engineering comparators.",
       },
       {
         label: "Category boundary",
-        strength: "强",
-        detail: "需要明确区分 RAG pipeline 与长期记忆产品。",
+        strength: "Strong",
+        detail: "The boundary between RAG pipelines and long-term memory products must stay explicit.",
       },
     ],
     cases: [
       {
         when: "2026-Q2",
         title: "RAG pipeline comparison",
-        detail: "以同一资料集对比检索、重排、引用和响应一致性。",
+        detail: "Compare retrieval, reranking, citation, and response consistency on one dataset.",
       },
     ],
     pairsWith: ["vectorstack", "llamaindex", "cognee"],

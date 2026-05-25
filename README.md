@@ -38,6 +38,20 @@ Managed RAG, and Haystack.
 - ESLint
 - GitHub Pages
 
+## Design Source
+
+The production interface is tied to the local OpenDesign corpus rather than
+freehand styling. The source files are:
+
+- `opendesign/manifest.json`
+- `opendesign/design-systems/memory-os/SKILL.md`
+- `opendesign/design-systems/memory-os/tokens/colors_and_type.css`
+- `opendesign/mockups/memorybench-ai-studio/index.html`
+- `opendesign/mockups/memory-coverage-lab/index.html`
+
+`pnpm check:opendesign` verifies the manifest, shared token mirrors, active
+mockup pointer, design-system vocabulary, and production React/CSS usage.
+
 ## Development
 
 ```bash
@@ -73,7 +87,19 @@ pnpm verify
 ```
 
 That command covers linting, type checking, unit tests, OpenDesign manifest
-validation, and the production build.
+validation, design and motion contracts, Browser probe contracts, production
+build, and bundle budget.
+
+For full local acceptance, refresh the official Codex Browser probe from the
+Codex Browser runtime, then run:
+
+```bash
+pnpm verify:full
+```
+
+`verify:full` runs `pnpm qa:strict`, which adds Codex runtime audit, focused
+GSAP interaction race coverage, owned-preview browser runtime QA, reduced-motion
+evidence, screenshot evidence, and Codex Browser diagnostics.
 
 The Vite config uses `base: "./"` so the static build works from the GitHub
 Pages project path.

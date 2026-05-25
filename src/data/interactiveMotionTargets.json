@@ -1,0 +1,64 @@
+[
+  {
+    "label": "hero-research-action",
+    "selector": ".hero-actions .action-link-primary[href=\"#research\"]",
+    "motionSelectors": [".hero-actions .action-link"],
+    "setup": "() => window.scrollTo(0, 0)"
+  },
+  {
+    "label": "hero-studio-action",
+    "selector": ".hero-actions .action-link-accent[href=\"#benchmarks\"]",
+    "motionSelectors": [".hero-actions .action-link"],
+    "setup": "() => window.scrollTo(0, 0)"
+  },
+  {
+    "label": "toprail-action",
+    "selector": ".top-rail .action-link-outline[href=\"#benchmarks\"]",
+    "motionSelectors": [".top-rail .action-link"],
+    "setup": "() => window.scrollTo(0, 0)"
+  },
+  {
+    "label": "surface-action",
+    "selector": ".surface-grid .action-link-dark[href=\"#benchmarks\"]",
+    "motionSelectors": [".surface-grid .action-link"]
+  },
+  {
+    "label": "research-action",
+    "selector": ".research-list .action-link-text[href=\"#evidence\"]",
+    "motionSelectors": [".research-list .action-link"]
+  },
+  {
+    "label": "platform-action",
+    "selector": ".platform-copy .action-link-outline[href=\"#benchmarks\"]",
+    "motionSelectors": [".platform-copy .action-link"]
+  },
+  {
+    "label": "footer-action",
+    "selector": ".footer-actions .action-link-accent[href=\"#evidence\"]",
+    "motionSelectors": [".footer-actions .action-link"]
+  },
+  {
+    "label": "map-node",
+    "selector": ".map-node[aria-current=\"true\"], .map-node",
+    "motionSelectors": [".map-node"],
+    "setup": "() => document.getElementById(\"studio-tab-map\")?.click()"
+  },
+  {
+    "label": "matrix-system-button",
+    "selector": ".matrix-workbench button",
+    "motionSelectors": [".matrix-workbench button"],
+    "setup": "() => document.getElementById(\"studio-tab-matrix\")?.click()"
+  },
+  {
+    "label": "stack-selector-button",
+    "selector": ".selector-panel button",
+    "motionSelectors": [".selector-panel button"],
+    "setup": "() => document.getElementById(\"studio-tab-stack\")?.click()"
+  },
+  {
+    "label": "evidence-row",
+    "selector": ".evidence-row[aria-current=\"true\"]",
+    "motionSelectors": [".evidence-row"],
+    "setup": "() => document.getElementById(\"studio-tab-evidence\")?.click()"
+  }
+]

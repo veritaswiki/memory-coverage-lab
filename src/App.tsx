@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import {
   Activity,
   ArrowRight,
@@ -35,6 +35,7 @@ import {
   getProjectCoverage,
   getStrongestCapabilities,
 } from "./lib/coverage";
+import { useMemoryBenchMotion } from "./useMemoryBenchMotion";
 
 const defaultStack = ["mem0", "zep-graphiti", "llamaindex", "vectorstack"];
 
@@ -46,13 +47,30 @@ const modes = [
 ] as const satisfies Array<{ id: StudioMode; label: string; icon: LucideIcon }>;
 
 type StudioMode = "map" | "matrix" | "stack" | "evidence";
+type SelectStudioMode = (
+  mode: StudioMode,
+  shouldFocus?: boolean,
+  shouldScrollToStudio?: boolean,
+) => void;
+
+function studioModeFromHash(hash: string): StudioMode | null {
+  if (hash === "#evidence") {
+    return "evidence";
+  }
+
+  if (hash === "#benchmarks") {
+    return "map";
+  }
+
+  return null;
+}
 
 const heroWorkflow = [
-  { label: "Plan", value: "Scope locked", state: "done" },
-  { label: "Review", value: "Docs challenged", state: "done" },
-  { label: "QA", value: "Hard cases live", state: "current" },
-  { label: "Ship", value: "Scorecards public", state: "queued" },
-  { label: "Learn", value: "Changes tracked", state: "watch" },
+  { label: "Define", value: "Category boundary", state: "done" },
+  { label: "Publish", value: "Evidence public", state: "done" },
+  { label: "Operate", value: "Benchmarks live", state: "current" },
+  { label: "Verify", value: "Studio inspection", state: "queued" },
+  { label: "Continue", value: "Trail tracked", state: "watch" },
 ] as const;
 
 const studioSignals = [
@@ -72,6 +90,7 @@ const researchLanes = [
 
 const researchCards = [
   {
+    index: "01",
     month: "may-2026",
     dateTime: "2026-05",
     title: "AI memory products are not one category",
@@ -79,6 +98,7 @@ const researchCards = [
     meta: "11 systems / 16 criteria / 4 capability layers",
   },
   {
+    index: "02",
     month: "may-2026",
     dateTime: "2026-05",
     title: "Vector retrieval is mature, but not memory",
@@ -86,6 +106,7 @@ const researchCards = [
     meta: "Infrastructure baseline / category boundary",
   },
   {
+    index: "03",
     month: "may-2026",
     dateTime: "2026-05",
     title: "Temporal graphs are the strongest fact-dynamics bet",
@@ -97,32 +118,43 @@ const researchCards = [
 const platformSteps = [
   {
     number: "01",
-    label: "Dataset",
+    label: "Define",
     title: "Memory benchmark dataset",
-    body: "Structured vendor runs across user preference, entity updates, retrieval grounding, deletion, and multi-session continuity prompts.",
+    body: "Category-separated runs across preference, entity update, retrieval grounding, deletion, and multi-session continuity prompts.",
   },
   {
     number: "02",
-    label: "Dashboard",
+    label: "Publish",
     title: "Capability boundary explorer",
-    body: "Coverage map, project matrix, stack design and evidence ledger for comparing adjacent products without collapsing categories.",
+    body: "Coverage map, project matrix, stack design, and evidence ledger keep adjacent products comparable without collapsing categories.",
   },
   {
     number: "03",
-    label: "Signal",
+    label: "Operate",
     title: "Continuous re-runs",
     body: "Scorecards are designed to refresh as vendors ship APIs, frameworks change, and model memory patterns drift.",
   },
   {
     number: "04",
-    label: "Playbooks",
+    label: "Verify",
     title: "Neutral adoption briefs",
-    body: "Evidence-led notes on where each memory layer fits, what it does not cover, and which claims need validation.",
+    body: "Evidence-led notes show where each memory layer fits, what it does not cover, and which claims still need validation.",
   },
 ];
 
+const continuityStages = [
+  { number: "01", label: "Define", body: "category boundary" },
+  { number: "02", label: "Publish", body: "public evidence" },
+  { number: "03", label: "Operate", body: "benchmark workflow" },
+  { number: "04", label: "Verify", body: "studio inspection" },
+  { number: "05", label: "Continue", body: "evidence trail" },
+] as const;
+
 function App() {
-  const [mode, setMode] = useState<StudioMode>("map");
+  const appRef = useRef<HTMLDivElement>(null);
+  const [mode, setMode] = useState<StudioMode>(() =>
+    typeof window === "undefined" ? "map" : studioModeFromHash(window.location.hash) ?? "map",
+  );
   const [selectedSlug, setSelectedSlug] = useState("mem0");
   const [query, setQuery] = useState("");
   const [stackSlugs, setStackSlugs] = useState<string[]>(defaultStack);
@@ -172,6 +204,44 @@ function App() {
   const stackCoverage =
     stackProjects.length === 0 ? 0 : calculateCoverageScore(stackScores);
   const stackGaps = getCoverageGaps(stackScores);
+  const hasMotionReduceOverride =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("motion") === "reduce";
+
+  useEffect(() => {
+    if (hasMotionReduceOverride) {
+      document.documentElement.dataset.motionReduce = "true";
+    } else {
+      delete document.documentElement.dataset.motionReduce;
+    }
+
+    return () => {
+      delete document.documentElement.dataset.motionReduce;
+    };
+  }, [hasMotionReduceOverride]);
+
+  useEffect(() => {
+    const syncModeFromHash = () => {
+      const hashMode = studioModeFromHash(window.location.hash);
+      if (hashMode) {
+        setMode(hashMode);
+      }
+    };
+
+    syncModeFromHash();
+    window.addEventListener("hashchange", syncModeFromHash);
+
+    return () => {
+      window.removeEventListener("hashchange", syncModeFromHash);
+    };
+  }, []);
+
+  useMemoryBenchMotion(appRef, {
+    mode,
+    normalizedQuery,
+    selectedProjectSlug: selectedProject.slug,
+    stackKey: stackSlugs.join("|"),
+  });
 
   function toggleStack(slug: string) {
     setStackSlugs((current) =>
@@ -185,233 +255,464 @@ function App() {
     setSelectedSlug(slug);
   }
 
+  function markTopNavigationCurrent(currentHref: "#research" | "#benchmarks" | "#evidence") {
+    document.querySelectorAll<HTMLAnchorElement>(".top-rail nav a").forEach((link) => {
+      const isCurrent = link.getAttribute("href") === currentHref;
+      link.classList.toggle("is-current", isCurrent);
+      if (isCurrent) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  function scrollStudioIntoView(currentHref: "#benchmarks" | "#evidence") {
+    const syncStudioAnchor = () => {
+      const target = document.getElementById("benchmarks");
+      if (target && typeof window.scrollTo === "function") {
+        const top = target.getBoundingClientRect().top + window.scrollY;
+        const rootScrollBehavior = document.documentElement.style.scrollBehavior;
+        const bodyScrollBehavior = document.body.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = "auto";
+        document.body.style.scrollBehavior = "auto";
+        try {
+          window.scrollTo(0, top);
+        } catch {
+          window.scrollTo(0, top);
+        } finally {
+          window.requestAnimationFrame(() => {
+            document.documentElement.style.scrollBehavior = rootScrollBehavior;
+            document.body.style.scrollBehavior = bodyScrollBehavior;
+          });
+        }
+      }
+      markTopNavigationCurrent(currentHref);
+    };
+
+    window.setTimeout(syncStudioAnchor, 0);
+    window.setTimeout(syncStudioAnchor, 180);
+    window.setTimeout(() => markTopNavigationCurrent(currentHref), 520);
+  }
+
+  function activateMode(nextMode: StudioMode, shouldFocus = false, shouldScrollToStudio = false) {
+    setMode(nextMode);
+
+    if (shouldScrollToStudio) {
+      const currentHref = nextMode === "evidence" ? "#evidence" : "#benchmarks";
+      window.history.pushState({}, "", currentHref);
+      markTopNavigationCurrent(currentHref);
+      scrollStudioIntoView(currentHref);
+    }
+
+    if (shouldFocus) {
+      window.requestAnimationFrame(() => {
+        document.getElementById(`studio-tab-${nextMode}`)?.focus();
+      });
+    }
+  }
+
+  function handleModeKeyDown(event: KeyboardEvent<HTMLButtonElement>, currentMode: StudioMode) {
+    const currentIndex = modes.findIndex((item) => item.id === currentMode);
+    const lastIndex = modes.length - 1;
+    let nextMode: StudioMode | null = null;
+
+    if (event.key === "ArrowRight") {
+      nextMode = modes[currentIndex === lastIndex ? 0 : currentIndex + 1]!.id;
+    } else if (event.key === "ArrowLeft") {
+      nextMode = modes[currentIndex === 0 ? lastIndex : currentIndex - 1]!.id;
+    } else if (event.key === "Home") {
+      nextMode = modes[0]!.id;
+    } else if (event.key === "End") {
+      nextMode = modes[lastIndex]!.id;
+    }
+
+    if (nextMode) {
+      event.preventDefault();
+      activateMode(nextMode, true);
+    }
+  }
+
   return (
-    <div className="opendesign-app">
-      <TopRail onSelectMode={setMode} />
-      <Hero />
-      <SurfaceSection />
-      <PublishedResearch />
-      <PlatformSection />
+    <div
+      className="opendesign-app"
+      data-motion-reduce={hasMotionReduceOverride ? "true" : undefined}
+      ref={appRef}
+    >
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
+      <TopRail onSelectMode={activateMode} />
+      <main className="site-main" id="main-content" tabIndex={-1}>
+        <Hero onSelectMode={activateMode} />
+        <div className="page-continuum">
+          <SurfaceSection onSelectMode={activateMode} />
+          <PublishedResearch onSelectMode={activateMode} />
+          <PlatformSection onSelectMode={activateMode} />
 
-      <main className="studio-workbench" id="benchmarks">
-        <span id="evidence" className="scroll-anchor" aria-hidden="true" />
-        <header className="workbench-head">
-          <div>
-            <p className="eyebrow">MemoryBench Intelligence Studio</p>
-            <h2>Category-first intelligence for AI memory systems</h2>
-          </div>
-          <p>
-            The interface starts from first principles: define the category,
-            inspect the evidence, compare the capability boundary, then design a
-            stack with visible gaps.
-          </p>
-        </header>
+          <section className="studio-workbench briefing-section" id="benchmarks" aria-labelledby="studio-heading">
+            <span id="evidence" className="scroll-anchor" aria-hidden="true" />
+            <div className="section-frame briefing-frame studio-frame">
+              <aside className="briefing-rail" aria-label="studio sequence">
+                <span>04</span>
+                <p>Benchmark studio</p>
+              </aside>
+              <div className="workbench-frame">
+                <header className="workbench-head">
+                  <div>
+                    <p className="eyebrow">MemoryBench Intelligence Studio</p>
+                    <h2 id="studio-heading">Category-first intelligence for AI memory systems</h2>
+                  </div>
+                  <p>
+                    The interface starts from first principles: define the category,
+                    inspect the evidence, compare the capability boundary, then design a
+                    stack with visible gaps.
+                  </p>
+                </header>
 
-        <section className="metric-ribbon" aria-label="current benchmark context">
-          <Metric icon={Boxes} label="Visible systems" value={String(filteredProjects.length)} />
-          <Metric icon={Radar} label="Criteria" value={String(capabilityDefinitions.length)} />
-          <Metric
-            icon={Layers3}
-            label={normalizedQuery ? "Filtered stack" : "Stack coverage"}
-            value={stackProjects.length === 0 ? "Pending" : `${stackCoverage}%`}
-          />
-          <Metric icon={TriangleAlert} label="Open gaps" value={String(stackGaps.length)} />
-          <Metric icon={Target} label="Focus score" value={`${focusCoverage}%`} strong />
-        </section>
+                <section className="metric-ribbon" aria-label="current benchmark context">
+                  <Metric icon={Boxes} label="Visible systems" value={String(filteredProjects.length)} />
+                  <Metric icon={Radar} label="Criteria" value={String(capabilityDefinitions.length)} />
+                  <Metric
+                    icon={Layers3}
+                    label={normalizedQuery ? "Filtered stack" : "Stack coverage"}
+                    value={stackProjects.length === 0 ? "Pending" : `${stackCoverage}%`}
+                  />
+                  <Metric icon={TriangleAlert} label="Open gaps" value={String(stackGaps.length)} />
+                  <Metric icon={Target} label="Focus score" value={`${focusCoverage}%`} strong />
+                </section>
 
-        <section className="studio-controls" aria-label="studio controls">
-          <label className="search-control" htmlFor="memorybench-search">
-            <Search aria-hidden="true" size={18} />
-            <input
-              id="memorybench-search"
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search systems, layers, evidence, risks"
-              aria-label="Search systems, layers, evidence, and risks"
-            />
-          </label>
+                <section className="studio-controls" aria-label="studio controls">
+                  <label className="search-control" htmlFor="memorybench-search">
+                    <Search aria-hidden="true" size={18} />
+                    <input
+                      id="memorybench-search"
+                      type="search"
+                      value={query}
+                      onChange={(event) => setQuery(event.target.value)}
+                      placeholder="Search systems, layers, evidence, risks"
+                      aria-label="Search systems, layers, evidence, and risks"
+                    />
+                  </label>
 
-          <div className="mode-tabs" role="tablist" aria-label="MemoryBench studio views">
-            {modes.map((item) => {
-              const Icon = item.icon;
+                  <div className="mode-tabs" role="tablist" aria-label="MemoryBench studio views">
+                    {modes.map((item) => {
+                      const Icon = item.icon;
 
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  role="tab"
-                  id={`studio-tab-${item.id}`}
-                  aria-selected={mode === item.id}
-                  aria-controls="studio-panel"
-                  className={mode === item.id ? "active" : ""}
-                  onClick={() => setMode(item.id)}
-                >
-                  <Icon aria-hidden="true" size={17} />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          role="tab"
+                          id={`studio-tab-${item.id}`}
+                          aria-selected={mode === item.id}
+                          aria-controls="studio-panel"
+                          className={mode === item.id ? "active" : ""}
+                          tabIndex={mode === item.id ? 0 : -1}
+                          onClick={() => activateMode(item.id)}
+                          onKeyDown={(event) => handleModeKeyDown(event, item.id)}
+                        >
+                          <Icon aria-hidden="true" size={17} />
+                          <span>{item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
 
-        {filteredProjects.length === 0 ? (
-          <section className="empty-scope" aria-live="polite">
-            <p className="eyebrow">No matching dossier</p>
-            <h3>No system or evidence line matches this filter.</h3>
-            <p>Try category terms such as graph, RAG, vector, runtime, governance, or API.</p>
+                {filteredProjects.length === 0 ? (
+                  <section
+                    className="empty-scope"
+                    id="studio-panel"
+                    role="tabpanel"
+                    aria-labelledby={`studio-tab-${mode}`}
+                    aria-live="polite"
+                  >
+                    <p className="eyebrow">No matching dossier</p>
+                    <h3>No system or evidence line matches this filter.</h3>
+                    <p>Try category terms such as graph, RAG, vector, runtime, governance, or API.</p>
+                  </section>
+                ) : (
+                  <section className="studio-grid">
+                    <section
+                      className="primary-lab"
+                      id="studio-panel"
+                      role="tabpanel"
+                      aria-labelledby={`studio-tab-${mode}`}
+                      aria-label="MemoryBench primary work area"
+                    >
+                      {mode === "map" ? (
+                        <BoundaryMap
+                          projects={filteredProjects}
+                          selectedProject={selectedProject}
+                          selectedStackSlugs={stackProjects.map((project) => project.slug)}
+                          onSelectProject={selectProject}
+                        />
+                      ) : null}
+
+                      {mode === "matrix" ? (
+                        <CapabilityMatrix
+                          projects={filteredProjects}
+                          selectedProject={selectedProject}
+                          onSelectProject={selectProject}
+                        />
+                      ) : null}
+
+                      {mode === "stack" ? (
+                        <StackStudio
+                          projects={scopeProjects}
+                          selectedSlugs={stackSlugs}
+                          stackProjects={stackProjects}
+                          stackCoverage={stackCoverage}
+                          onToggleProject={toggleStack}
+                        />
+                      ) : null}
+
+                      {mode === "evidence" ? (
+                        <EvidenceLedger
+                          projects={filteredProjects}
+                          selectedProject={selectedProject}
+                          onSelectProject={selectProject}
+                        />
+                      ) : null}
+                    </section>
+
+                    <Dossier
+                      project={selectedProject}
+                      implementation={selectedImplementation}
+                      allProjects={memoryProjects}
+                      stats={stats}
+                    />
+                  </section>
+                )}
+              </div>
+            </div>
           </section>
-        ) : (
-          <section className="studio-grid">
-            <section
-              className="primary-lab"
-              id="studio-panel"
-              role="tabpanel"
-              aria-labelledby={`studio-tab-${mode}`}
-              aria-label="MemoryBench primary work area"
-            >
-              {mode === "map" ? (
-                <BoundaryMap
-                  projects={filteredProjects}
-                  selectedProject={selectedProject}
-                  selectedStackSlugs={stackProjects.map((project) => project.slug)}
-                  onSelectProject={selectProject}
-                />
-              ) : null}
-
-              {mode === "matrix" ? (
-                <CapabilityMatrix
-                  projects={filteredProjects}
-                  selectedProject={selectedProject}
-                  onSelectProject={selectProject}
-                />
-              ) : null}
-
-              {mode === "stack" ? (
-                <StackStudio
-                  projects={scopeProjects}
-                  selectedSlugs={stackSlugs}
-                  stackProjects={stackProjects}
-                  stackCoverage={stackCoverage}
-                  onToggleProject={toggleStack}
-                />
-              ) : null}
-
-              {mode === "evidence" ? <EvidenceLedger projects={filteredProjects} /> : null}
-            </section>
-
-            <Dossier
-              project={selectedProject}
-              implementation={selectedImplementation}
-              allProjects={memoryProjects}
-              stats={stats}
-            />
-          </section>
-        )}
+          <SiteFooter onSelectMode={activateMode} />
+        </div>
       </main>
-
-      <footer className="site-footer" id="subscribe">
-        <span>MemoryBench / AI memory intelligence</span>
-        <a href="https://github.com/veritaswiki/memory-coverage-lab">GitHub</a>
-      </footer>
     </div>
   );
 }
 
-function SurfaceSection() {
+function SurfaceSection({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
   return (
-    <section className="surface-section" id="research">
-      <div className="section-intro">
-        <p className="eyebrow">memorybench / surfaces</p>
-        <h2 className="split-heading" aria-label="Read the research. Run the benchmark.">
-          <span>Read the research.</span>
-          <span>Run the benchmark.</span>
-        </h2>
-      </div>
-      <div className="surface-grid">
-        <article>
-          <span>Research Public</span>
-          <h3>Public research</h3>
+    <section className="surface-section briefing-section" id="research">
+      <div className="section-frame briefing-frame">
+        <aside className="briefing-rail" aria-label="research sequence">
+          <span>01</span>
+          <p>Research thesis</p>
+        </aside>
+        <div className="section-intro">
+          <p className="eyebrow">memorybench / surfaces</p>
+          <h2 className="split-heading" aria-label="Read the research. Run the benchmark.">
+            <span>Read the research.</span>
+            <span>Run the benchmark.</span>
+          </h2>
           <p>
-            Open reports on memory category boundaries, methodology, raw scoring
-            assumptions, and published studies behind every claim on this site.
+            MemoryBench is built as a public intelligence dossier first and an
+            interactive benchmark second. Every lower section follows the same
+            evidence sequence: define the category, show the research artifact,
+            then move into the studio where the claim can be tested.
           </p>
-          <a href="#published">
-            View studies
-            <ArrowRight aria-hidden="true" size={17} />
-          </a>
-        </article>
-        <article>
-          <span>Platform Benchmark</span>
-          <h3>Intelligence platform</h3>
+        </div>
+        <div className="continuity-lane" aria-label="MemoryBench evidence flow">
+          {continuityStages.map((stage) => (
+            <article key={stage.number}>
+              <span>{stage.number}</span>
+              <strong>{stage.label}</strong>
+              <p>{stage.body}</p>
+            </article>
+          ))}
+        </div>
+        <div className="surface-grid">
+          <article>
+            <span>Evidence archive</span>
+            <h3>Research archive</h3>
+            <p>
+              The public layer holds category boundaries, method notes, raw
+              scoring assumptions, and study summaries behind the studio.
+            </p>
+            <a className="action-link action-link-dark" href="#published">
+              View studies
+              <ArrowRight aria-hidden="true" size={17} />
+            </a>
+          </article>
+          <article>
+            <span>Method spine</span>
+            <h3>One evidence chain</h3>
+            <p>
+              Every section uses the same sequence: define the layer, show the
+              public claim, expose the score, then point back to evidence.
+            </p>
+            <a className="action-link action-link-dark" href="#evidence" onClick={(event) => {
+              event.preventDefault();
+              onSelectMode("evidence", false, true);
+            }}>
+              Open ledger
+              <ArrowRight aria-hidden="true" size={17} />
+            </a>
+          </article>
+          <article>
+            <span>Interactive layer</span>
+            <h3>Benchmark studio</h3>
+            <p>
+              Dense controls and dossier panels let teams inspect where a memory
+              product fits, where it breaks, and what should be retested.
+            </p>
+            <a className="action-link action-link-dark" href="#benchmarks" onClick={(event) => {
+              event.preventDefault();
+              onSelectMode("map", false, true);
+            }}>
+              Open studio
+              <ArrowRight aria-hidden="true" size={17} />
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PublishedResearch({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
+  return (
+    <section className="published-section briefing-section" id="published">
+      <div className="section-frame briefing-frame">
+        <aside className="briefing-rail" aria-label="published sequence">
+          <span>02</span>
+          <p>Published evidence</p>
+        </aside>
+        <div className="section-intro compact">
+          <p className="eyebrow">Published</p>
+          <h2>Public research</h2>
           <p>
-            Private dashboard shape, continuous re-runs, and category playbooks
-            for teams that need to know how agents see their memory layer.
+            These briefing lines are the editorial front of the same benchmark
+            model: category boundary first, score interpretation second, studio
+            inspection third.
           </p>
-          <a href="#benchmarks">
-            Open studio
-            <ArrowRight aria-hidden="true" size={17} />
+        </div>
+        <div className="research-list">
+          {researchCards.map((card) => (
+            <article key={card.title}>
+              <div className="research-index">
+                <b>{card.index}</b>
+                <time dateTime={card.dateTime}>{card.month}</time>
+              </div>
+              <div>
+                <h3>{card.title}</h3>
+                <p>{card.body}</p>
+              </div>
+              <span>{card.meta}</span>
+              <a className="action-link action-link-text" href="#evidence" onClick={(event) => {
+                event.preventDefault();
+                onSelectMode("evidence", false, true);
+              }}>
+                View study
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlatformSection({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
+  return (
+    <section className="platform-section briefing-section" id="platform">
+      <div className="section-frame briefing-frame platform-frame">
+        <aside className="briefing-rail" aria-label="platform sequence">
+          <span>03</span>
+          <p>Operational layer</p>
+        </aside>
+        <div className="platform-copy">
+          <p className="eyebrow">Platform / for memory companies</p>
+          <h2>An intelligence and optimization platform for AI memory products.</h2>
+          <p>
+            Per-category benchmarks for the memory layers that agents actually use:
+            APIs, temporal graphs, RAG frameworks, retrieval substrate, and
+            stateful runtimes. The public research, studio controls, and proof
+            ledger now share one operating model.
+          </p>
+          <a
+            className="outline-link action-link action-link-outline dark"
+            href="#benchmarks"
+            onClick={(event) => {
+              event.preventDefault();
+              onSelectMode("map", false, true);
+            }}
+          >
+            See the benchmark
           </a>
-        </article>
+        </div>
+        <div className="platform-steps">
+          {platformSteps.map((step) => (
+            <article key={step.number}>
+              <div>
+                <span>{step.number}</span>
+                <b>{step.label}</b>
+                <Activity aria-hidden="true" size={18} />
+              </div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function PublishedResearch() {
+function SiteFooter({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
   return (
-    <section className="published-section" id="published">
-      <div className="section-intro compact">
-        <p className="eyebrow">Published</p>
-        <h2>Public research</h2>
-      </div>
-      <div className="research-list">
-        {researchCards.map((card) => (
-          <article key={card.title}>
-            <time dateTime={card.dateTime}>{card.month}</time>
-            <h3>{card.title}</h3>
-            <p>{card.body}</p>
-            <span>{card.meta}</span>
-            <a href="#benchmarks">View study</a>
+    <footer className="site-footer briefing-section" id="subscribe">
+      <div className="section-frame briefing-frame footer-frame">
+        <aside className="briefing-rail" aria-label="method handoff sequence">
+          <span>05</span>
+          <p>Method handoff</p>
+        </aside>
+        <div className="footer-copy">
+          <p className="eyebrow">MemoryBench / AI memory intelligence</p>
+          <h2>Follow the evidence trail.</h2>
+          <p>
+            The public surface closes where the studio starts: category boundary,
+            benchmark evidence, implementation risk, and source trace remain part
+            of one research loop.
+          </p>
+          <div className="footer-actions" aria-label="MemoryBench footer links">
+            <a className="action-link action-link-outline" href="#research">Research thesis</a>
+            <a className="action-link action-link-accent" href="#evidence" onClick={(event) => {
+              event.preventDefault();
+              onSelectMode("evidence", false, true);
+            }}>
+              Evidence ledger
+            </a>
+            <a className="action-link action-link-outline" href="https://github.com/veritaswiki/memory-coverage-lab">GitHub</a>
+          </div>
+        </div>
+        <div className="footer-proof-grid" aria-label="MemoryBench proof summary">
+          <article>
+            <span>Method</span>
+            <strong>16 criteria</strong>
+            <p>same scoring model</p>
           </article>
-        ))}
+          <article>
+            <span>Coverage</span>
+            <strong>11 systems</strong>
+            <p>one category map</p>
+          </article>
+          <article>
+            <span>Refresh</span>
+            <strong>continuous QA</strong>
+            <p>audited motion path</p>
+          </article>
+        </div>
       </div>
-    </section>
+    </footer>
   );
 }
 
-function PlatformSection() {
-  return (
-    <section className="platform-section" id="platform">
-      <div className="platform-copy">
-        <p className="eyebrow">Platform / for memory companies</p>
-        <h2>An intelligence and optimization platform for AI memory products.</h2>
-        <p>
-          Per-category benchmarks for the memory layers that agents actually use:
-          APIs, temporal graphs, RAG frameworks, retrieval substrate, and
-          stateful runtimes.
-        </p>
-        <a className="outline-link dark" href="#benchmarks">
-          See the benchmark
-        </a>
-      </div>
-      <div className="platform-steps">
-        {platformSteps.map((step) => (
-          <article key={step.number}>
-            <div>
-              <span>{step.number} / {step.label}</span>
-              <Activity aria-hidden="true" size={18} />
-            </div>
-            <h3>{step.title}</h3>
-            <p>{step.body}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function TopRail({ onSelectMode }: { onSelectMode: (mode: StudioMode) => void }) {
+function TopRail({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
   return (
     <header className="top-rail">
       <a className="wordmark" href="#top" aria-label="MemoryBench home">
@@ -420,17 +721,29 @@ function TopRail({ onSelectMode }: { onSelectMode: (mode: StudioMode) => void })
       </a>
       <nav aria-label="primary navigation">
         <a href="#research">Research</a>
-        <a href="#benchmarks" onClick={() => onSelectMode("map")}>Studio</a>
-        <a href="#evidence" onClick={() => onSelectMode("evidence")}>Evidence</a>
+        <a href="#benchmarks" onClick={(event) => {
+          event.preventDefault();
+          onSelectMode("map", false, true);
+        }}>Studio</a>
+        <a href="#evidence" onClick={(event) => {
+          event.preventDefault();
+          onSelectMode("evidence", false, true);
+        }}>Evidence</a>
       </nav>
-      <a className="outline-link" href="#benchmarks">
+      <a className="outline-link action-link action-link-outline" href="#benchmarks" onClick={(event) => {
+        event.preventDefault();
+        onSelectMode("map", false, true);
+      }}>
         Open studio
       </a>
+      <div className="reading-progress" aria-hidden="true">
+        <span />
+      </div>
     </header>
   );
 }
 
-function Hero() {
+function Hero({ onSelectMode }: { onSelectMode: SelectStudioMode }) {
   const signalValues = studioSignals.map((signal) => ({
     ...signal,
     value: averageCoverage(signal.match),
@@ -490,11 +803,16 @@ function Hero() {
           to look comparable.
         </p>
         <div className="hero-actions">
-          <a href="#research">
+          <a className="action-link action-link-primary" href="#research">
             See public research
             <ArrowRight aria-hidden="true" size={18} />
           </a>
-          <a href="#benchmarks">Explore benchmark data</a>
+          <a className="action-link action-link-accent" href="#benchmarks" onClick={(event) => {
+            event.preventDefault();
+            onSelectMode("map", false, true);
+          }}>
+            Explore benchmark data
+          </a>
         </div>
         <div className="lane-strip" id="memory-categories" aria-label="memory categories">
           {researchLanes.map((lane) => (
@@ -777,7 +1095,24 @@ function StackStudio({
   );
 }
 
-function EvidenceLedger({ projects }: { projects: MemoryProject[] }) {
+function EvidenceLedger({
+  projects,
+  selectedProject,
+  onSelectProject,
+}: {
+  projects: MemoryProject[];
+  selectedProject: MemoryProject;
+  onSelectProject: (slug: string) => void;
+}) {
+  function handleLedgerKeyDown(event: KeyboardEvent<HTMLElement>, slug: string) {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+
+    event.preventDefault();
+    onSelectProject(slug);
+  }
+
   return (
     <div className="evidence-workbench" aria-label="evidence ledger">
       <header className="panel-title">
@@ -792,9 +1127,21 @@ function EvidenceLedger({ projects }: { projects: MemoryProject[] }) {
         {projects.map((project) => {
           const implementation = getProjectImplementation(project.slug);
           const strongest = getStrongestCapabilities(project.scores, 2);
+          const visibleSignals = project.evidence.slice(0, 3);
+          const hiddenSignalCount = Math.max(project.evidence.length - visibleSignals.length, 0);
+          const isSelected = project.slug === selectedProject.slug;
 
           return (
-            <article key={project.slug} className="evidence-row">
+            <article
+              key={project.slug}
+              className={isSelected ? "evidence-row active" : "evidence-row"}
+              role="button"
+              tabIndex={0}
+              aria-current={isSelected ? "true" : undefined}
+              aria-label={`Select ${project.name} dossier`}
+              onClick={() => onSelectProject(project.slug)}
+              onKeyDown={(event) => handleLedgerKeyDown(event, project.slug)}
+            >
               <div>
                 <span>{implementation.phaseLabel}</span>
                 <h4>{project.name}</h4>
@@ -809,14 +1156,15 @@ function EvidenceLedger({ projects }: { projects: MemoryProject[] }) {
                 <p>{project.cases[0]?.title ?? implementation.nextMilestone}</p>
               </div>
               <div className="signal-chips">
-                {project.evidence.map((signal) => (
+                {visibleSignals.map((signal) => (
                   <span key={signal.label} data-strength={signal.strength}>
                     {signal.label}: {signal.strength}
                   </span>
                 ))}
-                {strongest.map((capability) => (
+                {strongest.slice(0, 1).map((capability) => (
                   <span key={capability.key}>{capability.label}</span>
                 ))}
+                {hiddenSignalCount > 0 ? <span>+{hiddenSignalCount} evidence</span> : null}
               </div>
             </article>
           );
@@ -842,7 +1190,7 @@ function Dossier({
   const workflow = getProjectWorkflow(project.slug);
 
   return (
-    <aside className="dossier-panel" aria-label="selected system dossier">
+    <aside className="dossier-panel" tabIndex={0} aria-label="selected system dossier">
       <div className="dossier-head">
         <div>
           <p className="eyebrow">{project.layer}</p>
