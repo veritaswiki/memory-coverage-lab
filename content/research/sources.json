@@ -41,17 +41,17 @@
   "arxivQueries": [
     {
       "name": "AI agent memory",
-      "query": "all:%22agent%20memory%22 OR all:%22AI%20memory%22",
+      "query": "all:\"agent memory\" OR all:\"AI memory\" OR all:\"memory agent\"",
       "layer": "Research Literature"
     },
     {
       "name": "Temporal graph memory",
-      "query": "all:%22temporal%20knowledge%20graph%22 AND all:%22agent%22",
+      "query": "all:\"temporal knowledge graph\" AND all:agent",
       "layer": "Temporal Graph Memory"
     },
     {
       "name": "Long-term LLM memory",
-      "query": "all:%22long-term%20memory%22 AND all:%22LLM%22",
+      "query": "all:\"long-term memory\" AND all:\"large language model\"",
       "layer": "Memory Evaluation"
     }
   ],
@@ -73,4 +73,3 @@
     }
   ]
 }
-

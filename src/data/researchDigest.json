@@ -1,8 +1,19 @@
 {
-  "generatedAt": "2026-05-25T11:17:29.570Z",
+  "generatedAt": "2026-05-26T02:06:46.879Z",
   "sourcePath": "content/research",
   "githubBaseUrl": "https://github.com/veritaswiki/memory-coverage-lab/blob/main/content/research",
   "entries": [
+    {
+      "id": "2026-05-26-ai-memory-watch",
+      "date": "2026-05-26",
+      "title": "AI memory watch: 2026-05-26",
+      "category": "daily-watch",
+      "status": "published",
+      "summary": "Daily MemoryBench watch digest for AI memory repositories, papers, and project surfaces.",
+      "sourceCount": 12,
+      "githubPath": "content/research/daily/2026-05-26-ai-memory-watch.md",
+      "githubUrl": "https://github.com/veritaswiki/memory-coverage-lab/blob/main/content/research/daily/2026-05-26-ai-memory-watch.md"
+    },
     {
       "id": "2026-05-25-ai-memory-field-map",
       "date": "2026-05-25",

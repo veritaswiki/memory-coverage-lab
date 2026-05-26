@@ -102,6 +102,32 @@ async function fetchArxiv(query) {
   };
 }
 
+function arxivSearchUrl(query) {
+  const params = new URLSearchParams({
+    query: query.query,
+    searchtype: "all",
+    source: "header",
+  });
+  return `https://arxiv.org/search/?${params}`;
+}
+
+function describeArxivError(error) {
+  if (!(error instanceof Error)) {
+    return "arXiv API request failed";
+  }
+
+  if (error.name === "TimeoutError" || error.message.includes("aborted due to timeout")) {
+    return "arXiv API timeout";
+  }
+
+  const status = error.message.match(/returned\s+(\d{3})/)?.[1];
+  if (status) {
+    return `arXiv API returned ${status}`;
+  }
+
+  return "arXiv API request failed";
+}
+
 async function collectSignals() {
   const sources = readJson(sourcesPath);
   const token = process.env.GITHUB_TOKEN;
@@ -128,9 +154,37 @@ async function collectSignals() {
     }),
   );
 
-  const arxivSignals = (
-    await Promise.all(sources.arxivQueries.map((query) => fetchArxiv(query).catch(() => null)))
-  ).filter(Boolean);
+  const arxivSignals = await Promise.all(
+    sources.arxivQueries.map(async (query) => {
+      try {
+        const signal = await fetchArxiv(query);
+        if (signal) {
+          return {
+            ...signal,
+            detail: query.name,
+          };
+        }
+
+        return {
+          name: query.name,
+          layer: query.layer,
+          title: `${query.name} watch query`,
+          updated: "no result",
+          url: arxivSearchUrl(query),
+          detail: "No matching item returned",
+        };
+      } catch (error) {
+        return {
+          name: query.name,
+          layer: query.layer,
+          title: `${query.name} watch query`,
+          updated: "unavailable",
+          url: arxivSearchUrl(query),
+          detail: describeArxivError(error),
+        };
+      }
+    }),
+  );
 
   return { repoSignals, arxivSignals, sources };
 }
@@ -146,14 +200,12 @@ function writeDailyDigest({ repoSignals, arxivSignals, sources }) {
         `| ${escapeMarkdown(signal.layer)} | [${escapeMarkdown(signal.name)}](${signal.url}) | ${escapeMarkdown(signal.updated)} | ${escapeMarkdown(signal.detail)} |`,
     )
     .join("\n");
-  const arxivRows = arxivSignals.length
-    ? arxivSignals
-        .map(
-          (signal) =>
-            `| ${escapeMarkdown(signal.layer)} | [${escapeMarkdown(signal.title)}](${signal.url}) | ${escapeMarkdown(signal.updated)} | ${escapeMarkdown(signal.name)} |`,
-        )
-        .join("\n")
-    : "| Research Literature | No matching arXiv item returned | unknown | watch query needs review |";
+  const arxivRows = arxivSignals
+    .map(
+      (signal) =>
+        `| ${escapeMarkdown(signal.layer)} | [${escapeMarkdown(signal.title)}](${signal.url}) | ${escapeMarkdown(signal.updated)} | ${escapeMarkdown(signal.detail)} |`,
+    )
+    .join("\n");
   const manualRows = sources.manualFeeds
     .map((feed) => `| ${escapeMarkdown(feed.layer)} | [${escapeMarkdown(feed.name)}](${feed.url}) | manual review |`)
     .join("\n");
