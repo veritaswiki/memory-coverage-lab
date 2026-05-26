@@ -4,6 +4,15 @@
   "private": true,
   "type": "module",
   "description": "Interactive comparison lab for agent memory systems and project coverage boundaries.",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=24.0.0 <25",
+    "pnpm": ">=10.0.0 <11"
+  },
+  "volta": {
+    "node": "24.14.0",
+    "pnpm": "10.32.1"
+  },
   "scripts": {
     "dev": "vite --host ::",
     "build": "tsc -b && vite build",
